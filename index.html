@@ -568,9 +568,9 @@ const WEAPONS = {
   confetti:    { name: 'CONFETTI GUN',damage: 2,   fireRate: 350,  bullets: 10,spread: 0.9,  speed: 5,  ammo: 50, reload: 2500, color: '#ff88ff', range: 200 },                                          // 🔴 BAD
   // ── GOOD (new) ──────────────────────────────────────────────────────────────
   deagle:       { name: 'DEAGLE',        damage: 80,  fireRate: 500,  bullets: 1, spread: 0.03, speed: 18, ammo: 7,  reload: 1100, color: '#e8c060', range: 700 },
-  barrett:      { name: 'BARRETT .50',   damage: 120, fireRate: 1300, bullets: 1, spread: 0,    speed: 0,  ammo: 3,  reload: 2800, color: '#60e880', range: 950, hitscan: true },
+  barrett:      { name: 'BARRETT .50',   damage: 90,  fireRate: 1300, bullets: 1, spread: 0,    speed: 0,  ammo: 3,  reload: 2800, color: '#60e880', range: 950, hitscan: true },
   jackhammer:   { name: 'JACKHAMMER',    damage: 28,  fireRate: 600,  bullets: 10,spread: 0.3,  speed: 13, ammo: 10, reload: 1800, color: '#f06060', range: 310 },
-  bfg:          { name: 'BFG',           damage: 100, fireRate: 2000, bullets: 1, spread: 0.01, speed: 5,  ammo: 2,  reload: 3000, color: '#00ff88', range: 900, splash: true, splashRadius: 120, splashDamage: 60 },
+  bfg:          { name: 'BFG',           damage: 60,  fireRate: 2000, bullets: 1, spread: 0.01, speed: 5,  ammo: 2,  reload: 3000, color: '#00ff88', range: 900, splash: true, splashRadius: 120, splashDamage: 35 },
   tripleshot:   { name: 'TRIPLE SHOT',   damage: 45,  fireRate: 600,  bullets: 3, spread: 0.06, speed: 16, ammo: 12, reload: 1500, color: '#f0c040', range: 600 },
   lightningrifle:{ name: 'LIGHTNING RIFLE',damage:65, fireRate:1200, bullets:1, spread:0,      speed: 0,  ammo: 4,  reload: 2000, color: '#ffff00', range: 950, hitscan: true },
   energysword:  { name: 'ENERGY SWORD',  damage: 35,  fireRate: 250,  bullets: 0, spread: 0,    speed: 0,  ammo: 999,reload: 100,  color: '#44ffff', range: 140, melee: true, katana: true },
@@ -579,7 +579,7 @@ const WEAPONS = {
   chaingun:     { name: 'CHAIN GUN',     damage: 20,  fireRate: 65,   bullets: 1, spread: 0.15, speed: 20, ammo: 120,reload: 3000, color: '#aaaaaa', range: 450 },
   vortexrifle:  { name: 'VORTEX RIFLE',  damage: 0,   fireRate: 2000, bullets: 1, spread: 0.01, speed: 5,  ammo: 3,  reload: 2500, color: '#cc44ff', range: 900, gravityOrb: true, pullRadius: 140, pullDuration: 1500, splashRadius: 100, splashDamage: 70 },
   dualuzi:      { name: 'DUAL UZI',      damage: 14,  fireRate: 90,   bullets: 2, spread: 0.18, speed: 18, ammo: 60, reload: 2500, color: '#40c0f0', range: 420 },
-  supersniper:  { name: 'SUPER SNIPER',  damage: 140, fireRate: 2000, bullets: 1, spread: 0,    speed: 0,  ammo: 2,  reload: 3000, color: '#00ffaa', range: 950, hitscan: true },
+  supersniper:  { name: 'SUPER SNIPER',  damage: 95,  fireRate: 2000, bullets: 1, spread: 0,    speed: 0,  ammo: 2,  reload: 3000, color: '#00ffaa', range: 950, hitscan: true },
   grenadelauncher:{ name: 'GRENADE LAUNCHER', damage:55, fireRate:700, bullets:1, spread:0.05, speed:9, ammo:6, reload:2000, color:'#aaff44', range:900, bouncing:true, fuseTime:1200, splash:true, splashRadius:85, splashDamage:40 },
   shockrifle:   { name: 'SHOCK RIFLE',   damage: 70,  fireRate: 1400, bullets: 1, spread: 0,    speed: 0,  ammo: 4,  reload: 2200, color: '#88eeff', range: 950, hitscan: true, freeze: true },
   spiritblade:  { name: 'SPIRIT BLADE',  damage: 30,  fireRate: 200,  bullets: 0, spread: 0,    speed: 0,  ammo: 999,reload: 100,  color: '#eeddff', range: 150, melee: true, katana: true },
@@ -944,11 +944,11 @@ function doMeleeAttack(ent, tx, ty) {
       // Katana has no backstab — only knife does
       const isBackstab = !wDef.katana && behindDot < -0.4;
       if (isBackstab) {
-        // Instant kill
+        // Backstab: heavy bonus damage (3×), no longer an instant kill
         spawnParticles(target.x, target.y, '#ff2222', 20, 6);
         spawnParticles(target.x, target.y, '#ffd700', 12, 4);
         floatingTexts.push({ x: target.x, y: target.y - 20, text: 'BACKSTAB!', life: 1, color: '#ffd700', size: 18 });
-        target.hp = 0;
+        target.hp -= wDef.damage * 3;
       } else {
         target.hp -= wDef.damage;
         spawnParticles(target.x, target.y, '#a0d8ff', 8, 4);

@@ -92,6 +92,23 @@
   .igwBtn .ibadge.secret { color: #ffd700; }
   #igToggle { position: fixed; bottom: 14px; right: 14px; background: rgba(20,20,40,0.95); color: #ffd700; border: 1px solid #ffd70088; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; pointer-events: all; display: none; z-index: 51; transition: background 0.15s; }
   #igToggle:hover { background: rgba(40,40,80,0.95); }
+  /* ── Hotbar ── */
+  #hotbar { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); display: none; flex-direction: row; gap: 8px; }
+  #hotbar.visible { display: flex; }
+  .hotSlot { background: rgba(10,10,25,0.85); border: 2px solid #333; border-radius: 6px; padding: 5px 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 70px; }
+  .hotSlot.active { border-color: #ffd700; background: rgba(20,20,50,0.95); }
+  .hsKey { font-size: 10px; color: #666; font-weight: 900; }
+  .hsName { font-size: 10px; color: #fff; font-weight: bold; text-align: center; max-width: 70px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .hsTier { font-size: 8px; font-weight: 900; letter-spacing: 1px; }
+  .hsTier.good { color: #ffd700; }
+  .hsTier.mid { color: #ff9900; }
+  .hsTier.bad { color: #ff4444; }
+  /* ── Mode selector ── */
+  #modeSelector { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; pointer-events: all; }
+  .modeBtn { background: #111; color: #777; border: 1px solid #333; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; transition: all 0.15s; }
+  .modeBtn:hover { color: #fff; border-color: #666; }
+  .modeBtn.active { color: #ffd700; border-color: #ffd700; background: rgba(255,215,0,0.1); }
+  #modeLabel { position: fixed; top: 10px; right: 120px; background: rgba(0,0,0,0.6); color: #ffd700; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 4px; letter-spacing: 1.5px; display: none; }
 </style>
 </head>
 <body>
@@ -102,6 +119,13 @@
     <div id="scoreList"></div>
   </div>
   <div id="killFeed"></div>
+  <div id="modeLabel"></div>
+  <div id="hotbar">
+    <div class="hotSlot" id="hs-0"><span class="hsKey">1</span><span class="hsName"></span><span class="hsTier good">GOOD</span></div>
+    <div class="hotSlot" id="hs-1"><span class="hsKey">2</span><span class="hsName"></span><span class="hsTier mid">MID</span></div>
+    <div class="hotSlot" id="hs-2"><span class="hsKey">3</span><span class="hsName"></span><span class="hsTier mid">MID</span></div>
+    <div class="hotSlot" id="hs-3"><span class="hsKey">4</span><span class="hsName"></span><span class="hsTier bad">BAD</span></div>
+  </div>
   <div id="hud">
     <div id="weaponName">PISTOL</div>
     <div id="healthBar"><div id="healthFill"></div></div>
@@ -168,6 +192,14 @@
   <div id="respawnMsg">You were eliminated! Respawning...</div>
 </div>
 <div id="overlay">
+  <div id="modeSelector">
+    <button class="modeBtn active" data-mode="ffa">FREE FOR ALL</button>
+    <button class="modeBtn" data-mode="juggernaut">⚔️ JUGGERNAUT</button>
+    <button class="modeBtn" data-mode="1v1">1v1</button>
+    <button class="modeBtn" data-mode="2v2">2v2</button>
+    <button class="modeBtn" data-mode="3v3">3v3</button>
+    <button class="modeBtn" data-mode="4v4">4v4 + COSMO</button>
+  </div>
   <div id="secretBox">
     <div id="secretLabel">enter code</div>
     <div id="secretSlots">
@@ -327,6 +359,30 @@ const WEAPONS = {
                  nuke: true, golden: true },                                                                       // 🔒 SECRET nuke
 };
 
+// ── Weapon tier lists ────────────────────────────────────────────────────────
+const GOOD_WEAPONS = ['sniper','railgun','gravcannon','katana','crossbow','plasmarifle','laserrifle'];
+const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot'];
+const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti'];
+
+function buildLoadout(sel) {
+  const pick = (arr, exclude) => {
+    const pool = exclude ? arr.filter(w => w !== exclude) : arr;
+    return WEAPONS[pool[Math.floor(Math.random() * pool.length)]];
+  };
+  const selTier = GOOD_WEAPONS.includes(sel) ? 'good' : MID_WEAPONS.includes(sel) ? 'mid' : BAD_WEAPONS.includes(sel) ? 'bad' : null;
+  const slot1 = selTier === 'good' ? WEAPONS[sel] : pick(GOOD_WEAPONS);
+  let mid1Key, slot2, slot3;
+  if (selTier === 'mid') {
+    mid1Key = sel; slot2 = WEAPONS[sel];
+  } else {
+    mid1Key = MID_WEAPONS[Math.floor(Math.random() * MID_WEAPONS.length)];
+    slot2 = WEAPONS[mid1Key];
+  }
+  slot3 = pick(MID_WEAPONS, mid1Key);
+  const slot4 = selTier === 'bad' ? WEAPONS[sel] : pick(BAD_WEAPONS);
+  return [slot1, slot2, slot3, slot4];
+}
+
 // ── Map tiles ───────────────────────────────────────────────────────────────
 const TILE = 50;
 const MAP_W = Math.floor(W / TILE), MAP_H = Math.floor(H / TILE);
@@ -393,6 +449,7 @@ function doSplash(b, ix, iy, directHit) {
   const allEnts = [player, ...bots];
   for (const ent of allEnts) {
     if (ent.dead || ent.invincible > 0 || ent === directHit) continue;
+    if (b.owner && b.owner.team !== undefined && b.owner.team >= 0 && ent.team === b.owner.team) continue;
     if (Math.abs(ent.x - ix) < b.splashRadius && Math.abs(ent.y - iy) < b.splashRadius) {
       ent.hp -= b.splashDamage;
       spawnParticles(ent.x, ent.y, ent.color, 6, 3);
@@ -415,6 +472,7 @@ function doMeleeAttack(ent, tx, ty) {
   const allEnts = [player, ...bots];
   for (const target of allEnts) {
     if (target === ent || target.dead || target.invincible > 0) continue;
+    if (ent.team !== undefined && ent.team >= 0 && target.team === ent.team) continue;
     const dist = Math.hypot(target.x - ent.x, target.y - ent.y);
     if (dist > wDef.range) continue;
     const angleToTarget = Math.atan2(target.y - ent.y, target.x - ent.x);
@@ -456,6 +514,7 @@ function doRailgun(ent, tx, ty, wDef) {
     const allEnts = [player, ...bots];
     for (const target of allEnts) {
       if (target === ent || target.dead || target.invincible > 0 || hitEnts.has(target)) continue;
+      if (ent.team !== undefined && ent.team >= 0 && target.team === ent.team) continue;
       if (Math.hypot(target.x - rx, target.y - ry) < target.r + 4) {
         hitEnts.add(target);
         target.hp -= wDef.damage;
@@ -546,28 +605,30 @@ function updateScoreboard() {
 
 // ── Player ──────────────────────────────────────────────────────────────────
 let player, bots, gameRunning=false, selectedWeapon='sniper';
+let gameMode = 'ffa';
 let mouse = {x:W/2, y:H/2};
 let keys = {};
 
 function createPlayer(sp) {
-  const wDef = WEAPONS[selectedWeapon];
+  const loadout = (selectedWeapon === 'goldengun' || selectedWeapon === 'nuke')
+    ? (selectedWeapon === 'goldengun' ? [WEAPONS.goldengun, WEAPONS.deatblade, WEAPONS.pistol, WEAPONS.nerf] : [WEAPONS.nuke, WEAPONS.pistol, WEAPONS.smg, WEAPONS.nerf])
+    : buildLoadout(selectedWeapon);
   return {
     x: sp.x, y: sp.y, r: 14,
     hp: 100, maxHp: 100,
     speed: 3.5,
     color: '#4af',
     name: 'You',
-    weapons: selectedWeapon === 'goldengun'
-      ? [WEAPONS.goldengun, WEAPONS.deatblade]
-      : [WEAPONS[selectedWeapon]],
+    weapons: loadout,
     wIdx: 0,
-    ammo: wDef.ammo,
+    ammo: loadout[0].ammo,
     reloading: false,
     reloadTimer: 0,
     lastFire: 0,
     angle: 0,
     kills: 0, deaths: 0,
     isPlayer: true,
+    team: -1,
     dead: false, respawnTimer: 0,
     invincible: 0,
     trail: [],
@@ -580,15 +641,26 @@ const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade'
   'crossbow','plasmarifle','laserrifle','revolver','minigun','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot',
   'slingshot','watergun','rubberball','confetti'];
 
-function createBot(idx) {
+function createBot(idx, team=-1) {
   const sp = randomSpawn();
   const wKey = BOT_WEAPONS[Math.floor(Math.random()*BOT_WEAPONS.length)];
   const wDef = WEAPONS[wKey];
+  // Color: team 0 = blueish, team 1 = reddish, -1 = default
+  let color;
+  if (team === 0) {
+    const blueColors = ['#44aaff','#4488ff','#6699ff','#88bbff'];
+    color = blueColors[idx % blueColors.length];
+  } else if (team === 1) {
+    const redColors = ['#ff4444','#ff6644','#ff4488','#ff8844'];
+    color = redColors[idx % redColors.length];
+  } else {
+    color = BOT_COLORS[idx % BOT_COLORS.length];
+  }
   return {
     x: sp.x, y: sp.y, r: 14,
     hp: 100, maxHp: 100,
     speed: 2.2 + Math.random()*0.6,
-    color: BOT_COLORS[idx % BOT_COLORS.length],
+    color,
     name: BOT_NAMES[idx % BOT_NAMES.length],
     weapons: [wDef],
     wIdx: 0,
@@ -599,6 +671,7 @@ function createBot(idx) {
     angle: 0,
     kills: 0, deaths: 0,
     isPlayer: false,
+    team,
     dead: false, respawnTimer: 0,
     invincible: 0,
     // AI state
@@ -615,7 +688,29 @@ function startGame() {
   document.getElementById('overlay').style.display = 'none';
   buildMap();
   player = createPlayer(randomSpawn());
-  bots = Array.from({length:7}, (_,i)=>createBot(i));
+
+  if (gameMode === 'ffa') {
+    bots = Array.from({length:7}, (_,i) => createBot(i, -1));
+    player.team = -1;
+  } else if (gameMode === 'juggernaut') {
+    bots = Array.from({length:7}, (_,i) => createBot(i, -1));
+    player.team = -1;
+    player.hp = 250; player.maxHp = 250;
+  } else if (gameMode === '1v1') {
+    bots = [createBot(0, 1)];
+    player.team = 0;
+  } else if (gameMode === '2v2') {
+    bots = [createBot(0, 0), createBot(1, 1), createBot(2, 1)];
+    player.team = 0;
+  } else if (gameMode === '3v3') {
+    bots = [createBot(0, 0), createBot(1, 0), createBot(2, 1), createBot(3, 1), createBot(4, 1)];
+    player.team = 0;
+  } else if (gameMode === '4v4') {
+    bots = [createBot(0, 0), createBot(1, 0), createBot(2, 0), createBot(3, 1), createBot(4, 1), createBot(5, 1), createBot(6, 1)];
+    bots[6].name = 'Cosmo'; bots[6].color = '#ff00ff';
+    player.team = 0;
+  }
+
   gameRunning = true;
   bullets = []; particles = []; explosions = []; floatingTexts = []; beams = []; gravityWells = [];
   screenFlash = 0;
@@ -626,6 +721,14 @@ function startGame() {
   if (startBtn) startBtn.classList.add('active');
   // Show secret weapons in panel if already unlocked
   if (secretUnlocked) unlockIgSecret();
+  // Show hotbar
+  document.getElementById('hotbar').classList.add('visible');
+  updateHotbar();
+  // Mode label
+  const modeLabelEl = document.getElementById('modeLabel');
+  modeLabelEl.style.display = 'block';
+  const modeNames = { ffa: 'FREE FOR ALL', juggernaut: 'JUGGERNAUT', '1v1': '1v1', '2v2': '2v2', '3v3': '3v3', '4v4': '4v4 + COSMO' };
+  modeLabelEl.textContent = modeNames[gameMode] || gameMode.toUpperCase();
   loop();
 }
 
@@ -639,6 +742,9 @@ document.addEventListener('keydown', e => {
   keys[e.key.toLowerCase()] = true;
   if (e.key.toLowerCase()==='r' && gameRunning && !player.dead) startReload(player);
   if (e.key.toLowerCase()==='q' && gameRunning && !player.dead) cycleWeapon(player);
+  if (['1','2','3','4'].includes(e.key) && gameRunning && player && !player.dead) {
+    setPlayerSlot(parseInt(e.key) - 1);
+  }
 });
 document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
@@ -690,7 +796,30 @@ function cycleWeapon(ent) {
   ent.wIdx = (ent.wIdx+1) % ent.weapons.length;
   ent.ammo = currentWeapon(ent).ammo;
   ent.reloading = false;
-  if (ent.isPlayer) updateHUD();
+  if (ent.isPlayer) { updateHUD(); updateHotbar(); }
+}
+
+function setPlayerSlot(idx) {
+  if (!gameRunning || !player || player.dead) return;
+  if (idx >= player.weapons.length) return;
+  player.wIdx = idx;
+  player.ammo = player.weapons[idx].ammo;
+  player.reloading = false;
+  player.reloadTimer = 0;
+  hideReloadBar();
+  updateHUD();
+  updateHotbar();
+}
+
+function updateHotbar() {
+  if (!player) return;
+  for (let i = 0; i < 4; i++) {
+    const slot = document.getElementById(`hs-${i}`);
+    if (!slot) continue;
+    const w = player.weapons[i];
+    slot.querySelector('.hsName').textContent = w ? w.name : '-';
+    slot.classList.toggle('active', i === player.wIdx);
+  }
 }
 
 // ── HUD ──────────────────────────────────────────────────────────────────────
@@ -718,6 +847,10 @@ function showReloadBar(duration) {
   clearTimeout(reloadAnimFrame);
   reloadAnimFrame = setTimeout(()=>bar.style.display='none', duration);
 }
+function hideReloadBar() {
+  clearTimeout(reloadAnimFrame);
+  document.getElementById('reloadBar').style.display = 'none';
+}
 
 // ── Movement & collision ─────────────────────────────────────────────────────
 function moveEntity(ent, dx, dy) {
@@ -730,11 +863,13 @@ function moveEntity(ent, dx, dy) {
 function updateBot(bot, dt) {
   if (bot.dead) return;
 
-  // Pick target
+  // Pick target (respect teams — no friendly fire)
   const targets = [player, ...bots.filter(b=>b!==bot&&!b.dead)];
   let closest = null, closestDist = Infinity;
   for (const t of targets) {
     if (t.dead) continue;
+    // Skip teammates
+    if (bot.team >= 0 && t.team === bot.team) continue;
     const d = Math.hypot(t.x-bot.x, t.y-bot.y);
     if (d < closestDist) { closestDist = d; closest = t; }
   }
@@ -787,7 +922,26 @@ function killEntity(ent, killer) {
   const isPlayerKill = killer===player;
   addKill(killer?killer.name:'?', ent.name, isPlayerKill||ent===player);
   if (ent.isPlayer) {
-    document.getElementById('respawnMsg').style.display = 'block';
+    if (gameMode === 'juggernaut') {
+      ent.respawnTimer = Infinity;
+      document.getElementById('respawnMsg').style.display = 'block';
+      document.getElementById('respawnMsg').textContent = 'ELIMINATED — GAME OVER';
+      floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'ELIMINATED - GAME OVER', life: 3, color: '#ff4444', size: 30 });
+      setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2000);
+    } else if (gameMode === '1v1') {
+      ent.respawnTimer = Infinity;
+      document.getElementById('respawnMsg').style.display = 'block';
+      document.getElementById('respawnMsg').textContent = 'YOU LOSE!';
+      floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'YOU LOSE!', life: 3, color: '#ff4444', size: 36 });
+      setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2500);
+    } else {
+      document.getElementById('respawnMsg').style.display = 'block';
+    }
+  } else if (!ent.isPlayer && gameMode === '1v1' && bots.length === 1) {
+    // The single enemy bot died in 1v1
+    ent.respawnTimer = Infinity;
+    floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'YOU WIN!', life: 3, color: '#ffd700', size: 36 });
+    setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2500);
   }
   updateScoreboard();
 
@@ -801,6 +955,10 @@ function killEntity(ent, killer) {
 }
 
 function respawnEntity(ent) {
+  // In 1v1 and juggernaut, Infinity timer prevents natural respawn — but guard here too
+  if (ent.respawnTimer === Infinity) return;
+  // In 1v1, bots don't respawn either
+  if (gameMode === '1v1' && !ent.isPlayer) return;
   ent.dead = false;
   ent.hp = ent.maxHp;
   const sp = randomSpawn();
@@ -980,6 +1138,8 @@ function loop(ts=0) {
         if (skipOwner && ent === b.owner) continue;
         if (!b.boomerang && ent === b.owner) continue;
         if (ent.dead || ent.invincible>0) continue;
+        // Friendly fire check
+        if (b.owner && b.owner.team !== undefined && b.owner.team >= 0 && ent.team === b.owner.team) continue;
         if (Math.hypot(ent.x-b.x, ent.y-b.y) < ent.r + 5) {
           if (b.gravityOrb) {
             // Landing on a player — create well at impact spot
@@ -1688,6 +1848,15 @@ document.addEventListener('keydown', e => {
   }
 });
 document.getElementById('startBtn').addEventListener('click', startGame);
+
+// ── Mode selector ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.modeBtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.modeBtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    gameMode = btn.dataset.mode;
+  });
+});
 </script>
 </body>
 </html>

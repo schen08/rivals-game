@@ -819,15 +819,25 @@ let walls = [];
 
 function buildMap() {
   walls = [];
+  // Each entry: [tx, ty, tw, th, color_light, color_dark, border_color]
   const rects = [
-    [3,3,4,3],[10,3,4,3],[3,10,4,3],[10,10,4,3],
-    [6,5,3,2],[7,8,3,2],
-    [1,6,2,2],[14,6,2,2],
-    [5,1,2,4],[11,1,2,4],[5,11,2,4],[11,11,2,4],
+    [3,3,4,3,  '#8b2fc9','#5a1a8a','#c060ff'],  // top-left — purple
+    [10,3,4,3, '#1a6abf','#0d3d7a','#40aaff'],   // top-right — blue
+    [3,10,4,3, '#bf6a1a','#7a3d0d','#ffaa40'],   // bottom-left — orange
+    [10,10,4,3,'#1abf6a','#0d7a3d','#40ffaa'],   // bottom-right — green
+    [6,5,3,2,  '#bf1a4a','#7a0d28','#ff4080'],   // center-top — red/pink
+    [7,8,3,2,  '#bf1a4a','#7a0d28','#ff4080'],   // center-bottom — red/pink
+    [1,6,2,2,  '#1abfbf','#0d7a7a','#40ffff'],   // left-side — cyan
+    [14,6,2,2, '#1abfbf','#0d7a7a','#40ffff'],   // right-side — cyan
+    [5,1,2,4,  '#bfbf1a','#7a7a0d','#ffff40'],   // top corridors — yellow
+    [11,1,2,4, '#bfbf1a','#7a7a0d','#ffff40'],
+    [5,11,2,4, '#bfbf1a','#7a7a0d','#ffff40'],
+    [11,11,2,4,'#bfbf1a','#7a7a0d','#ffff40'],
   ];
-  for (const [x,y,w,h] of rects) {
+  for (const [x,y,w,h,cl,cd,cb] of rects) {
     for (let cx=x; cx<x+w; cx++) for (let cy=y; cy<y+h; cy++) {
-      if (cx>=0&&cy>=0&&cx<MAP_W&&cy<MAP_H) walls.push({x:cx*TILE,y:cy*TILE,w:TILE,h:TILE});
+      if (cx>=0&&cy>=0&&cx<MAP_W&&cy<MAP_H)
+        walls.push({x:cx*TILE,y:cy*TILE,w:TILE,h:TILE,colorLight:cl,colorDark:cd,colorBorder:cb});
     }
   }
 }
@@ -1686,24 +1696,41 @@ function loop(ts=0) {
 
 // ── Drawing ───────────────────────────────────────────────────────────────────
 function draw() {
-  // Background
+  // Background — dark floor with subtle tile pattern
   ctx.fillStyle = '#0d0d1a';
   ctx.fillRect(0,0,W,H);
 
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  // Floor tiles: alternating very-dark squares for checkerboard feel
+  for (let tx=0;tx<MAP_W;tx++) for (let ty=0;ty<MAP_H;ty++) {
+    if ((tx+ty)%2===0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.025)';
+      ctx.fillRect(tx*TILE,ty*TILE,TILE,TILE);
+    }
+  }
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
   ctx.lineWidth = 1;
   for (let x=0;x<=W;x+=TILE) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
   for (let y=0;y<=H;y+=TILE) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-  // Walls
+  // Walls — colored by zone
   for (const w of walls) {
     const grad = ctx.createLinearGradient(w.x,w.y,w.x+w.w,w.y+w.h);
-    grad.addColorStop(0,'#1e2040'); grad.addColorStop(1,'#161630');
+    grad.addColorStop(0, w.colorLight);
+    grad.addColorStop(1, w.colorDark);
     ctx.fillStyle = grad;
     ctx.fillRect(w.x,w.y,w.w,w.h);
-    ctx.strokeStyle = '#2a2a5a'; ctx.lineWidth = 1;
+    // Bright border glow
+    ctx.strokeStyle = w.colorBorder;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.6;
     ctx.strokeRect(w.x+0.5,w.y+0.5,w.w-1,w.h-1);
+    ctx.globalAlpha = 1;
+    // Inner highlight (top-left bevel)
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
+    ctx.fillRect(w.x+1,w.y+1,w.w-2,4);
+    ctx.fillRect(w.x+1,w.y+1,4,w.h-2);
   }
 
   // Bullet trails
@@ -2128,8 +2155,10 @@ function draw() {
   ctx.strokeRect(mmX, mmY, mmW, mmH);
   const sx = mmW/W, sy = mmH/H;
   for (const w of walls) {
-    ctx.fillStyle = '#2a2a5a';
+    ctx.fillStyle = w.colorLight || '#2a2a5a';
+    ctx.globalAlpha = 0.8;
     ctx.fillRect(mmX+w.x*sx, mmY+w.y*sy, w.w*sx, w.h*sy);
+    ctx.globalAlpha = 1;
   }
   for (const ent of allEnts) {
     if (ent.dead) continue;

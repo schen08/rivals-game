@@ -932,11 +932,16 @@ function killEntity(ent, killer) {
     } else {
       document.getElementById('respawnMsg').style.display = 'block';
     }
-  } else if (!ent.isPlayer && gameMode === '1v1' && bots.length === 1) {
-    // The single enemy bot died in 1v1
-    ent.respawnTimer = Infinity;
-    floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'YOU WIN!', life: 3, color: '#ffd700', size: 36 });
-    setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2500);
+  } else if (!ent.isPlayer) {
+    // Check if all bots are now eliminated
+    setTimeout(() => {
+      if (!gameRunning) return;
+      const allBotsEliminated = bots.every(b => b.dead);
+      if (allBotsEliminated) {
+        floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
+        setTimeout(() => { gameRunning = false; }, 3000);
+      }
+    }, 100);
   }
   updateScoreboard();
 
@@ -1011,11 +1016,7 @@ function loop(ts=0) {
 
   // ── Update bots ──
   for (const bot of bots) {
-    if (bot.dead) {
-      bot.respawnTimer -= dt;
-      if (bot.respawnTimer <= 0) respawnEntity(bot);
-      continue;
-    }
+    if (bot.dead) continue; // bots are permanently eliminated
     if (bot.invincible > 0) bot.invincible -= dt;
     if (bot.reloading) {
       bot.reloadTimer -= dt;

@@ -26,6 +26,10 @@
   #overlay p { color: #aaa; font-size: 16px; }
   #overlay button { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 14px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: all; transition: transform 0.1s, box-shadow 0.1s; letter-spacing: 1px; }
   #overlay button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(231,76,60,0.5); }
+  .slotSection { display: flex; flex-direction: column; gap: 5px; border: 1px solid #222; border-radius: 7px; padding: 7px 10px; }
+  .slotLabel { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .slotKey { background: #222; color: #ffd700; font-size: 12px; font-weight: 900; width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .slotCurrent { font-size: 11px; color: #ffd700; font-weight: 900; margin-left: auto; letter-spacing: 1px; }
   #tierTabs { display: flex; gap: 6px; justify-content: center; margin-top: 10px; pointer-events: all; }
   .tierTab { background: #111122; color: #777; border: 2px solid #333; padding: 5px 18px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 2px; transition: all 0.15s; }
   .tierTab.all   { }
@@ -215,73 +219,86 @@
   </div>
   <h1>RIVALS</h1>
   <p>Arena combat — last team standing</p>
-  <!-- Tier filter tabs -->
-  <div id="tierTabs">
-    <button class="tierTab all tab-active"    data-tier="all">ALL</button>
-    <button class="tierTab good"              data-tier="good">★ GOOD</button>
-    <button class="tierTab mid"               data-tier="mid">◆ MID</button>
-    <button class="tierTab bad"               data-tier="bad">✗ BAD</button>
-  </div>
   <div id="weaponPicker">
-    <!-- GOOD -->
-    <div class="tierSection" id="sec-good">
-      <div class="wRow"><span class="tier-header good">★ GOOD</span></div>
+    <!-- SLOT 1: GOOD -->
+    <div class="slotSection">
+      <div class="slotLabel"><span class="slotKey">1</span><span class="tier-header good">★ GOOD</span><span class="slotCurrent" id="sc-0">SNIPER</span></div>
       <div class="wRow">
-        <button class="wBtn active" data-w="sniper">🎯 Sniper<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="railgun">⚡ Railgun<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="gravcannon">🌀 Grav Cannon<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="katana">🗡️ Katana<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="crossbow">🏹 Crossbow<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="badge good">GOOD</span></button>
-        <button class="wBtn" data-w="laserrifle">🔴 Laser Rifle<span class="badge good">GOOD</span></button>
+        <button class="wBtn s0 active" data-w="sniper" data-slot="0">🎯 Sniper</button>
+        <button class="wBtn s0" data-w="railgun" data-slot="0">⚡ Railgun</button>
+        <button class="wBtn s0" data-w="gravcannon" data-slot="0">🌀 Grav Cannon</button>
+        <button class="wBtn s0" data-w="katana" data-slot="0">🗡️ Katana</button>
+        <button class="wBtn s0" data-w="crossbow" data-slot="0">🏹 Crossbow</button>
+        <button class="wBtn s0" data-w="plasmarifle" data-slot="0">🔵 Plasma Rifle</button>
+        <button class="wBtn s0" data-w="laserrifle" data-slot="0">🔴 Laser Rifle</button>
       </div>
     </div>
-    <!-- MID -->
-    <div class="tierSection" id="sec-mid">
-      <div class="wRow"><span class="tier-header mid">◆ MID</span></div>
+    <!-- SLOT 2: MID -->
+    <div class="slotSection">
+      <div class="slotLabel"><span class="slotKey">2</span><span class="tier-header mid">◆ MID</span><span class="slotCurrent" id="sc-1">PISTOL</span></div>
       <div class="wRow">
-        <button class="wBtn" data-w="pistol">🔫 Pistol<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="smg">💨 SMG<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="shotgun">🔴 Shotgun<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="rpg">🚀 RPG<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="burst">🔫 Burst<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="revolver">🔫 Revolver<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="minigun">💥 Minigun<span class="badge mid">MID</span></button>
-      </div>
-      <div class="wRow">
-        <button class="wBtn" data-w="grenade">💣 Grenade<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="flamethrower">🔥 Flamethrower<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="boomerang">🪃 Boomerang<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="knife">🔪 Knife<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="freezeray">🧊 Freeze Ray<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="dualpistols">🔫 Dual Pistols<span class="badge mid">MID</span></button>
-      </div>
-      <div class="wRow">
-        <button class="wBtn" data-w="cannon">💣 Cannon<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="iceshards">❄️ Ice Shards<span class="badge mid">MID</span></button>
-        <button class="wBtn" data-w="scattershot">🟡 Scatter Shot<span class="badge mid">MID</span></button>
+        <button class="wBtn s1 active" data-w="pistol" data-slot="1">🔫 Pistol</button>
+        <button class="wBtn s1" data-w="smg" data-slot="1">💨 SMG</button>
+        <button class="wBtn s1" data-w="shotgun" data-slot="1">🔴 Shotgun</button>
+        <button class="wBtn s1" data-w="rpg" data-slot="1">🚀 RPG</button>
+        <button class="wBtn s1" data-w="burst" data-slot="1">🔫 Burst</button>
+        <button class="wBtn s1" data-w="revolver" data-slot="1">🔫 Revolver</button>
+        <button class="wBtn s1" data-w="minigun" data-slot="1">💥 Minigun</button>
+        <button class="wBtn s1" data-w="grenade" data-slot="1">💣 Grenade</button>
+        <button class="wBtn s1" data-w="flamethrower" data-slot="1">🔥 Flamethrower</button>
+        <button class="wBtn s1" data-w="boomerang" data-slot="1">🪃 Boomerang</button>
+        <button class="wBtn s1" data-w="knife" data-slot="1">🔪 Knife</button>
+        <button class="wBtn s1" data-w="freezeray" data-slot="1">🧊 Freeze Ray</button>
+        <button class="wBtn s1" data-w="huntingrifle" data-slot="1">🦌 Hunting Rifle</button>
+        <button class="wBtn s1" data-w="dualpistols" data-slot="1">🔫 Dual Pistols</button>
+        <button class="wBtn s1" data-w="cannon" data-slot="1">💣 Cannon</button>
+        <button class="wBtn s1" data-w="throwingknives" data-slot="1">🗡️ Throwing Knives</button>
+        <button class="wBtn s1" data-w="iceshards" data-slot="1">❄️ Ice Shards</button>
+        <button class="wBtn s1" data-w="scattershot" data-slot="1">🟡 Scatter Shot</button>
       </div>
     </div>
-    <!-- BAD -->
-    <div class="tierSection" id="sec-bad">
-      <div class="wRow"><span class="tier-header bad">✗ BAD</span></div>
+    <!-- SLOT 3: MID -->
+    <div class="slotSection">
+      <div class="slotLabel"><span class="slotKey">3</span><span class="tier-header mid">◆ MID</span><span class="slotCurrent" id="sc-2">SMG</span></div>
       <div class="wRow">
-        <button class="wBtn" data-w="nerf">🟠 Nerf Gun<span class="badge bad">BAD</span></button>
-        <button class="wBtn" data-w="bubblegum">🫧 Bubble Gun<span class="badge bad">BAD</span></button>
-        <button class="wBtn" data-w="slingshot">🪢 Slingshot<span class="badge bad">BAD</span></button>
-        <button class="wBtn" data-w="watergun">💧 Water Gun<span class="badge bad">BAD</span></button>
-        <button class="wBtn" data-w="rubberball">🎱 Rubber Ball<span class="badge bad">BAD</span></button>
-        <button class="wBtn" data-w="confetti">🎉 Confetti Gun<span class="badge bad">BAD</span></button>
+        <button class="wBtn s2" data-w="pistol" data-slot="2">🔫 Pistol</button>
+        <button class="wBtn s2 active" data-w="smg" data-slot="2">💨 SMG</button>
+        <button class="wBtn s2" data-w="shotgun" data-slot="2">🔴 Shotgun</button>
+        <button class="wBtn s2" data-w="rpg" data-slot="2">🚀 RPG</button>
+        <button class="wBtn s2" data-w="burst" data-slot="2">🔫 Burst</button>
+        <button class="wBtn s2" data-w="revolver" data-slot="2">🔫 Revolver</button>
+        <button class="wBtn s2" data-w="minigun" data-slot="2">💥 Minigun</button>
+        <button class="wBtn s2" data-w="grenade" data-slot="2">💣 Grenade</button>
+        <button class="wBtn s2" data-w="flamethrower" data-slot="2">🔥 Flamethrower</button>
+        <button class="wBtn s2" data-w="boomerang" data-slot="2">🪃 Boomerang</button>
+        <button class="wBtn s2" data-w="knife" data-slot="2">🔪 Knife</button>
+        <button class="wBtn s2" data-w="freezeray" data-slot="2">🧊 Freeze Ray</button>
+        <button class="wBtn s2" data-w="huntingrifle" data-slot="2">🦌 Hunting Rifle</button>
+        <button class="wBtn s2" data-w="dualpistols" data-slot="2">🔫 Dual Pistols</button>
+        <button class="wBtn s2" data-w="cannon" data-slot="2">💣 Cannon</button>
+        <button class="wBtn s2" data-w="throwingknives" data-slot="2">🗡️ Throwing Knives</button>
+        <button class="wBtn s2" data-w="iceshards" data-slot="2">❄️ Ice Shards</button>
+        <button class="wBtn s2" data-w="scattershot" data-slot="2">🟡 Scatter Shot</button>
+      </div>
+    </div>
+    <!-- SLOT 4: BAD -->
+    <div class="slotSection">
+      <div class="slotLabel"><span class="slotKey">4</span><span class="tier-header bad">✗ BAD</span><span class="slotCurrent" id="sc-3">NERF GUN</span></div>
+      <div class="wRow">
+        <button class="wBtn s3 active" data-w="nerf" data-slot="3">🟠 Nerf Gun</button>
+        <button class="wBtn s3" data-w="bubblegum" data-slot="3">🫧 Bubble Gun</button>
+        <button class="wBtn s3" data-w="slingshot" data-slot="3">🪢 Slingshot</button>
+        <button class="wBtn s3" data-w="watergun" data-slot="3">💧 Water Gun</button>
+        <button class="wBtn s3" data-w="rubberball" data-slot="3">🎱 Rubber Ball</button>
+        <button class="wBtn s3" data-w="confetti" data-slot="3">🎉 Confetti Gun</button>
       </div>
     </div>
     <!-- SECRET (hidden until code entered) -->
     <div id="secretTier">
-      <div class="wRow"><span class="tier-header secret">★ SECRET</span></div>
+      <div class="slotLabel"><span class="slotKey" style="color:#ffd700;">1</span><span class="tier-header secret">★ SECRET</span><span style="font-size:10px;color:#888;">replaces slot 1</span></div>
       <div class="wRow">
-        <button class="wBtn" data-w="goldengun" style="border-color:#ffd700;color:#ffd700;">☠️ KILLER + DEATH BLADE<span class="badge good" style="color:#ffd700;">SECRET</span></button>
-        <button class="wBtn" data-w="nuke" style="border-color:#ff3300;color:#ff3300;">☢️ NUKE<span class="badge bad" style="color:#ff3300;">SECRET</span></button>
+        <button class="wBtn s0" data-w="goldengun" data-slot="0" style="border-color:#ffd700;color:#ffd700;">☠️ KILLER + DEATH BLADE</button>
+        <button class="wBtn s0" data-w="nuke" data-slot="0" style="border-color:#ff3300;color:#ff3300;">☢️ NUKE</button>
       </div>
     </div>
   </div>
@@ -364,23 +381,8 @@ const GOOD_WEAPONS = ['sniper','railgun','gravcannon','katana','crossbow','plasm
 const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot'];
 const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti'];
 
-function buildLoadout(sel) {
-  const pick = (arr, exclude) => {
-    const pool = exclude ? arr.filter(w => w !== exclude) : arr;
-    return WEAPONS[pool[Math.floor(Math.random() * pool.length)]];
-  };
-  const selTier = GOOD_WEAPONS.includes(sel) ? 'good' : MID_WEAPONS.includes(sel) ? 'mid' : BAD_WEAPONS.includes(sel) ? 'bad' : null;
-  const slot1 = selTier === 'good' ? WEAPONS[sel] : pick(GOOD_WEAPONS);
-  let mid1Key, slot2, slot3;
-  if (selTier === 'mid') {
-    mid1Key = sel; slot2 = WEAPONS[sel];
-  } else {
-    mid1Key = MID_WEAPONS[Math.floor(Math.random() * MID_WEAPONS.length)];
-    slot2 = WEAPONS[mid1Key];
-  }
-  slot3 = pick(MID_WEAPONS, mid1Key);
-  const slot4 = selTier === 'bad' ? WEAPONS[sel] : pick(BAD_WEAPONS);
-  return [slot1, slot2, slot3, slot4];
+function buildLoadout() {
+  return selectedSlots.map(key => WEAPONS[key] || WEAPONS.pistol);
 }
 
 // ── Map tiles ───────────────────────────────────────────────────────────────
@@ -604,15 +606,14 @@ function updateScoreboard() {
 }
 
 // ── Player ──────────────────────────────────────────────────────────────────
-let player, bots, gameRunning=false, selectedWeapon='sniper';
+let player, bots, gameRunning=false;
+let selectedSlots = ['sniper', 'pistol', 'smg', 'nerf']; // slot 0=GOOD, 1=MID, 2=MID, 3=BAD
 let gameMode = 'ffa';
 let mouse = {x:W/2, y:H/2};
 let keys = {};
 
 function createPlayer(sp) {
-  const loadout = (selectedWeapon === 'goldengun' || selectedWeapon === 'nuke')
-    ? (selectedWeapon === 'goldengun' ? [WEAPONS.goldengun, WEAPONS.deatblade, WEAPONS.pistol, WEAPONS.nerf] : [WEAPONS.nuke, WEAPONS.pistol, WEAPONS.smg, WEAPONS.nerf])
-    : buildLoadout(selectedWeapon);
+  const loadout = buildLoadout();
   return {
     x: sp.x, y: sp.y, r: 14,
     hp: 100, maxHp: 100,
@@ -717,7 +718,7 @@ function startGame() {
   showIgToggle(true);
   // Mark the starting weapon active in the panel
   document.querySelectorAll('.igwBtn').forEach(b => b.classList.remove('active'));
-  const startBtn = document.querySelector(`.igwBtn[data-w="${selectedWeapon}"]`);
+  const startBtn = document.querySelector(`.igwBtn[data-w="${selectedSlots[0]}"]`);
   if (startBtn) startBtn.classList.add('active');
   // Show secret weapons in panel if already unlocked
   if (secretUnlocked) unlockIgSecret();
@@ -1715,12 +1716,17 @@ function draw() {
   }
 }
 
-// ── UI controls ───────────────────────────────────────────────────────────────
+// ── UI controls — 4-slot weapon picker ───────────────────────────────────────
 document.querySelectorAll('.wBtn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.wBtn').forEach(b=>b.classList.remove('active'));
+    const slot = parseInt(btn.dataset.slot);
+    if (isNaN(slot)) return;
+    // Deactivate all buttons in this slot, activate clicked one
+    document.querySelectorAll(`.wBtn[data-slot="${slot}"]`).forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    selectedWeapon = btn.dataset.w;
+    selectedSlots[slot] = btn.dataset.w;
+    const sc = document.getElementById(`sc-${slot}`);
+    if (sc) sc.textContent = WEAPONS[btn.dataset.w]?.name || btn.dataset.w.toUpperCase();
   });
 });
 

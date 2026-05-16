@@ -1327,15 +1327,18 @@ function updateBot(bot, dt) {
     bot.target = player.dead ? null : player;
   } else {
     const targets = [player, ...bots.filter(b=>b!==bot&&!b.dead)];
-    let closest = null, closestDist = Infinity;
+    let closest = null, bestDist = Infinity;
     for (const t of targets) {
       if (t.dead) continue;
       if (bot.team >= 0 && t.team === bot.team) continue;
       const d = Math.hypot(t.x-bot.x, t.y-bot.y);
-      if (d < closestDist) { closestDist = d; closest = t; }
+      if (d < bestDist) { bestDist = d; closest = t; }
     }
     bot.target = closest;
   }
+
+  // Distance to current target (computed after target is set regardless of mode)
+  const closestDist = bot.target ? Math.hypot(bot.target.x - bot.x, bot.target.y - bot.y) : Infinity;
 
   const wDef = currentWeapon(bot);
   const botSpeed = bot.frozen > 0 ? bot.speed * 0.25 : bot.speed;

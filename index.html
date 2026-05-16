@@ -917,21 +917,11 @@ function killEntity(ent, killer) {
   const isPlayerKill = killer===player;
   addKill(killer?killer.name:'?', ent.name, isPlayerKill||ent===player);
   if (ent.isPlayer) {
-    if (gameMode === 'juggernaut') {
-      ent.respawnTimer = Infinity;
-      document.getElementById('respawnMsg').style.display = 'block';
-      document.getElementById('respawnMsg').textContent = 'ELIMINATED — GAME OVER';
-      floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'ELIMINATED - GAME OVER', life: 3, color: '#ff4444', size: 30 });
-      setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2000);
-    } else if (gameMode === '1v1') {
-      ent.respawnTimer = Infinity;
-      document.getElementById('respawnMsg').style.display = 'block';
-      document.getElementById('respawnMsg').textContent = 'YOU LOSE!';
-      floatingTexts.push({ x: W/2, y: H/2 - 40, text: 'YOU LOSE!', life: 3, color: '#ff4444', size: 36 });
-      setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 2500);
-    } else {
-      document.getElementById('respawnMsg').style.display = 'block';
-    }
+    const msg = document.getElementById('respawnMsg');
+    msg.textContent = '💀 ELIMINATED — GAME OVER';
+    msg.style.display = 'block';
+    floatingTexts.push({ x: W/2, y: H/2 - 40, text: '💀 ELIMINATED', life: 4, color: '#ff4444', size: 36 });
+    setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 3000);
   } else if (!ent.isPlayer) {
     // Check if all bots are now eliminated
     setTimeout(() => {
@@ -1009,10 +999,7 @@ function loop(ts=0) {
     player.trail.push({x:player.x,y:player.y,life:1});
     if (player.trail.length > 8) player.trail.shift();
     updateHUD();
-  } else {
-    player.respawnTimer -= dt;
-    if (player.respawnTimer <= 0) respawnEntity(player);
-  }
+  } // player is permanently eliminated on death
 
   // ── Update bots ──
   for (const bot of bots) {

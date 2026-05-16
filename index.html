@@ -1388,9 +1388,14 @@ function killEntity(ent, killer) {
   addKill(killer?killer.name:'?', ent.name, isPlayerKill||ent===player);
   if (ent.isPlayer) {
     const msg = document.getElementById('respawnMsg');
-    msg.textContent = '💀 ELIMINATED — GAME OVER';
+    const killerName = killer ? killer.name : 'the environment';
+    const kw = killer && killer.weapons ? killer.weapons[killer.wIdx] : null;
+    const weaponName = kw ? kw.name : '???';
+    msg.innerHTML = `💀 ELIMINATED — GAME OVER<br>` +
+      `<span style="font-size:15px;color:#ff9999;">Eliminated by <b style="color:#ffd700;">${killerName}</b> using <b style="color:#ffd700;">${weaponName}</b></span>`;
     msg.style.display = 'block';
-    floatingTexts.push({ x: W/2, y: H/2 - 40, text: '💀 ELIMINATED', life: 4, color: '#ff4444', size: 36 });
+    floatingTexts.push({ x: W/2, y: H/2 - 50, text: '💀 ELIMINATED', life: 4, color: '#ff4444', size: 36 });
+    floatingTexts.push({ x: W/2, y: H/2 - 8, text: `by ${killerName} · ${weaponName}`, life: 4, color: '#ffaa66', size: 18 });
     setTimeout(() => {
       gameRunning = false;
       document.getElementById('respawnMsg').style.display = 'none';

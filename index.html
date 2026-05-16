@@ -70,6 +70,28 @@
   #reloadProgress { width: 160px; height: 6px; background: #1a1a2e; border-radius: 3px; overflow: hidden; }
   #reloadFill { height: 100%; width: 0; background: #ffd700; transition: width linear; }
   #reloadLabel { color: #ffd700; font-size: 12px; text-align: center; margin-top: 4px; letter-spacing: 1px; }
+  /* ── In-game weapon panel ── */
+  #igPanel { position: fixed; bottom: 70px; right: 14px; background: rgba(8,8,20,0.92); border: 1px solid #333; border-radius: 10px; padding: 10px; display: none; flex-direction: column; gap: 7px; pointer-events: all; z-index: 50; max-width: 320px; }
+  #igPanel.open { display: flex; }
+  #igTabs { display: flex; gap: 5px; justify-content: center; }
+  .igTab { background: #111122; color: #666; border: 1px solid #333; padding: 3px 11px; border-radius: 12px; cursor: pointer; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; transition: all 0.12s; pointer-events: all; }
+  .igTab.tab-active.all    { border-color: #fff;    color: #fff; }
+  .igTab.tab-active.good   { border-color: #ffd700; color: #ffd700; }
+  .igTab.tab-active.mid    { border-color: #ff9900; color: #ff9900; }
+  .igTab.tab-active.bad    { border-color: #ff4444; color: #ff4444; }
+  .igTab.tab-active.secret { border-color: #ffd700; color: #ffd700; }
+  #igWeapons { display: flex; flex-direction: column; gap: 5px; max-height: 320px; overflow-y: auto; }
+  .igRow { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+  .igwBtn { background: #1a1a2e; color: #ccc; border: 1px solid #333; padding: 4px 9px 3px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.12s; pointer-events: all; white-space: nowrap; }
+  .igwBtn:hover { border-color: #ffd700; color: #ffd700; background: #12122a; }
+  .igwBtn.active { border-color: #ffd700; color: #ffd700; background: #12122a; }
+  .igwBtn .ibadge { font-size: 7px; font-weight: 900; margin-left: 4px; }
+  .igwBtn .ibadge.good { color: #ffd700; }
+  .igwBtn .ibadge.mid  { color: #ff9900; }
+  .igwBtn .ibadge.bad  { color: #ff4444; }
+  .igwBtn .ibadge.secret { color: #ffd700; }
+  #igToggle { position: fixed; bottom: 14px; right: 14px; background: rgba(20,20,40,0.95); color: #ffd700; border: 1px solid #ffd70088; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; pointer-events: all; display: none; z-index: 51; transition: background 0.15s; }
+  #igToggle:hover { background: rgba(40,40,80,0.95); }
 </style>
 </head>
 <body>
@@ -84,6 +106,60 @@
     <div id="weaponName">PISTOL</div>
     <div id="healthBar"><div id="healthFill"></div></div>
     <div id="ammoDisplay">12 / 12</div>
+  </div>
+  <!-- In-game weapon switcher -->
+  <button id="igToggle">🔫 WEAPONS ▲</button>
+  <div id="igPanel">
+    <div id="igTabs">
+      <button class="igTab all tab-active" data-tier="all">ALL</button>
+      <button class="igTab good" data-tier="good">★ GOOD</button>
+      <button class="igTab mid"  data-tier="mid">◆ MID</button>
+      <button class="igTab bad"  data-tier="bad">✗ BAD</button>
+      <button class="igTab secret" id="igSecretTab" data-tier="secret" style="display:none;">★ SECRET</button>
+    </div>
+    <div id="igWeapons">
+      <div class="igRow ig-good">
+        <button class="igwBtn" data-w="sniper">🎯 Sniper<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="railgun">⚡ Railgun<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="gravcannon">🌀 Grav Cannon<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="katana">🗡️ Katana<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="crossbow">🏹 Crossbow<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="laserrifle">🔴 Laser Rifle<span class="ibadge good">GOOD</span></button>
+      </div>
+      <div class="igRow ig-mid">
+        <button class="igwBtn" data-w="pistol">🔫 Pistol<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="smg">💨 SMG<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="shotgun">🔴 Shotgun<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="rpg">🚀 RPG<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="burst">🔫 Burst<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="revolver">🔫 Revolver<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="minigun">💥 Minigun<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="grenade">💣 Grenade<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="flamethrower">🔥 Flamethrower<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="boomerang">🪃 Boomerang<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="knife">🔪 Knife<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="freezeray">🧊 Freeze Ray<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="dualpistols">🔫 Dual Pistols<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="cannon">💣 Cannon<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="iceshards">❄️ Ice Shards<span class="ibadge mid">MID</span></button>
+        <button class="igwBtn" data-w="scattershot">🟡 Scatter Shot<span class="ibadge mid">MID</span></button>
+      </div>
+      <div class="igRow ig-bad">
+        <button class="igwBtn" data-w="nerf">🟠 Nerf Gun<span class="ibadge bad">BAD</span></button>
+        <button class="igwBtn" data-w="bubblegum">🫧 Bubble Gun<span class="ibadge bad">BAD</span></button>
+        <button class="igwBtn" data-w="slingshot">🪢 Slingshot<span class="ibadge bad">BAD</span></button>
+        <button class="igwBtn" data-w="watergun">💧 Water Gun<span class="ibadge bad">BAD</span></button>
+        <button class="igwBtn" data-w="rubberball">🎱 Rubber Ball<span class="ibadge bad">BAD</span></button>
+        <button class="igwBtn" data-w="confetti">🎉 Confetti Gun<span class="ibadge bad">BAD</span></button>
+      </div>
+      <div class="igRow ig-secret" style="display:none;">
+        <button class="igwBtn" data-w="goldengun" style="border-color:#ffd700;color:#ffd700;">☠️ KILLER+BLADE<span class="ibadge secret">SECRET</span></button>
+        <button class="igwBtn" data-w="nuke" style="border-color:#ff3300;color:#ff3300;">☢️ NUKE<span class="ibadge secret" style="color:#ff3300;">SECRET</span></button>
+      </div>
+    </div>
   </div>
   <div id="reloadBar">
     <div id="reloadProgress"><div id="reloadFill"></div></div>
@@ -543,6 +619,13 @@ function startGame() {
   gameRunning = true;
   bullets = []; particles = []; explosions = []; floatingTexts = []; beams = []; gravityWells = [];
   screenFlash = 0;
+  showIgToggle(true);
+  // Mark the starting weapon active in the panel
+  document.querySelectorAll('.igwBtn').forEach(b => b.classList.remove('active'));
+  const startBtn = document.querySelector(`.igwBtn[data-w="${selectedWeapon}"]`);
+  if (startBtn) startBtn.classList.add('active');
+  // Show secret weapons in panel if already unlocked
+  if (secretUnlocked) unlockIgSecret();
   loop();
 }
 
@@ -1498,6 +1581,61 @@ document.querySelectorAll('.tierTab').forEach(tab => {
   tab.addEventListener('click', () => setTierFilter(tab.dataset.tier));
 });
 
+// ── In-game weapon panel ──────────────────────────────────────────────────────
+const igToggle = document.getElementById('igToggle');
+const igPanel  = document.getElementById('igPanel');
+
+function switchPlayerWeapon(wKey) {
+  if (!gameRunning || !player || player.dead) return;
+  const wDef = WEAPONS[wKey];
+  if (!wDef) return;
+  player.weapons = wKey === 'goldengun' ? [WEAPONS.goldengun, WEAPONS.deatblade] : [wDef];
+  player.wIdx = 0;
+  player.ammo = wDef.ammo;
+  player.reloading = false;
+  player.reloadTimer = 0;
+  hideReloadBar();
+  updateHUD();
+  document.querySelectorAll('.igwBtn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.igwBtn[data-w="${wKey}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+document.querySelectorAll('.igwBtn').forEach(btn => {
+  btn.addEventListener('click', () => switchPlayerWeapon(btn.dataset.w));
+});
+
+igToggle.addEventListener('click', () => {
+  const open = igPanel.classList.toggle('open');
+  igToggle.textContent = open ? '🔫 WEAPONS ▼' : '🔫 WEAPONS ▲';
+});
+
+// In-game tier tabs
+function setIgTierFilter(tier) {
+  document.querySelectorAll('.igTab').forEach(t => t.classList.remove('tab-active'));
+  document.querySelector(`.igTab[data-tier="${tier}"]`).classList.add('tab-active');
+  const show = { all: ['ig-good','ig-mid','ig-bad','ig-secret'], good: ['ig-good'], mid: ['ig-mid'], bad: ['ig-bad'], secret: ['ig-secret'] }[tier] || [];
+  document.querySelectorAll('#igWeapons .igRow').forEach(row => {
+    const visible = show.some(cls => row.classList.contains(cls));
+    row.style.display = visible ? 'flex' : 'none';
+  });
+}
+document.querySelectorAll('.igTab').forEach(tab => {
+  tab.addEventListener('click', () => setIgTierFilter(tab.dataset.tier));
+});
+
+// Show/hide toggle button with game state
+function showIgToggle(show) {
+  igToggle.style.display = show ? 'block' : 'none';
+  if (!show) { igPanel.classList.remove('open'); igToggle.textContent = '🔫 WEAPONS ▲'; }
+}
+
+// Reveal secret weapons in in-game panel
+function unlockIgSecret() {
+  document.getElementById('igSecretTab').style.display = 'block';
+  document.querySelector('#igWeapons .ig-secret').style.display = 'flex';
+}
+
 // ── Secret code ──────────────────────────────────────────────────────────────
 const SECRET_CODE = 'brendan';
 let secretTyped = '';
@@ -1534,6 +1672,7 @@ document.addEventListener('keydown', e => {
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById('secretTier').style.display = 'block';
+      unlockIgSecret();
     }
     secretTyped = '';
   } else if (!SECRET_CODE.startsWith(secretTyped)) {

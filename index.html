@@ -101,6 +101,9 @@
       <button class="wBtn" data-w="railgun">⚡ Railgun<span class="badge good">GOOD</span></button>
       <button class="wBtn" data-w="gravcannon">🌀 Grav Cannon<span class="badge good">GOOD</span></button>
       <button class="wBtn" data-w="katana">🗡️ Katana<span class="badge good">GOOD</span></button>
+      <button class="wBtn" data-w="crossbow">🏹 Crossbow<span class="badge good">GOOD</span></button>
+      <button class="wBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="badge good">GOOD</span></button>
+      <button class="wBtn" data-w="laserrifle">🔴 Laser Rifle<span class="badge good">GOOD</span></button>
     </div>
     <!-- MID -->
     <div class="wRow"><span class="tier-header mid">◆ MID</span></div>
@@ -110,6 +113,8 @@
       <button class="wBtn" data-w="shotgun">🔴 Shotgun<span class="badge mid">MID</span></button>
       <button class="wBtn" data-w="rpg">🚀 RPG<span class="badge mid">MID</span></button>
       <button class="wBtn" data-w="burst">🔫 Burst<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="revolver">🔫 Revolver<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="minigun">💥 Minigun<span class="badge mid">MID</span></button>
     </div>
     <div class="wRow">
       <button class="wBtn" data-w="grenade">💣 Grenade<span class="badge mid">MID</span></button>
@@ -117,12 +122,24 @@
       <button class="wBtn" data-w="boomerang">🪃 Boomerang<span class="badge mid">MID</span></button>
       <button class="wBtn" data-w="knife">🔪 Knife<span class="badge mid">MID</span></button>
       <button class="wBtn" data-w="freezeray">🧊 Freeze Ray<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="dualpistols">🔫 Dual Pistols<span class="badge mid">MID</span></button>
+    </div>
+    <div class="wRow">
+      <button class="wBtn" data-w="cannon">💣 Cannon<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="iceshards">❄️ Ice Shards<span class="badge mid">MID</span></button>
+      <button class="wBtn" data-w="scattershot">🟡 Scatter Shot<span class="badge mid">MID</span></button>
     </div>
     <!-- BAD -->
     <div class="wRow"><span class="tier-header bad">✗ BAD</span></div>
     <div class="wRow">
       <button class="wBtn" data-w="nerf">🟠 Nerf Gun<span class="badge bad">BAD</span></button>
       <button class="wBtn" data-w="bubblegum">🫧 Bubble Gun<span class="badge bad">BAD</span></button>
+      <button class="wBtn" data-w="slingshot">🪢 Slingshot<span class="badge bad">BAD</span></button>
+      <button class="wBtn" data-w="watergun">💧 Water Gun<span class="badge bad">BAD</span></button>
+      <button class="wBtn" data-w="rubberball">🎱 Rubber Ball<span class="badge bad">BAD</span></button>
+      <button class="wBtn" data-w="confetti">🎉 Confetti Gun<span class="badge bad">BAD</span></button>
     </div>
     <!-- SECRET (hidden until code entered) -->
     <div id="secretTier">
@@ -173,6 +190,31 @@ const WEAPONS = {
   bubblegum:   { name: 'BUBBLE GUN',   damage: 8,  fireRate: 260,  bullets: 1, spread: 0.46, speed: 4,  ammo: 20, reload: 1500, color: '#ff69b4', range: 240 }, // 🔴 BAD
   freezeray:   { name: 'FREEZE RAY',  damage: 15, fireRate: 600,  bullets: 1, spread: 0.03, speed: 12, ammo: 8,  reload: 1800, color: '#88ddff', range: 650,
                  freeze: true },                                                                                    // 🟠 MID
+  // ── GOOD ────────────────────────────────────────────────────────────────────
+  crossbow:    { name: 'CROSSBOW',    damage: 90,  fireRate: 900,  bullets: 1, spread: 0.005,speed: 22, ammo: 1,  reload: 800,  color: '#c8a060', range: 880 },                                          // 🟡 GOOD
+  plasmarifle: { name: 'PLASMA RIFLE',damage: 55,  fireRate: 650,  bullets: 1, spread: 0.03, speed: 15, ammo: 8,  reload: 1800, color: '#cc44ff', range: 750,
+                 splash: true, splashRadius: 45, splashDamage: 20 },                                       // 🟡 GOOD
+  laserrifle:  { name: 'LASER RIFLE', damage: 52,  fireRate: 1100, bullets: 1, spread: 0,    speed: 0,  ammo: 5,  reload: 2200, color: '#ff2266', range: 950,
+                 hitscan: true },                                                                           // 🟡 GOOD
+  // ── MID ─────────────────────────────────────────────────────────────────────
+  revolver:    { name: 'REVOLVER',    damage: 55,  fireRate: 700,  bullets: 1, spread: 0.03, speed: 16, ammo: 6,  reload: 900,  color: '#d4a030', range: 620 },                                          // 🟠 MID
+  minigun:     { name: 'MINIGUN',     damage: 12,  fireRate: 75,   bullets: 1, spread: 0.22, speed: 18, ammo: 100,reload: 3500, color: '#999999', range: 400 },                                          // 🟠 MID
+  huntingrifle:{ name: 'HUNTING RIFLE',damage:72,  fireRate: 1100, bullets: 1, spread: 0.015,speed: 20, ammo: 3,  reload: 1800, color: '#8b5e3c', range: 850 },                                          // 🟠 MID
+  dualpistols: { name: 'DUAL PISTOLS',damage: 22,  fireRate: 280,  bullets: 2, spread: 0.1,  speed: 14, ammo: 24, reload: 1400, color: '#f0c070', range: 500 },                                          // 🟠 MID
+  cannon:      { name: 'CANNON',      damage: 65,  fireRate: 1300, bullets: 1, spread: 0.01, speed: 3,  ammo: 4,  reload: 2200, color: '#888888', range: 900,
+                 splash: true, splashRadius: 95, splashDamage: 35 },                                       // 🟠 MID
+  throwingknives:{ name: 'THROWING KNIVES',damage:20, fireRate:180, bullets:3, spread: 0.4,  speed: 15, ammo: 18, reload: 1500, color: '#c0d8ff', range: 420 },                                          // 🟠 MID
+  iceshards:   { name: 'ICE SHARDS',  damage: 18,  fireRate: 500,  bullets: 3, spread: 0.28, speed: 13, ammo: 15, reload: 1800, color: '#aaeeff', range: 500,
+                 freeze: true },                                                                            // 🟠 MID
+  scattershot: { name: 'SCATTER SHOT',damage: 14,  fireRate: 750,  bullets: 6, spread: 0.38, speed: 11, ammo: 5,  reload: 1600, color: '#ffbb44', range: 350,
+                 bouncing: true, fuseTime: 2500, splash: true, splashRadius: 40, splashDamage: 10 },       // 🟠 MID
+  // ── BAD ─────────────────────────────────────────────────────────────────────
+  slingshot:   { name: 'SLINGSHOT',   damage: 5,   fireRate: 950,  bullets: 1, spread: 0.1,  speed: 7,  ammo: 1,  reload: 1400, color: '#aa7733', range: 320 },                                          // 🔴 BAD
+  watergun:    { name: 'WATER GUN',   damage: 3,   fireRate: 120,  bullets: 1, spread: 0.25, speed: 7,  ammo: 60, reload: 2500, color: '#44aaff', range: 250 },                                          // 🔴 BAD
+  rubberball:  { name: 'RUBBER BALL', damage: 7,   fireRate: 1000, bullets: 1, spread: 0.08, speed: 9,  ammo: 6,  reload: 1800, color: '#ff44aa', range: 900,
+                 bouncing: true, fuseTime: 3500, splash: true, splashRadius: 30, splashDamage: 7 },        // 🔴 BAD
+  confetti:    { name: 'CONFETTI GUN',damage: 2,   fireRate: 350,  bullets: 10,spread: 0.9,  speed: 5,  ammo: 50, reload: 2500, color: '#ff88ff', range: 200 },                                          // 🔴 BAD
+  // ── SECRET ──────────────────────────────────────────────────────────────────
   goldengun:   { name: 'KILLER',      damage: 999, fireRate: 100, bullets: 1, spread: 0,    speed: 18, ammo: 1,  reload: 5000, color: '#ffd700', range: 950,
                  golden: true, perShotReload: true,
                  splash: true, splashRadius: 500, splashDamage: 999 },                                             // 🔒 SECRET ranged
@@ -431,7 +473,9 @@ function createPlayer(sp) {
 
 const BOT_NAMES = ['Shadow','Blaze','Frost','Storm','Viper','Ghost','Nova','Titan'];
 const BOT_COLORS = ['#f44','#f84','#f4f','#4f4','#f40','#40f','#ff0','#0ff'];
-const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade','burst','gravcannon','flamethrower','boomerang','katana','freezeray'];
+const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade','burst','gravcannon','flamethrower','boomerang','katana','freezeray',
+  'crossbow','plasmarifle','laserrifle','revolver','minigun','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot',
+  'slingshot','watergun','rubberball','confetti'];
 
 function createBot(idx) {
   const sp = randomSpawn();

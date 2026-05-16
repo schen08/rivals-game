@@ -41,6 +41,8 @@
   #userBar span { color: #ffd700; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
   #logoutBtn { background: #1a1a2e; color: #888; border: 1px solid #333; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; pointer-events: all; transition: color 0.15s; }
   #logoutBtn:hover { color: #ff4444; border-color: #ff4444; }
+  #clearDataBtn { background: #1a1a2e; color: #555; border: 1px solid #222; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; pointer-events: all; transition: color 0.15s; }
+  #clearDataBtn:hover { color: #ff6600; border-color: #ff6600; }
   #overlay h1 { font-size: 56px; font-weight: 900; background: linear-gradient(135deg, #e74c3c, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; }
   #overlay p { color: #aaa; font-size: 16px; }
   #overlay button { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 14px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: all; transition: transform 0.1s, box-shadow 0.1s; letter-spacing: 1px; }
@@ -310,6 +312,7 @@
 <div id="overlay" style="display:none;">
   <div id="userBar">
     <span id="userBarName">👤 Player</span>
+    <button id="clearDataBtn">CLEAR DATA</button>
     <button id="logoutBtn">LOGOUT</button>
   </div>
   <div id="modeSelector">
@@ -2313,6 +2316,23 @@ document.getElementById('authSubmit').addEventListener('click', () => {
   document.getElementById(id).addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('authSubmit').click();
   });
+});
+
+document.getElementById('clearDataBtn').addEventListener('click', () => {
+  if (!confirm('Reset your account? This clears all unlocked weapons and stats.')) return;
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u);
+  if (idx === -1) return;
+  accs[idx].unlocked = [...DEFAULT_UNLOCKED];
+  accs[idx].stats = { kills: 0, wins: 0, deaths: 0 };
+  saveAccounts(accs);
+  unlockedWeapons = [...DEFAULT_UNLOCKED];
+  saveUnlocked();
+  secretUnlocked = false;
+  document.getElementById('secretTier').style.display = 'none';
+  selectedSlots = ['sniper','pistol','smg','nerf'];
+  showOverlay();
 });
 
 document.getElementById('logoutBtn').addEventListener('click', () => {

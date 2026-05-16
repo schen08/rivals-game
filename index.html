@@ -48,6 +48,7 @@
   #overlay button { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 14px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: all; transition: transform 0.1s, box-shadow 0.1s; letter-spacing: 1px; }
   #overlay button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(231,76,60,0.5); }
   .slotSection { display: flex; flex-direction: column; gap: 5px; border: 1px solid #222; border-radius: 7px; padding: 7px 10px; }
+  .slotSection .wRow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; justify-items: stretch; }
   .slotLabel { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
   .slotKey { background: #222; color: #ffd700; font-size: 12px; font-weight: 900; width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .slotCurrent { font-size: 11px; color: #ffd700; font-weight: 900; margin-left: auto; letter-spacing: 1px; }
@@ -71,7 +72,7 @@
   .tier-header.good { color: #ffd700; border: 1px solid #ffd70055; background: rgba(255,215,0,0.08); }
   .tier-header.mid  { color: #ff9900; border: 1px solid #ff990055; background: rgba(255,153,0,0.08); }
   .tier-header.bad  { color: #ff4444; border: 1px solid #ff444455; background: rgba(255,68,68,0.08); }
-  .wBtn { background: #1a1a2e; color: #fff; border: 2px solid #333; padding: 6px 13px 4px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+  .wBtn { background: #1a1a2e; color: #fff; border: 2px solid #333; padding: 6px 6px 4px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center; width: 100%; }
   .wBtn .badge { font-size: 8px; font-weight: 900; letter-spacing: 1.5px; margin-top: 1px; }
   .wBtn .badge.good { color: #ffd700; }
   .wBtn .badge.mid  { color: #ff9900; }

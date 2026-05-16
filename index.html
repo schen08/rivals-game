@@ -1391,7 +1391,14 @@ function killEntity(ent, killer) {
     msg.textContent = '💀 ELIMINATED — GAME OVER';
     msg.style.display = 'block';
     floatingTexts.push({ x: W/2, y: H/2 - 40, text: '💀 ELIMINATED', life: 4, color: '#ff4444', size: 36 });
-    setTimeout(() => { if (gameRunning) { gameRunning = false; } }, 3000);
+    setTimeout(() => {
+      gameRunning = false;
+      document.getElementById('respawnMsg').style.display = 'none';
+      document.getElementById('hotbar').classList.remove('visible');
+      showIgToggle(false);
+      saveAccountProgress();
+      showOverlay();
+    }, 3000);
   } else if (!ent.isPlayer) {
     // Check if all bots are now eliminated
     setTimeout(() => {

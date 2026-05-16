@@ -60,6 +60,17 @@
   .wBtn.active .badge { opacity: 1; }
   .wBtn.locked { opacity: 0.3; cursor: not-allowed; border-color: #222 !important; color: #444 !important; }
   .wBtn.locked::after { content: ' 🔒'; font-size: 10px; }
+  .prizeGroup { display:flex; flex-direction:column; gap:6px; }
+  .prizeGroupLabel { font-size:10px; font-weight:900; letter-spacing:3px; padding:2px 8px; border-radius:3px; align-self:flex-start; }
+  .prizeGroupLabel.good { color:#ffd700; border:1px solid #ffd70055; background:rgba(255,215,0,0.08); }
+  .prizeGroupLabel.mid  { color:#ff9900; border:1px solid #ff990055; background:rgba(255,153,0,0.08); }
+  .prizeGroupLabel.bad  { color:#ff4444; border:1px solid #ff444455; background:rgba(255,68,68,0.08); }
+  .prizeRow { display:flex; gap:8px; flex-wrap:wrap; }
+  .prizeBtn { background:#1a1a2e; color:#fff; border:2px solid #333; padding:8px 16px; border-radius:7px; cursor:pointer; font-size:13px; font-weight:bold; transition:all 0.15s; }
+  .prizeBtn:hover { border-color:#ffd700; color:#ffd700; background:#12122a; transform:scale(1.05); }
+  .prizeBtn.good:hover { border-color:#ffd700; }
+  .prizeBtn.mid:hover  { border-color:#ff9900; color:#ff9900; }
+  .prizeBtn.bad:hover  { border-color:#ff4444; color:#ff4444; }
   #respawnMsg { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 20px 40px; border-radius: 10px; font-size: 22px; display: none; border: 2px solid #e74c3c; }
   #secretBox { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 4px; }
   #secretLabel { color: #444; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
@@ -195,13 +206,11 @@
     <div id="reloadLabel">RELOADING</div>
   </div>
   <div id="respawnMsg">You were eliminated! Respawning...</div>
-  <div id="prizeScreen" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:200;pointer-events:all;">
-    <div style="font-size:60px;">🏆</div>
-    <div style="font-size:32px;font-weight:900;color:#ffd700;letter-spacing:3px;">YOU WIN!</div>
-    <div style="font-size:16px;color:#aaa;">Prize unlocked:</div>
-    <div id="prizeWeapon" style="font-size:26px;font-weight:900;color:#fff;background:#1a1a2e;border:2px solid #ffd700;padding:12px 32px;border-radius:10px;"></div>
-    <div id="prizeTier" style="font-size:12px;font-weight:900;letter-spacing:3px;"></div>
-    <button onclick="document.getElementById('prizeScreen').style.display='none';document.getElementById('overlay').style.display='flex';" style="margin-top:10px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;padding:12px 36px;font-size:16px;font-weight:bold;border-radius:8px;cursor:pointer;letter-spacing:1px;">PLAY AGAIN</button>
+  <div id="prizeScreen" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;z-index:200;pointer-events:all;overflow-y:auto;padding:30px 20px 40px;">
+    <div style="font-size:50px;margin-top:10px;">🏆</div>
+    <div style="font-size:30px;font-weight:900;color:#ffd700;letter-spacing:3px;">YOU WIN!</div>
+    <div style="font-size:15px;color:#aaa;">Choose a weapon to unlock:</div>
+    <div id="prizeChoices" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:640px;"></div>
   </div>
 </div>
 <div id="overlay">
@@ -426,14 +435,61 @@ function refreshLockedStates() {
   }
 }
 
-function unlockPrize() {
+function unlockWeapon(key) {
+  if (!unlockedWeapons.includes(key)) {
+    unlockedWeapons.push(key);
+    saveUnlocked();
+    refreshLockedStates();
+  }
+}
+
+function showPrizeScreen() {
   const locked = ALL_NORMAL_WEAPONS.filter(k => !unlockedWeapons.includes(k));
-  if (locked.length === 0) return null; // all unlocked already
-  const prize = locked[Math.floor(Math.random() * locked.length)];
-  unlockedWeapons.push(prize);
-  saveUnlocked();
-  refreshLockedStates();
-  return prize;
+  const ps = document.getElementById('prizeScreen');
+  const choices = document.getElementById('prizeChoices');
+  choices.innerHTML = '';
+
+  if (locked.length === 0) {
+    choices.innerHTML = '<div style="font-size:20px;color:#ffd700;font-weight:900;text-align:center;">🏆 ALL WEAPONS UNLOCKED!<br><span style="font-size:13px;color:#aaa;">You are a master.</span></div>';
+    const btn = document.createElement('button');
+    btn.textContent = 'PLAY AGAIN';
+    btn.style.cssText = 'margin:20px auto 0;display:block;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;padding:12px 36px;font-size:16px;font-weight:bold;border-radius:8px;cursor:pointer;';
+    btn.onclick = () => { ps.style.display='none'; document.getElementById('overlay').style.display='flex'; };
+    choices.appendChild(btn);
+  } else {
+    // Group locked weapons by tier
+    const groups = [
+      { label: '★ GOOD', cls: 'good', keys: GOOD_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '◆ MID',  cls: 'mid',  keys: MID_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '✗ BAD',  cls: 'bad',  keys: BAD_WEAPONS.filter(k => locked.includes(k)) },
+    ];
+    const emojis = { sniper:'🎯',railgun:'⚡',gravcannon:'🌀',katana:'🗡️',crossbow:'🏹',plasmarifle:'🔵',laserrifle:'🔴',pistol:'🔫',smg:'💨',shotgun:'🔴',rpg:'🚀',burst:'🔫',revolver:'🔫',minigun:'💥',grenade:'💣',flamethrower:'🔥',boomerang:'🪃',knife:'🔪',freezeray:'🧊',huntingrifle:'🦌',dualpistols:'🔫',cannon:'💣',throwingknives:'🗡️',iceshards:'❄️',scattershot:'🟡',nerf:'🟠',bubblegum:'🫧',slingshot:'🪢',watergun:'💧',rubberball:'🎱',confetti:'🎉' };
+    for (const g of groups) {
+      if (g.keys.length === 0) continue;
+      const group = document.createElement('div');
+      group.className = 'prizeGroup';
+      const lbl = document.createElement('div');
+      lbl.className = `prizeGroupLabel ${g.cls}`;
+      lbl.textContent = g.label;
+      const row = document.createElement('div');
+      row.className = 'prizeRow';
+      for (const key of g.keys) {
+        const btn = document.createElement('button');
+        btn.className = `prizeBtn ${g.cls}`;
+        btn.textContent = (emojis[key] || '') + ' ' + (WEAPONS[key]?.name || key);
+        btn.onclick = () => {
+          unlockWeapon(key);
+          ps.style.display = 'none';
+          document.getElementById('overlay').style.display = 'flex';
+        };
+        row.appendChild(btn);
+      }
+      group.appendChild(lbl);
+      group.appendChild(row);
+      choices.appendChild(group);
+    }
+  }
+  ps.style.display = 'flex';
 }
 
 function buildLoadout() {
@@ -987,22 +1043,7 @@ function killEntity(ent, killer) {
         floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
         setTimeout(() => {
           gameRunning = false;
-          const prize = unlockPrize();
-          const ps = document.getElementById('prizeScreen');
-          const pw = document.getElementById('prizeWeapon');
-          const pt = document.getElementById('prizeTier');
-          if (prize && WEAPONS[prize]) {
-            pw.textContent = WEAPONS[prize].name;
-            const tier = GOOD_WEAPONS.includes(prize) ? 'GOOD' : BAD_WEAPONS.includes(prize) ? 'BAD' : 'MID';
-            const tierColor = tier === 'GOOD' ? '#ffd700' : tier === 'BAD' ? '#ff4444' : '#ff9900';
-            pt.textContent = '★ ' + tier;
-            pt.style.color = tierColor;
-          } else {
-            pw.textContent = 'ALL WEAPONS UNLOCKED!';
-            pt.textContent = '🏆 MASTER';
-            pt.style.color = '#ffd700';
-          }
-          ps.style.display = 'flex';
+          showPrizeScreen();
         }, 2000);
       }
     }, 100);

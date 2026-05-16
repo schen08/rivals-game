@@ -976,7 +976,11 @@ function doNuke(owner) {
     if (!gameRunning) return;
     const allEnts = [player, ...bots];
     for (const ent of allEnts) {
-      if (!ent.dead) { ent.hp = 0; killEntity(ent, ent === owner ? null : owner); }
+      if (!ent.dead) {
+        // Don't nuke teammates
+        if (owner && owner.team >= 0 && ent !== owner && ent.team === owner.team) continue;
+        ent.hp = 0; killEntity(ent, ent === owner ? null : owner);
+      }
     }
   }, 350);
 }
@@ -1360,7 +1364,10 @@ function killEntity(ent, killer) {
     // Check if all bots are now eliminated
     setTimeout(() => {
       if (!gameRunning) return;
-      const allBotsEliminated = bots.every(b => b.dead);
+      // In team modes, win when all enemy-team bots are gone; in FFA/juggernaut win when all bots gone
+      const allBotsEliminated = (gameMode === 'ffa' || gameMode === 'juggernaut')
+        ? bots.every(b => b.dead)
+        : bots.filter(b => b.team !== player.team).every(b => b.dead);
       if (allBotsEliminated) {
         floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
         setTimeout(() => {
@@ -1644,6 +1651,7 @@ function loop(ts=0) {
       explosions.push({ x:gw.x, y:gw.y, r:0, maxR:gw.splashRadius, life:1 });
       for (const ent of allEnts) {
         if (ent.dead || ent.invincible > 0 || ent === gw.owner) continue;
+        if (gw.owner && gw.owner.team >= 0 && ent.team === gw.owner.team) continue;
         if (Math.hypot(ent.x - gw.x, ent.y - gw.y) < gw.splashRadius) {
           ent.hp -= gw.splashDamage;
           if (ent.hp <= 0) killEntity(ent, gw.owner);

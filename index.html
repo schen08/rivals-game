@@ -1289,17 +1289,20 @@ function moveEntity(ent, dx, dy) {
 function updateBot(bot, dt) {
   if (bot.dead) return;
 
-  // Pick target (respect teams — no friendly fire)
-  const targets = [player, ...bots.filter(b=>b!==bot&&!b.dead)];
-  let closest = null, closestDist = Infinity;
-  for (const t of targets) {
-    if (t.dead) continue;
-    // Skip teammates
-    if (bot.team >= 0 && t.team === bot.team) continue;
-    const d = Math.hypot(t.x-bot.x, t.y-bot.y);
-    if (d < closestDist) { closestDist = d; closest = t; }
+  // Pick target (in juggernaut, all bots always hunt the player)
+  if (gameMode === 'juggernaut') {
+    bot.target = player.dead ? null : player;
+  } else {
+    const targets = [player, ...bots.filter(b=>b!==bot&&!b.dead)];
+    let closest = null, closestDist = Infinity;
+    for (const t of targets) {
+      if (t.dead) continue;
+      if (bot.team >= 0 && t.team === bot.team) continue;
+      const d = Math.hypot(t.x-bot.x, t.y-bot.y);
+      if (d < closestDist) { closestDist = d; closest = t; }
+    }
+    bot.target = closest;
   }
-  bot.target = closest;
 
   const wDef = currentWeapon(bot);
   const botSpeed = bot.frozen > 0 ? bot.speed * 0.25 : bot.speed;

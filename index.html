@@ -464,6 +464,7 @@ function showPrizeScreen() {
       { label: '✗ BAD',  cls: 'bad',  keys: BAD_WEAPONS.filter(k => locked.includes(k)) },
     ];
     const emojis = { sniper:'🎯',railgun:'⚡',gravcannon:'🌀',katana:'🗡️',crossbow:'🏹',plasmarifle:'🔵',laserrifle:'🔴',pistol:'🔫',smg:'💨',shotgun:'🔴',rpg:'🚀',burst:'🔫',revolver:'🔫',minigun:'💥',grenade:'💣',flamethrower:'🔥',boomerang:'🪃',knife:'🔪',freezeray:'🧊',huntingrifle:'🦌',dualpistols:'🔫',cannon:'💣',throwingknives:'🗡️',iceshards:'❄️',scattershot:'🟡',nerf:'🟠',bubblegum:'🫧',slingshot:'🪢',watergun:'💧',rubberball:'🎱',confetti:'🎉' };
+    const ROW_SIZE = { good: 7, mid: 6, bad: 6 };
     for (const g of groups) {
       if (g.keys.length === 0) continue;
       const group = document.createElement('div');
@@ -471,21 +472,25 @@ function showPrizeScreen() {
       const lbl = document.createElement('div');
       lbl.className = `prizeGroupLabel ${g.cls}`;
       lbl.textContent = g.label;
-      const row = document.createElement('div');
-      row.className = 'prizeRow';
-      for (const key of g.keys) {
-        const btn = document.createElement('button');
-        btn.className = `prizeBtn ${g.cls}`;
-        btn.textContent = (emojis[key] || '') + ' ' + (WEAPONS[key]?.name || key);
-        btn.onclick = () => {
-          unlockWeapon(key);
-          ps.style.display = 'none';
-          document.getElementById('overlay').style.display = 'flex';
-        };
-        row.appendChild(btn);
-      }
       group.appendChild(lbl);
-      group.appendChild(row);
+      // Split into rows
+      const perRow = ROW_SIZE[g.cls] || 6;
+      for (let i = 0; i < g.keys.length; i += perRow) {
+        const row = document.createElement('div');
+        row.className = 'prizeRow';
+        for (const key of g.keys.slice(i, i + perRow)) {
+          const btn = document.createElement('button');
+          btn.className = `prizeBtn ${g.cls}`;
+          btn.textContent = (emojis[key] || '') + ' ' + (WEAPONS[key]?.name || key);
+          btn.onclick = () => {
+            unlockWeapon(key);
+            ps.style.display = 'none';
+            document.getElementById('overlay').style.display = 'flex';
+          };
+          row.appendChild(btn);
+        }
+        group.appendChild(row);
+      }
       choices.appendChild(group);
     }
   }

@@ -58,6 +58,8 @@
   .wBtn .badge.bad  { color: #ff4444; }
   .wBtn:hover, .wBtn.active { border-color: #ffd700; color: #ffd700; background: #12122a; }
   .wBtn.active .badge { opacity: 1; }
+  .wBtn.locked { opacity: 0.3; cursor: not-allowed; border-color: #222 !important; color: #444 !important; }
+  .wBtn.locked::after { content: ' 🔒'; font-size: 10px; }
   #respawnMsg { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 20px 40px; border-radius: 10px; font-size: 22px; display: none; border: 2px solid #e74c3c; }
   #secretBox { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 4px; }
   #secretLabel { color: #444; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
@@ -193,6 +195,14 @@
     <div id="reloadLabel">RELOADING</div>
   </div>
   <div id="respawnMsg">You were eliminated! Respawning...</div>
+  <div id="prizeScreen" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:200;pointer-events:all;">
+    <div style="font-size:60px;">🏆</div>
+    <div style="font-size:32px;font-weight:900;color:#ffd700;letter-spacing:3px;">YOU WIN!</div>
+    <div style="font-size:16px;color:#aaa;">Prize unlocked:</div>
+    <div id="prizeWeapon" style="font-size:26px;font-weight:900;color:#fff;background:#1a1a2e;border:2px solid #ffd700;padding:12px 32px;border-radius:10px;"></div>
+    <div id="prizeTier" style="font-size:12px;font-weight:900;letter-spacing:3px;"></div>
+    <button onclick="document.getElementById('prizeScreen').style.display='none';document.getElementById('overlay').style.display='flex';" style="margin-top:10px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;padding:12px 36px;font-size:16px;font-weight:bold;border-radius:8px;cursor:pointer;letter-spacing:1px;">PLAY AGAIN</button>
+  </div>
 </div>
 <div id="overlay">
   <div id="modeSelector">
@@ -379,6 +389,52 @@ const WEAPONS = {
 const GOOD_WEAPONS = ['sniper','railgun','gravcannon','katana','crossbow','plasmarifle','laserrifle'];
 const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot'];
 const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti'];
+const ALL_NORMAL_WEAPONS = [...GOOD_WEAPONS, ...MID_WEAPONS, ...BAD_WEAPONS];
+const DEFAULT_UNLOCKED = ['sniper', 'pistol', 'smg', 'nerf'];
+
+// ── Unlock system ─────────────────────────────────────────────────────────────
+let unlockedWeapons = JSON.parse(localStorage.getItem('rivals_unlocked') || 'null') || [...DEFAULT_UNLOCKED];
+
+function saveUnlocked() { localStorage.setItem('rivals_unlocked', JSON.stringify(unlockedWeapons)); }
+
+function unlockAll() {
+  unlockedWeapons = [...ALL_NORMAL_WEAPONS];
+  saveUnlocked();
+  refreshLockedStates();
+}
+
+function refreshLockedStates() {
+  document.querySelectorAll('.wBtn[data-slot]').forEach(btn => {
+    const key = btn.dataset.w;
+    const locked = !unlockedWeapons.includes(key);
+    btn.classList.toggle('locked', locked);
+    btn.disabled = locked;
+    // If currently selected slot uses a now-locked weapon, reset to default
+    const slot = parseInt(btn.dataset.slot);
+    if (locked && selectedSlots[slot] === key) {
+      const defaults = ['sniper','pistol','smg','nerf'];
+      selectedSlots[slot] = defaults[slot];
+    }
+  });
+  // Re-highlight active buttons
+  for (let s = 0; s < 4; s++) {
+    document.querySelectorAll(`.wBtn[data-slot="${s}"]`).forEach(b => b.classList.remove('active'));
+    const active = document.querySelector(`.wBtn[data-slot="${s}"][data-w="${selectedSlots[s]}"]`);
+    if (active) active.classList.add('active');
+    const sc = document.getElementById(`sc-${s}`);
+    if (sc) sc.textContent = WEAPONS[selectedSlots[s]]?.name || selectedSlots[s].toUpperCase();
+  }
+}
+
+function unlockPrize() {
+  const locked = ALL_NORMAL_WEAPONS.filter(k => !unlockedWeapons.includes(k));
+  if (locked.length === 0) return null; // all unlocked already
+  const prize = locked[Math.floor(Math.random() * locked.length)];
+  unlockedWeapons.push(prize);
+  saveUnlocked();
+  refreshLockedStates();
+  return prize;
+}
 
 function buildLoadout() {
   return selectedSlots.map(key => WEAPONS[key] || WEAPONS.pistol);
@@ -929,7 +985,25 @@ function killEntity(ent, killer) {
       const allBotsEliminated = bots.every(b => b.dead);
       if (allBotsEliminated) {
         floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
-        setTimeout(() => { gameRunning = false; }, 3000);
+        setTimeout(() => {
+          gameRunning = false;
+          const prize = unlockPrize();
+          const ps = document.getElementById('prizeScreen');
+          const pw = document.getElementById('prizeWeapon');
+          const pt = document.getElementById('prizeTier');
+          if (prize && WEAPONS[prize]) {
+            pw.textContent = WEAPONS[prize].name;
+            const tier = GOOD_WEAPONS.includes(prize) ? 'GOOD' : BAD_WEAPONS.includes(prize) ? 'BAD' : 'MID';
+            const tierColor = tier === 'GOOD' ? '#ffd700' : tier === 'BAD' ? '#ff4444' : '#ff9900';
+            pt.textContent = '★ ' + tier;
+            pt.style.color = tierColor;
+          } else {
+            pw.textContent = 'ALL WEAPONS UNLOCKED!';
+            pt.textContent = '🏆 MASTER';
+            pt.style.color = '#ffd700';
+          }
+          ps.style.display = 'flex';
+        }, 2000);
       }
     }, 100);
   }
@@ -1821,6 +1895,7 @@ document.addEventListener('keydown', e => {
       secretUnlocked = true;
       document.getElementById('secretTier').style.display = 'block';
       unlockIgSecret();
+      unlockAll(); // secret code unlocks every weapon
     }
     secretTyped = '';
   } else if (!SECRET_CODE.startsWith(secretTyped)) {
@@ -1836,6 +1911,10 @@ document.addEventListener('keydown', e => {
   }
 });
 document.getElementById('startBtn').addEventListener('click', startGame);
+
+// Apply locked states on first load
+refreshLockedStates();
+if (secretUnlocked) { document.getElementById('secretTier').style.display = 'block'; unlockIgSecret(); }
 
 // ── Mode selector ─────────────────────────────────────────────────────────────
 document.querySelectorAll('.modeBtn').forEach(btn => {

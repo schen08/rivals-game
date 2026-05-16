@@ -1126,7 +1126,7 @@ function startGame() {
   } else if (gameMode === 'juggernaut') {
     bots = Array.from({length:7}, (_,i) => createBot(i, -1));
     player.team = -1;
-    player.hp = 250; player.maxHp = 250;
+    player.hp = 1000; player.maxHp = 1000;
   } else if (gameMode === '1v1') {
     bots = [createBot(0, 1)];
     player.team = 0;

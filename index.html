@@ -23,6 +23,24 @@
   .scoreRow { display: flex; justify-content: space-between; gap: 16px; padding: 2px 0; }
   .scoreRow.you { color: #ffd700; }
   #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; overflow-y: auto; padding: 30px 20px 40px; }
+  /* ── Login screen ── */
+  #loginScreen { position: fixed; inset: 0; background: #0a0a0f; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; z-index: 300; }
+  #loginScreen h1 { font-size: 52px; font-weight: 900; background: linear-gradient(135deg,#e74c3c,#ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; }
+  #loginScreen p { color: #555; font-size: 14px; letter-spacing: 1px; }
+  #authTabs { display: flex; gap: 0; border: 1px solid #333; border-radius: 8px; overflow: hidden; }
+  .authTab { background: #111; color: #666; border: none; padding: 8px 28px; font-size: 13px; font-weight: 900; letter-spacing: 2px; cursor: pointer; transition: all 0.15s; }
+  .authTab.active { background: #1a1a2e; color: #ffd700; }
+  #authForm { display: flex; flex-direction: column; gap: 12px; width: 280px; }
+  #authForm input { background: #111; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color 0.15s; }
+  #authForm input:focus { border-color: #ffd700; }
+  #authForm input::placeholder { color: #444; }
+  #authSubmit { background: linear-gradient(135deg,#e74c3c,#c0392b); color: #fff; border: none; padding: 11px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: opacity 0.15s; }
+  #authSubmit:hover { opacity: 0.85; }
+  #authError { color: #ff4444; font-size: 12px; text-align: center; min-height: 16px; letter-spacing: 1px; }
+  #userBar { display: flex; align-items: center; gap: 12px; margin-bottom: -8px; }
+  #userBar span { color: #ffd700; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
+  #logoutBtn { background: #1a1a2e; color: #888; border: 1px solid #333; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; pointer-events: all; transition: color 0.15s; }
+  #logoutBtn:hover { color: #ff4444; border-color: #ff4444; }
   #overlay h1 { font-size: 56px; font-weight: 900; background: linear-gradient(135deg, #e74c3c, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; }
   #overlay p { color: #aaa; font-size: 16px; }
   #overlay button { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 14px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: all; transition: transform 0.1s, box-shadow 0.1s; letter-spacing: 1px; }
@@ -273,7 +291,27 @@
     <div id="prizeChoices" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:640px;"></div>
   </div>
 </div>
-<div id="overlay">
+<!-- Login / Sign-up screen -->
+<div id="loginScreen">
+  <h1>RIVALS</h1>
+  <p>ARENA COMBAT</p>
+  <div id="authTabs">
+    <button class="authTab active" data-tab="login">LOGIN</button>
+    <button class="authTab" data-tab="signup">SIGN UP</button>
+  </div>
+  <div id="authForm">
+    <input id="authUser" type="text" placeholder="Username" maxlength="20" autocomplete="off" />
+    <input id="authPass" type="password" placeholder="Password" maxlength="32" />
+    <button id="authSubmit">LOGIN</button>
+    <div id="authError"></div>
+  </div>
+</div>
+
+<div id="overlay" style="display:none;">
+  <div id="userBar">
+    <span id="userBarName">👤 Player</span>
+    <button id="logoutBtn">LOGOUT</button>
+  </div>
   <div id="modeSelector">
     <button class="modeBtn active" data-mode="ffa">FREE FOR ALL</button>
     <button class="modeBtn" data-mode="juggernaut">⚔️ JUGGERNAUT</button>
@@ -604,8 +642,70 @@ const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','co
 const ALL_NORMAL_WEAPONS = [...GOOD_WEAPONS, ...MID_WEAPONS, ...BAD_WEAPONS];
 const DEFAULT_UNLOCKED = ['sniper', 'pistol', 'smg', 'nerf'];
 
+// ── Account system ────────────────────────────────────────────────────────────
+function hashPass(p) { let h=5381; for(let i=0;i<p.length;i++) h=((h<<5)+h)+p.charCodeAt(i)|0; return h.toString(36); }
+function getAccounts() { return JSON.parse(localStorage.getItem('rivals_accounts')||'[]'); }
+function saveAccounts(a) { localStorage.setItem('rivals_accounts', JSON.stringify(a)); }
+function getSession() { return localStorage.getItem('rivals_session'); }
+function setSession(u) { localStorage.setItem('rivals_session', u); }
+function clearSession() { localStorage.removeItem('rivals_session'); }
+
+function getCurrentAccount() {
+  const u = getSession(); if (!u) return null;
+  return getAccounts().find(a => a.username === u) || null;
+}
+
+function saveAccountProgress() {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u);
+  if (idx === -1) return;
+  accs[idx].unlocked = [...unlockedWeapons];
+  if (player) {
+    accs[idx].stats = accs[idx].stats || {kills:0,wins:0,deaths:0};
+    accs[idx].stats.kills  += player.kills;
+    accs[idx].stats.deaths += player.deaths;
+  }
+  saveAccounts(accs);
+}
+
+function recordWin() {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u);
+  if (idx === -1) return;
+  accs[idx].stats = accs[idx].stats || {kills:0,wins:0,deaths:0};
+  accs[idx].stats.wins = (accs[idx].stats.wins||0) + 1;
+  saveAccounts(accs);
+}
+
+function doLogin(username, password) {
+  if (!username) return 'Enter a username';
+  const accs = getAccounts();
+  const acc = accs.find(a => a.username.toLowerCase() === username.toLowerCase());
+  if (!acc) return 'Account not found';
+  if (acc.password !== hashPass(password)) return 'Wrong password';
+  setSession(acc.username);
+  unlockedWeapons = acc.unlocked ? [...acc.unlocked] : [...DEFAULT_UNLOCKED];
+  return null;
+}
+
+function doSignup(username, password) {
+  if (username.length < 2) return 'Username must be 2+ characters';
+  if (password.length < 3) return 'Password must be 3+ characters';
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) return 'Letters, numbers, _ only';
+  const accs = getAccounts();
+  if (accs.find(a => a.username.toLowerCase() === username.toLowerCase())) return 'Username taken';
+  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0} };
+  accs.push(acc);
+  saveAccounts(accs);
+  setSession(username);
+  unlockedWeapons = [...DEFAULT_UNLOCKED];
+  return null;
+}
+
 // ── Unlock system ─────────────────────────────────────────────────────────────
-let unlockedWeapons = JSON.parse(localStorage.getItem('rivals_unlocked') || 'null') || [...DEFAULT_UNLOCKED];
+let unlockedWeapons = [...DEFAULT_UNLOCKED];
 
 function saveUnlocked() { localStorage.setItem('rivals_unlocked', JSON.stringify(unlockedWeapons)); }
 
@@ -642,6 +742,7 @@ function unlockWeapon(key) {
   if (!unlockedWeapons.includes(key)) {
     unlockedWeapons.push(key);
     saveUnlocked();
+    saveAccountProgress();
     refreshLockedStates();
   }
 }
@@ -1257,6 +1358,8 @@ function killEntity(ent, killer) {
         floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
         setTimeout(() => {
           gameRunning = false;
+          saveAccountProgress();
+          recordWin();
           showPrizeScreen();
         }, 2000);
       }
@@ -2167,9 +2270,70 @@ document.addEventListener('keydown', e => {
 });
 document.getElementById('startBtn').addEventListener('click', startGame);
 
-// Apply locked states on first load
-refreshLockedStates();
-if (secretUnlocked) { document.getElementById('secretTier').style.display = 'block'; unlockIgSecret(); }
+// ── Login screen logic ────────────────────────────────────────────────────────
+let authMode = 'login';
+
+function showOverlay() {
+  const acc = getCurrentAccount();
+  if (acc) {
+    document.getElementById('userBarName').textContent = '👤 ' + acc.username;
+    const stats = acc.stats || {};
+    const wins = stats.wins || 0;
+    document.getElementById('userBarName').title = `Wins: ${wins} | Kills: ${stats.kills||0} | Deaths: ${stats.deaths||0}`;
+  }
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('overlay').style.display = 'flex';
+  refreshLockedStates();
+  if (secretUnlocked) { document.getElementById('secretTier').style.display = 'block'; unlockIgSecret(); }
+}
+
+document.querySelectorAll('.authTab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    authMode = tab.dataset.tab;
+    document.querySelectorAll('.authTab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('authSubmit').textContent = authMode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT';
+    document.getElementById('authError').textContent = '';
+  });
+});
+
+document.getElementById('authSubmit').addEventListener('click', () => {
+  const user = document.getElementById('authUser').value.trim();
+  const pass = document.getElementById('authPass').value;
+  const err = authMode === 'login' ? doLogin(user, pass) : doSignup(user, pass);
+  if (err) {
+    document.getElementById('authError').textContent = err;
+  } else {
+    showOverlay();
+  }
+});
+
+// Allow Enter key to submit
+['authUser','authPass'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('authSubmit').click();
+  });
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  clearSession();
+  unlockedWeapons = [...DEFAULT_UNLOCKED];
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('authUser').value = '';
+  document.getElementById('authPass').value = '';
+  document.getElementById('authError').textContent = '';
+});
+
+// On load: check for existing session
+(function init() {
+  const acc = getCurrentAccount();
+  if (acc) {
+    unlockedWeapons = acc.unlocked ? [...acc.unlocked] : [...DEFAULT_UNLOCKED];
+    showOverlay();
+  }
+  // else loginScreen stays visible (default)
+})();
 
 // ── Mode selector ─────────────────────────────────────────────────────────────
 document.querySelectorAll('.modeBtn').forEach(btn => {

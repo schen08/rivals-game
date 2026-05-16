@@ -26,7 +26,21 @@
   #overlay p { color: #aaa; font-size: 16px; }
   #overlay button { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; padding: 14px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; pointer-events: all; transition: transform 0.1s, box-shadow 0.1s; letter-spacing: 1px; }
   #overlay button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(231,76,60,0.5); }
-  #weaponPicker { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; pointer-events: all; }
+  #tierTabs { display: flex; gap: 6px; justify-content: center; margin-top: 10px; pointer-events: all; }
+  .tierTab { background: #111122; color: #777; border: 2px solid #333; padding: 5px 18px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 2px; transition: all 0.15s; }
+  .tierTab.all   { }
+  .tierTab.good  { }
+  .tierTab.mid   { }
+  .tierTab.bad   { }
+  .tierTab.secret{ }
+  .tierTab.tab-active.all    { border-color: #fff;    color: #fff; background: #1a1a2e; }
+  .tierTab.tab-active.good   { border-color: #ffd700; color: #ffd700; background: rgba(255,215,0,0.1); }
+  .tierTab.tab-active.mid    { border-color: #ff9900; color: #ff9900; background: rgba(255,153,0,0.1); }
+  .tierTab.tab-active.bad    { border-color: #ff4444; color: #ff4444; background: rgba(255,68,68,0.1); }
+  .tierTab.tab-active.secret { border-color: #ffd700; color: #ffd700; background: rgba(255,215,0,0.1); }
+  #weaponPicker { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; pointer-events: all; }
+  .tierSection { display: flex; flex-direction: column; gap: 6px; }
+  .tierSection.hidden { display: none; }
   .wRow { display: flex; gap: 8px; justify-content: center; align-items: center; }
   .tier-header { font-size: 10px; font-weight: 900; letter-spacing: 3px; padding: 2px 10px; border-radius: 3px; }
   .tier-header.good { color: #ffd700; border: 1px solid #ffd70055; background: rgba(255,215,0,0.08); }
@@ -93,53 +107,66 @@
   </div>
   <h1>RIVALS</h1>
   <p>Arena combat — last team standing</p>
+  <!-- Tier filter tabs -->
+  <div id="tierTabs">
+    <button class="tierTab all tab-active"    data-tier="all">ALL</button>
+    <button class="tierTab good"              data-tier="good">★ GOOD</button>
+    <button class="tierTab mid"               data-tier="mid">◆ MID</button>
+    <button class="tierTab bad"               data-tier="bad">✗ BAD</button>
+  </div>
   <div id="weaponPicker">
     <!-- GOOD -->
-    <div class="wRow"><span class="tier-header good">★ GOOD</span></div>
-    <div class="wRow">
-      <button class="wBtn active" data-w="sniper">🎯 Sniper<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="railgun">⚡ Railgun<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="gravcannon">🌀 Grav Cannon<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="katana">🗡️ Katana<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="crossbow">🏹 Crossbow<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="badge good">GOOD</span></button>
-      <button class="wBtn" data-w="laserrifle">🔴 Laser Rifle<span class="badge good">GOOD</span></button>
+    <div class="tierSection" id="sec-good">
+      <div class="wRow"><span class="tier-header good">★ GOOD</span></div>
+      <div class="wRow">
+        <button class="wBtn active" data-w="sniper">🎯 Sniper<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="railgun">⚡ Railgun<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="gravcannon">🌀 Grav Cannon<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="katana">🗡️ Katana<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="crossbow">🏹 Crossbow<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="badge good">GOOD</span></button>
+        <button class="wBtn" data-w="laserrifle">🔴 Laser Rifle<span class="badge good">GOOD</span></button>
+      </div>
     </div>
     <!-- MID -->
-    <div class="wRow"><span class="tier-header mid">◆ MID</span></div>
-    <div class="wRow">
-      <button class="wBtn" data-w="pistol">🔫 Pistol<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="smg">💨 SMG<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="shotgun">🔴 Shotgun<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="rpg">🚀 RPG<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="burst">🔫 Burst<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="revolver">🔫 Revolver<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="minigun">💥 Minigun<span class="badge mid">MID</span></button>
-    </div>
-    <div class="wRow">
-      <button class="wBtn" data-w="grenade">💣 Grenade<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="flamethrower">🔥 Flamethrower<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="boomerang">🪃 Boomerang<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="knife">🔪 Knife<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="freezeray">🧊 Freeze Ray<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="dualpistols">🔫 Dual Pistols<span class="badge mid">MID</span></button>
-    </div>
-    <div class="wRow">
-      <button class="wBtn" data-w="cannon">💣 Cannon<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="iceshards">❄️ Ice Shards<span class="badge mid">MID</span></button>
-      <button class="wBtn" data-w="scattershot">🟡 Scatter Shot<span class="badge mid">MID</span></button>
+    <div class="tierSection" id="sec-mid">
+      <div class="wRow"><span class="tier-header mid">◆ MID</span></div>
+      <div class="wRow">
+        <button class="wBtn" data-w="pistol">🔫 Pistol<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="smg">💨 SMG<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="shotgun">🔴 Shotgun<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="rpg">🚀 RPG<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="burst">🔫 Burst<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="revolver">🔫 Revolver<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="minigun">💥 Minigun<span class="badge mid">MID</span></button>
+      </div>
+      <div class="wRow">
+        <button class="wBtn" data-w="grenade">💣 Grenade<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="flamethrower">🔥 Flamethrower<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="boomerang">🪃 Boomerang<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="knife">🔪 Knife<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="freezeray">🧊 Freeze Ray<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="dualpistols">🔫 Dual Pistols<span class="badge mid">MID</span></button>
+      </div>
+      <div class="wRow">
+        <button class="wBtn" data-w="cannon">💣 Cannon<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="iceshards">❄️ Ice Shards<span class="badge mid">MID</span></button>
+        <button class="wBtn" data-w="scattershot">🟡 Scatter Shot<span class="badge mid">MID</span></button>
+      </div>
     </div>
     <!-- BAD -->
-    <div class="wRow"><span class="tier-header bad">✗ BAD</span></div>
-    <div class="wRow">
-      <button class="wBtn" data-w="nerf">🟠 Nerf Gun<span class="badge bad">BAD</span></button>
-      <button class="wBtn" data-w="bubblegum">🫧 Bubble Gun<span class="badge bad">BAD</span></button>
-      <button class="wBtn" data-w="slingshot">🪢 Slingshot<span class="badge bad">BAD</span></button>
-      <button class="wBtn" data-w="watergun">💧 Water Gun<span class="badge bad">BAD</span></button>
-      <button class="wBtn" data-w="rubberball">🎱 Rubber Ball<span class="badge bad">BAD</span></button>
-      <button class="wBtn" data-w="confetti">🎉 Confetti Gun<span class="badge bad">BAD</span></button>
+    <div class="tierSection" id="sec-bad">
+      <div class="wRow"><span class="tier-header bad">✗ BAD</span></div>
+      <div class="wRow">
+        <button class="wBtn" data-w="nerf">🟠 Nerf Gun<span class="badge bad">BAD</span></button>
+        <button class="wBtn" data-w="bubblegum">🫧 Bubble Gun<span class="badge bad">BAD</span></button>
+        <button class="wBtn" data-w="slingshot">🪢 Slingshot<span class="badge bad">BAD</span></button>
+        <button class="wBtn" data-w="watergun">💧 Water Gun<span class="badge bad">BAD</span></button>
+        <button class="wBtn" data-w="rubberball">🎱 Rubber Ball<span class="badge bad">BAD</span></button>
+        <button class="wBtn" data-w="confetti">🎉 Confetti Gun<span class="badge bad">BAD</span></button>
+      </div>
     </div>
     <!-- SECRET (hidden until code entered) -->
     <div id="secretTier">
@@ -1452,6 +1479,23 @@ document.querySelectorAll('.wBtn').forEach(btn => {
     btn.classList.add('active');
     selectedWeapon = btn.dataset.w;
   });
+});
+
+// ── Tier filter tabs ──────────────────────────────────────────────────────────
+function setTierFilter(tier) {
+  document.querySelectorAll('.tierTab').forEach(t => t.classList.remove('tab-active'));
+  document.querySelector(`.tierTab[data-tier="${tier}"]`).classList.add('tab-active');
+  const sections = { good: document.getElementById('sec-good'), mid: document.getElementById('sec-mid'), bad: document.getElementById('sec-bad') };
+  if (tier === 'all') {
+    Object.values(sections).forEach(s => s.classList.remove('hidden'));
+  } else {
+    Object.entries(sections).forEach(([key, sec]) => {
+      sec.classList.toggle('hidden', key !== tier);
+    });
+  }
+}
+document.querySelectorAll('.tierTab').forEach(tab => {
+  tab.addEventListener('click', () => setTierFilter(tab.dataset.tier));
 });
 
 // ── Secret code ──────────────────────────────────────────────────────────────

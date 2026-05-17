@@ -37,8 +37,9 @@
   #authSubmit { background: linear-gradient(135deg,#e74c3c,#c0392b); color: #fff; border: none; padding: 11px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: opacity 0.15s; }
   #authSubmit:hover { opacity: 0.85; }
   #authError { color: #ff4444; font-size: 12px; text-align: center; min-height: 16px; letter-spacing: 1px; }
-  #userBar { display: flex; align-items: center; gap: 12px; margin-bottom: -8px; }
-  #userBar span { color: #ffd700; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
+  #userBar { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin-bottom: -4px; }
+  #userBarTop { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  #userBarName { color: #ffd700; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
   #logoutBtn { background: #1a1a2e; color: #888; border: 1px solid #333; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; pointer-events: all; transition: color 0.15s; }
   #logoutBtn:hover { color: #ff4444; border-color: #ff4444; }
   #clearDataBtn { background: #1a1a2e; color: #555; border: 1px solid #222; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; pointer-events: all; transition: color 0.15s; }
@@ -147,6 +148,55 @@
   .modeBtn { background: #111; color: #777; border: 1px solid #333; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; transition: all 0.15s; }
   .modeBtn:hover { color: #fff; border-color: #666; }
   .modeBtn.active { color: #ffd700; border-color: #ffd700; background: rgba(255,215,0,0.1); }
+  /* ── XP / Level system ── */
+  #levelBadge { background: linear-gradient(135deg,#7b2fbe,#ffd700); color: #fff; font-size: 11px; font-weight: 900; padding: 2px 9px; border-radius: 10px; letter-spacing: 1px; white-space: nowrap; }
+  #keysDisplay { color: #ffd700; font-size: 12px; font-weight: 900; letter-spacing: 1px; white-space: nowrap; }
+  #shopBtn { background: linear-gradient(135deg,#7b2fbe,#5b1faa); color: #ffd700; border: 1px solid #9b59b6; padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 900; cursor: pointer; pointer-events: all; transition: all 0.15s; letter-spacing: 1px; }
+  #shopBtn:hover { background: linear-gradient(135deg,#9b59b6,#7b2fbe); box-shadow: 0 0 10px rgba(155,89,182,0.5); }
+  #xpBarRow { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 400px; }
+  #xpBar { flex: 1; height: 7px; background: #1a1a2e; border-radius: 4px; overflow: hidden; border: 1px solid #2a1a4e; min-width: 120px; }
+  #xpFill { height: 100%; width: 0%; background: linear-gradient(90deg,#9b59b6,#ffd700); border-radius: 4px; transition: width 0.4s; }
+  #xpText { font-size: 10px; color: #666; letter-spacing: 1px; white-space: nowrap; }
+  /* ── Shop screen ── */
+  #shopScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; flex-direction: column; align-items: center; justify-content: flex-start; gap: 16px; overflow-y: auto; padding: 30px 20px 40px; z-index: 200; }
+  #shopScreen h2 { font-size: 36px; font-weight: 900; background: linear-gradient(135deg,#9b59b6,#ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; margin: 0; }
+  #shopKeysTop { color: #ffd700; font-size: 14px; font-weight: 900; letter-spacing: 2px; }
+  #shopTabs { display: flex; gap: 8px; pointer-events: all; }
+  .shopTab { background: #111; color: #777; border: 1px solid #333; padding: 6px 18px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 2px; transition: all 0.15s; pointer-events: all; }
+  .shopTab.active { border-color: #9b59b6; color: #c084fc; background: rgba(155,89,182,0.15); }
+  #shopItems { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 720px; pointer-events: all; }
+  .shopItem { background: #0d0d20; border: 2px solid #222; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; align-items: center; gap: 7px; width: 130px; cursor: pointer; pointer-events: all; transition: all 0.15s; }
+  .shopItem:hover { border-color: #9b59b6; transform: translateY(-2px); box-shadow: 0 4px 18px rgba(155,89,182,0.3); }
+  .shopItem.owned { border-color: #444; }
+  .shopItem.equipped { border-color: #ffd700; background: rgba(255,215,0,0.07); }
+  .shopItem .siIcon { font-size: 30px; line-height: 1; }
+  .shopItem .siName { color: #fff; font-size: 12px; font-weight: 900; text-align: center; }
+  .shopItem .siPrice { font-size: 12px; font-weight: 900; }
+  .shopItem .siStatus { font-size: 9px; font-weight: 900; letter-spacing: 1.5px; height: 12px; }
+  .shopItem.cant-afford { opacity: 0.45; cursor: not-allowed; }
+  .shopItem.cant-afford:hover { transform: none; box-shadow: none; border-color: #222; }
+  #shopCloseBtn { background: #1a1a2e; color: #888; border: 1px solid #333; padding: 8px 28px; border-radius: 8px; font-size: 13px; font-weight: 900; cursor: pointer; pointer-events: all; letter-spacing: 1px; transition: color 0.15s; }
+  #shopCloseBtn:hover { color: #fff; border-color: #666; }
+  /* ── Challenges ── */
+  .chalCard { background: #0d0d20; border: 2px solid #222; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 14px; width: 100%; max-width: 600px; pointer-events: all; transition: border-color 0.15s; }
+  .chalCard.complete { border-color: #ffd700; }
+  .chalCard.claimed  { border-color: #333; opacity: 0.5; }
+  .chalIcon { font-size: 28px; flex-shrink: 0; }
+  .chalInfo { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .chalName { color: #fff; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
+  .chalDesc { color: #666; font-size: 11px; letter-spacing: 1px; }
+  .chalBar { height: 5px; background: #1a1a2e; border-radius: 3px; overflow: hidden; margin-top: 2px; }
+  .chalBarFill { height: 100%; background: linear-gradient(90deg,#9b59b6,#ffd700); border-radius: 3px; transition: width 0.4s; }
+  .chalProg { font-size: 10px; color: #555; margin-top: 2px; letter-spacing: 1px; }
+  .chalClaim { background: linear-gradient(135deg,#ffd700,#ff9900); color: #000; border: none; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 900; cursor: pointer; pointer-events: all; white-space: nowrap; letter-spacing: 1px; transition: opacity 0.15s; flex-shrink: 0; }
+  .chalClaim:hover { opacity: 0.85; }
+  .chalReward { color: #ffd700; font-size: 12px; font-weight: 900; white-space: nowrap; flex-shrink: 0; text-align: center; }
+  .chalClaimedBadge { color: #444; font-size: 11px; font-weight: 900; letter-spacing: 1px; flex-shrink: 0; }
+  /* ── Level-up notification ── */
+  #levelUpNotif { position: fixed; top: 40%; left: 50%; transform: translate(-50%,-50%); background: linear-gradient(135deg,rgba(30,10,60,0.98),rgba(123,47,190,0.96)); border: 2px solid #ffd700; border-radius: 14px; padding: 22px 48px; text-align: center; display: none; z-index: 500; pointer-events: none; box-shadow: 0 0 60px rgba(255,215,0,0.3); }
+  #levelUpNotif .lunTitle { font-size: 30px; font-weight: 900; color: #ffd700; letter-spacing: 3px; margin-bottom: 4px; }
+  #levelUpNotif .lunSub { color: #ccc; font-size: 14px; letter-spacing: 1px; }
+  #levelUpNotif .lunKeys { color: #ffd700; font-weight: 900; font-size: 18px; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -197,6 +247,7 @@
         <button class="igwBtn" data-w="devastator">💣 Devastator<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="chaingun">💥 Chain Gun<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="dualuzi">🔫 Dual Uzi<span class="ibadge good">GOOD</span></button>
+        <button class="igwBtn" data-w="bazooka">🚀 Bazooka<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="supersniper">🎯 Super Sniper<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="grenadelauncher">💣 Grenade Launcher<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="shockrifle">⚡ Shock Rifle<span class="ibadge good">GOOD</span></button>
@@ -310,9 +361,18 @@
 
 <div id="overlay" style="display:none;">
   <div id="userBar">
-    <span id="userBarName">👤 Player</span>
-    <button id="clearDataBtn">CLEAR DATA</button>
-    <button id="logoutBtn">LOGOUT</button>
+    <div id="userBarTop">
+      <span id="userBarName">👤 Player</span>
+      <span id="levelBadge">LV.1</span>
+      <span id="keysDisplay">🗝 0</span>
+      <button id="shopBtn">🛒 SHOP</button>
+      <button id="clearDataBtn">CLEAR DATA</button>
+      <button id="logoutBtn">LOGOUT</button>
+    </div>
+    <div id="xpBarRow">
+      <div id="xpBar"><div id="xpFill"></div></div>
+      <span id="xpText">0 / 100 XP</span>
+    </div>
   </div>
   <div id="modeSelector">
     <button class="modeBtn active" data-mode="ffa">FREE FOR ALL</button>
@@ -367,6 +427,7 @@
         <button class="wBtn s0" data-w="megashotgun" data-slot="0">🔴 Mega Shotgun</button>
         <button class="wBtn s0" data-w="chargerifle" data-slot="0">⚡ Charge Rifle</button>
         <button class="wBtn s0" data-w="plasmabeam" data-slot="0">🔵 Plasma Beam</button>
+        <button class="wBtn s0" data-w="bazooka" data-slot="0">🚀 Bazooka</button>
       </div>
     </div>
     <!-- SLOT 2: MID -->
@@ -515,6 +576,8 @@ const WEAPONS = {
   smg:     { name: 'SMG',     damage: 18, fireRate: 100,  bullets: 1, spread: 0.12, speed: 16, ammo: 30, reload: 1800, color: '#40c0f0', range: 450 },
   shotgun: { name: 'SHOTGUN', damage: 20, fireRate: 700,  bullets: 8, spread: 0.35, speed: 13, ammo: 6,  reload: 1500, color: '#f04040', range: 300 },
   sniper:  { name: 'SNIPER',  damage: 95, fireRate: 900,  bullets: 1, spread: 0.01, speed: 22, ammo: 5,  reload: 2200, color: '#40f0a0', range: 900 },
+  bazooka: { name: 'BAZOOKA', damage: 95, fireRate: 80,   bullets: 1, spread: 0,    speed: 9,  ammo: 16, reload: 2200, color: '#ff4400', range: 1200,
+             splash: true, splashRadius: 110, splashDamage: 55, perShotReload: true },
   rpg:     { name: 'RPG',     damage: 67, fireRate: 100,  bullets: 1, spread: 0.005,speed: 6,  ammo: 16, reload: 1600, color: '#ff6600', range: 1000,
              splash: true, splashRadius: 75, splashDamage: 33, perShotReload: true },
   knife:   { name: 'KNIFE',   damage: 20, fireRate: 350,  bullets: 0, spread: 0,    speed: 0,  ammo: 999,reload: 100,  color: '#a0d8ff', range: 58,
@@ -633,7 +696,7 @@ const WEAPONS = {
 };
 
 // ── Weapon tier lists ────────────────────────────────────────────────────────
-const GOOD_WEAPONS = ['sniper','railgun','katana','crossbow','plasmarifle','laserrifle','deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam'];
+const GOOD_WEAPONS = ['sniper','railgun','katana','crossbow','plasmarifle','laserrifle','deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam','bazooka'];
 const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot','ak47','mp5','uzi','magnum','doubleshotgun','carbine','crossbolt','mortargun','nailgun','speargun','harpoon','discgun','chainsaw','mace','poisonspray','shockwave','triplebow','pepperbox','lancegun','frostbow'];
 const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti','spoon','banana','pillow','cottonball','glitter','airhorn','soap','toothpick','butterknife','kazoo','feather','newspaper','wetfish','leek','teacup','straw','flipflop','shoehorn','pennywhistle','squeakytoy'];
 const ALL_NORMAL_WEAPONS = [...GOOD_WEAPONS, ...MID_WEAPONS, ...BAD_WEAPONS];
@@ -664,6 +727,7 @@ function saveAccountProgress() {
     accs[idx].stats.deaths += player.deaths;
   }
   saveAccounts(accs);
+  checkChallenges();
 }
 
 function recordWin() {
@@ -673,7 +737,67 @@ function recordWin() {
   if (idx === -1) return;
   accs[idx].stats = accs[idx].stats || {kills:0,wins:0,deaths:0};
   accs[idx].stats.wins = (accs[idx].stats.wins||0) + 1;
+  accs[idx].winStreak = (accs[idx].winStreak || 0) + 1;
+  accs[idx].bestStreak = Math.max(accs[idx].bestStreak || 0, accs[idx].winStreak);
   saveAccounts(accs);
+  // Award XP: 100 for FFA/Juggernaut, 50 for team modes
+  const isTeam = ['2v2','3v3','4v4'].includes(gameMode);
+  const xpGain = isTeam ? 50 : 100;
+  addXP(xpGain);
+  floatingTexts.push({ x: W/2, y: H/2 + 60, text: `+${xpGain} XP`, life: 3, color: '#c084fc', size: 26 });
+  checkChallenges();
+}
+
+function recordLoss() {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  accs[idx].winStreak = 0;
+  saveAccounts(accs);
+}
+
+// ── XP / Level system ─────────────────────────────────────────────────────────
+function xpToNext(level) { return 100 + level * 50; }
+
+function updateXPBar() {
+  const acc = getCurrentAccount(); if (!acc) return;
+  const level = acc.level ?? 0;
+  const xp = acc.xp || 0;
+  const keys = acc.keys || 0;
+  const needed = xpToNext(level);
+  const pct = level >= 200 ? 100 : Math.min(xp / needed * 100, 100);
+  document.getElementById('xpFill').style.width = pct + '%';
+  document.getElementById('xpText').textContent = level >= 200 ? 'MAX LEVEL' : `${xp} / ${needed} XP`;
+  document.getElementById('levelBadge').textContent = `LV.${level}`;
+  document.getElementById('keysDisplay').textContent = `🗝 ${keys}`;
+}
+
+function showLevelUpNotif(newLevel, keysGained) {
+  const notif = document.getElementById('levelUpNotif');
+  document.getElementById('levelUpText').textContent = `You reached Level ${newLevel}!`;
+  document.getElementById('levelUpKeys').textContent = `+${keysGained} KEY${keysGained > 1 ? 'S' : ''} 🗝`;
+  notif.style.display = 'block';
+  setTimeout(() => { notif.style.display = 'none'; }, 3500);
+}
+
+function addXP(amount) {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  const acc = accs[idx];
+  acc.xp = (acc.xp || 0) + amount;
+  acc.level = acc.level ?? 0;
+  acc.keys = acc.keys || 0;
+  let levelsGained = 0;
+  while (acc.xp >= xpToNext(acc.level) && acc.level < 200) {
+    acc.xp -= xpToNext(acc.level);
+    acc.level++;
+    acc.keys++;
+    levelsGained++;
+  }
+  if (acc.level >= 200) acc.xp = 0; // max level — no overflow
+  saveAccounts(accs);
+  if (levelsGained > 0) setTimeout(() => showLevelUpNotif(acc.level, levelsGained), 1200);
 }
 
 function doLogin(username, password) {
@@ -693,7 +817,7 @@ function doSignup(username, password) {
   if (!/^[a-zA-Z0-9_]+$/.test(username)) return 'Letters, numbers, _ only';
   const accs = getAccounts();
   if (accs.find(a => a.username.toLowerCase() === username.toLowerCase())) return 'Username taken';
-  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0} };
+  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0}, xp:0, level:0, keys:0, bazookaAmmo:0, winStreak:0, bestStreak:0, claimedChallenges:[], cosmetics:{owned:[],equippedChar:null,equippedShot:null,equippedWrap:null} };
   accs.push(acc);
   saveAccounts(accs);
   setSession(username);
@@ -765,7 +889,7 @@ function showPrizeScreen() {
       { label: '✗ BAD',  cls: 'bad',  keys: BAD_WEAPONS.filter(k => locked.includes(k)) },
     ];
     const emojis = { sniper:'🎯',railgun:'⚡',gravcannon:'🌀',katana:'🗡️',crossbow:'🏹',plasmarifle:'🔵',laserrifle:'🔴',pistol:'🔫',smg:'💨',shotgun:'🔴',rpg:'🚀',burst:'🔫',revolver:'🔫',minigun:'💥',grenade:'💣',flamethrower:'🔥',boomerang:'🪃',knife:'🔪',freezeray:'🧊',huntingrifle:'🦌',dualpistols:'🔫',cannon:'💣',throwingknives:'🗡️',iceshards:'❄️',scattershot:'🟡',nerf:'🟠',bubblegum:'🫧',slingshot:'🪢',watergun:'💧',rubberball:'🎱',confetti:'🎉',
-      deagle:'🔫',barrett:'🎯',jackhammer:'🔴',bfg:'💥',tripleshot:'🔫',lightningrifle:'⚡',energysword:'⚔️',pulserifle:'🔵',devastator:'💣',chaingun:'💥',vortexrifle:'🌀',dualuzi:'🔫',supersniper:'🎯',grenadelauncher:'💣',shockrifle:'⚡',spiritblade:'🗡️',rocketpistol:'🚀',megashotgun:'🔴',chargerifle:'⚡',plasmabeam:'🔵',
+      deagle:'🔫',barrett:'🎯',jackhammer:'🔴',bfg:'💥',tripleshot:'🔫',lightningrifle:'⚡',energysword:'⚔️',pulserifle:'🔵',devastator:'💣',chaingun:'💥',vortexrifle:'🌀',dualuzi:'🔫',supersniper:'🎯',grenadelauncher:'💣',shockrifle:'⚡',spiritblade:'🗡️',rocketpistol:'🚀',megashotgun:'🔴',chargerifle:'⚡',plasmabeam:'🔵',bazooka:'🚀',
       ak47:'🔫',mp5:'💨',uzi:'💨',magnum:'🔫',doubleshotgun:'🔴',carbine:'🔫',crossbolt:'🏹',mortargun:'💣',nailgun:'🔨',speargun:'🏹',harpoon:'🪝',discgun:'🥏',chainsaw:'⚙️',mace:'🔨',poisonspray:'☠️',shockwave:'💫',triplebow:'🏹',pepperbox:'🔫',lancegun:'⚡',frostbow:'❄️',
       spoon:'🥄',banana:'🍌',pillow:'🛏️',cottonball:'☁️',glitter:'✨',airhorn:'📢',soap:'🧼',toothpick:'🦷',butterknife:'🍴',kazoo:'🎺',feather:'🪶',newspaper:'📰',wetfish:'🐟',leek:'🌿',teacup:'🍵',straw:'🥤',flipflop:'🩴',shoehorn:'👟',pennywhistle:'🎵',squeakytoy:'🧸' };
     const ROW_SIZE = { good: 7, mid: 6, bad: 6 };
@@ -802,7 +926,7 @@ function showPrizeScreen() {
 }
 
 function buildLoadout() {
-  return selectedSlots.map(key => WEAPONS[key] || WEAPONS.pistol);
+  return selectedSlots.map(key => ({...(WEAPONS[key] || WEAPONS.pistol)}));
 }
 
 // ── Map tiles ───────────────────────────────────────────────────────────────
@@ -1019,7 +1143,7 @@ function spawnBullet(owner, x, y, angle, wDef) {
   bullets.push({
     owner, x, y,
     vx: Math.cos(a)*wDef.speed, vy: Math.sin(a)*wDef.speed,
-    damage: wDef.damage, color: wDef.color,
+    damage: wDef.damage, color: (owner && owner.isPlayer && owner.equippedShotColor && !wDef.golden && !wDef.nuke) ? owner.equippedShotColor : wDef.color,
     dist: 0, maxDist: wDef.range,
     trail: [],
     splash: wDef.splash || false,
@@ -1095,7 +1219,7 @@ function createPlayer(sp) {
 
 const BOT_NAMES = ['Shadow','Blaze','Frost','Storm','Viper','Ghost','Nova','Titan'];
 const BOT_COLORS = ['#f44','#f84','#f4f','#4f4','#f40','#40f','#ff0','#0ff'];
-const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade','burst','flamethrower','boomerang','katana','freezeray',
+const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','bazooka','railgun','grenade','burst','flamethrower','boomerang','katana','freezeray',
   'crossbow','plasmarifle','laserrifle','revolver','minigun','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot',
   'slingshot','watergun','rubberball','confetti',
   'deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam',
@@ -1145,10 +1269,101 @@ function createBot(idx, team=-1) {
   };
 }
 
+// ── Challenges ────────────────────────────────────────────────────────────────
+const CHALLENGES = [
+  { id:'kills_1',    name:'First Blood',      icon:'🩸', desc:'Get your first kill',          type:'kills',  req:1,   keys:1 },
+  { id:'kills_25',   name:'Killing Spree',    icon:'💀', desc:'Get 25 total kills',           type:'kills',  req:25,  keys:1 },
+  { id:'kills_100',  name:'Serial Killer',    icon:'☠️', desc:'Get 100 total kills',          type:'kills',  req:100, keys:2 },
+  { id:'kills_500',  name:'Massacre',         icon:'💣', desc:'Get 500 total kills',          type:'kills',  req:500, keys:4 },
+  { id:'wins_1',     name:'First Victory',    icon:'🎖️', desc:'Win your first game',          type:'wins',   req:1,   keys:1 },
+  { id:'wins_10',    name:'Veteran',          icon:'🏅', desc:'Win 10 games total',           type:'wins',   req:10,  keys:2 },
+  { id:'wins_50',    name:'Champion',         icon:'🏆', desc:'Win 50 games total',           type:'wins',   req:50,  keys:3 },
+  { id:'wins_200',   name:'Legend',           icon:'👑', desc:'Win 200 games total',          type:'wins',   req:200, keys:6 },
+  { id:'streak_3',   name:'On a Roll',        icon:'🔥', desc:'Win 3 games in a row',         type:'streak', req:3,   keys:1 },
+  { id:'streak_5',   name:'Hot Streak',       icon:'🔥', desc:'Win 5 games in a row',         type:'streak', req:5,   keys:2 },
+  { id:'streak_10',  name:'Unstoppable',      icon:'⚡', desc:'Win 10 games in a row',        type:'streak', req:10,  keys:3 },
+  { id:'streak_20',  name:'Legendary Streak', icon:'👑', desc:'Win 20 games in a row',        type:'streak', req:20,  keys:5 },
+  { id:'streak_50',  name:'Godlike',          icon:'🌟', desc:'Win 50 games in a row',        type:'streak', req:50,  keys:10 },
+];
+
+function getChallengeProgress(acc, ch) {
+  const stats = acc.stats || {};
+  if (ch.type === 'kills')  return stats.kills || 0;
+  if (ch.type === 'wins')   return stats.wins  || 0;
+  if (ch.type === 'streak') return acc.bestStreak || 0;
+  return 0;
+}
+
+function checkChallenges() {
+  // Called after stats update — notifies if a new challenge just became claimable
+  // (actual claiming is manual in the shop UI)
+}
+
+// ── Shop data (declared here so startGame can reference it) ───────────────────
+const SHOP_ITEMS = {
+  char: [
+    { id:'shadow',  name:'Shadow',   icon:'🌑', price:3, color:'#9b59b6' },
+    { id:'phoenix', name:'Phoenix',  icon:'🔥', price:3, color:'#e74c3c' },
+    { id:'frost',   name:'Frost',    icon:'❄️', price:3, color:'#5dade2' },
+    { id:'toxic',   name:'Toxic',    icon:'☢️', price:3, color:'#2ecc71' },
+    { id:'gold',    name:'Gold',     icon:'⭐', price:5, color:'#ffd700' },
+    { id:'neon',    name:'Neon',     icon:'💜', price:4, color:'#ff69b4' },
+    { id:'void',    name:'Void',     icon:'🌌', price:5, color:'#1a0a3a' },
+    { id:'lava',    name:'Lava',     icon:'🌋', price:4, color:'#ff6600' },
+  ],
+  shot: [
+    { id:'shot_red',    name:'Inferno',  icon:'🔴', price:2, color:'#ff2200' },
+    { id:'shot_blue',   name:'Hydro',    icon:'🔵', price:2, color:'#3399ff' },
+    { id:'shot_green',  name:'Venom',    icon:'🟢', price:2, color:'#00ff66' },
+    { id:'shot_purple', name:'Phantom',  icon:'🟣', price:2, color:'#cc44ff' },
+    { id:'shot_gold',   name:'Gilded',   icon:'⭐', price:4, color:'#ffd700' },
+    { id:'shot_white',  name:'Pure',     icon:'⚪', price:2, color:'#ffffff' },
+    { id:'shot_cyan',   name:'Laser',    icon:'🩵', price:2, color:'#00ffff' },
+    { id:'shot_pink',   name:'Sakura',   icon:'🌸', price:3, color:'#ff88cc' },
+  ],
+  wrap: [
+    { id:'wrap_carbon', name:'Carbon',   icon:'🔩', price:2 },
+    { id:'wrap_chrome', name:'Chrome',   icon:'🪙', price:2 },
+    { id:'wrap_camo',   name:'Camo',     icon:'🌿', price:2 },
+    { id:'wrap_gold',   name:'Gold',     icon:'🏅', price:4 },
+    { id:'wrap_neon',   name:'Neon',     icon:'💡', price:3 },
+    { id:'wrap_obsid',  name:'Obsidian', icon:'🖤', price:3 },
+  ],
+};
+let shopTab = 'char';
+
 function startGame() {
   document.getElementById('overlay').style.display = 'none';
   buildMap();
   player = createPlayer(randomSpawn());
+  // Apply cosmetics + bazooka ammo stockpile
+  const _acc = getCurrentAccount();
+  if (_acc) {
+    if (_acc.cosmetics) {
+      if (_acc.cosmetics.equippedChar) {
+        const ci = SHOP_ITEMS.char.find(i => i.id === _acc.cosmetics.equippedChar);
+        if (ci) player.color = ci.color;
+      }
+      player.equippedShotColor = _acc.cosmetics.equippedShot
+        ? (SHOP_ITEMS.shot.find(i => i.id === _acc.cosmetics.equippedShot)||{}).color || null
+        : null;
+      player.equippedWrap = _acc.cosmetics.equippedWrap || null;
+    }
+    // Apply bazooka ammo stockpile if bazooka is in loadout
+    const bonus = _acc.bazookaAmmo || 0;
+    if (bonus > 0) {
+      const baz = player.weapons.find(w => w.name === 'BAZOOKA');
+      if (baz) {
+        baz.ammo = 16 + bonus;                    // patch the weapon copy's ammo cap
+        if (player.weapons[player.wIdx] === baz) player.ammo = baz.ammo; // update live ammo if active slot
+        // Consume stockpile
+        const accs2 = getAccounts();
+        const idx2 = accs2.findIndex(a => a.username === _acc.username);
+        if (idx2 !== -1) { accs2[idx2].bazookaAmmo = 0; saveAccounts(accs2); }
+        updateXPBar();
+      }
+    }
+  }
 
   if (gameMode === 'ffa') {
     bots = Array.from({length:7}, (_,i) => createBot(i, -1));
@@ -1399,6 +1614,7 @@ function killEntity(ent, killer) {
       document.getElementById('hotbar').classList.remove('visible');
       showIgToggle(false);
       saveAccountProgress();
+      recordLoss();
       showOverlay();
     }, 3000);
   } else if (!ent.isPlayer) {
@@ -2019,6 +2235,49 @@ function draw() {
     ctx.lineWidth = ent.isPlayer ? 2 : 1;
     ctx.stroke();
 
+    // Level rings (player only)
+    if (ent.isPlayer) {
+      const _lvlAcc = getCurrentAccount();
+      const _lvl = _lvlAcc ? (_lvlAcc.level ?? 0) : 0;
+      const _t = Date.now();
+      if (_lvl >= 2) {
+        // Glowing aura ring
+        const _h = _lvl >= 14 ? 50 : _lvl >= 7 ? 280 : 220; // gold / purple / blue
+        ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r + 7, 0, Math.PI*2);
+        const _a = 0.35 + Math.sin(_t*0.003)*0.15;
+        ctx.strokeStyle = `hsla(${_h},100%,65%,${_a})`;
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = `hsl(${_h},100%,60%)`; ctx.shadowBlur = 12;
+        ctx.stroke(); ctx.shadowBlur = 0;
+      }
+      if (_lvl >= 7) {
+        // Second ring
+        ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r + 13, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(255,215,0,${0.22 + Math.sin(_t*0.005+1)*0.1})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      if (_lvl >= 14) {
+        // Orbiting crown dots
+        for (let _d = 0; _d < 5; _d++) {
+          const _ang = _t*0.001 + (_d/5)*Math.PI*2;
+          const _dx = Math.cos(_ang)*(ent.r+19), _dy = Math.sin(_ang)*(ent.r+19);
+          ctx.beginPath(); ctx.arc(ent.x+_dx, ent.y+_dy, 2.5, 0, Math.PI*2);
+          ctx.fillStyle = '#ffd700';
+          ctx.shadowColor = '#ffd700'; ctx.shadowBlur = 8;
+          ctx.fill(); ctx.shadowBlur = 0;
+        }
+      }
+      if (_lvl >= 24) {
+        // Third outer ring — rainbow cycle
+        ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r + 20, 0, Math.PI*2);
+        ctx.strokeStyle = `hsla(${(_t*0.08)%360},100%,60%,0.4)`;
+        ctx.lineWidth = 2;
+        ctx.shadowColor = `hsl(${(_t*0.08)%360},100%,60%)`; ctx.shadowBlur = 10;
+        ctx.stroke(); ctx.shadowBlur = 0;
+      }
+    }
+
     // Frozen overlay — icy blue shell
     if (ent.frozen > 0) {
       const fp = Math.min(ent.frozen / 2200, 1);
@@ -2135,8 +2394,12 @@ function draw() {
       ctx.fill();
     } else {
       const gLen = 18, gW = 5;
-      ctx.fillStyle = ent.isPlayer ? '#ccc' : '#999';
+      const WRAP_COLORS = { wrap_carbon:'#2a2a2a', wrap_chrome:'#c8c8d4', wrap_camo:'#4a6b3a', wrap_gold:'#ffd700', wrap_neon:'#ff44ff', wrap_obsid:'#1a0a2e' };
+      const _wc = ent.isPlayer && ent.equippedWrap ? (WRAP_COLORS[ent.equippedWrap] || '#ccc') : (ent.isPlayer ? '#ccc' : '#999');
+      ctx.fillStyle = _wc;
+      if (ent.isPlayer && ent.equippedWrap) { ctx.shadowColor = _wc; ctx.shadowBlur = 8; }
       ctx.fillRect(ent.r-2, -gW/2, gLen, gW);
+      ctx.shadowBlur = 0;
     }
     ctx.shadowBlur = 0;
     ctx.restore();
@@ -2355,6 +2618,7 @@ function showOverlay() {
     const stats = acc.stats || {};
     const wins = stats.wins || 0;
     document.getElementById('userBarName').title = `Wins: ${wins} | Kills: ${stats.kills||0} | Deaths: ${stats.deaths||0}`;
+    updateXPBar();
   }
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('overlay').style.display = 'flex';
@@ -2398,6 +2662,9 @@ document.getElementById('clearDataBtn').addEventListener('click', () => {
   if (idx === -1) return;
   accs[idx].unlocked = [...DEFAULT_UNLOCKED];
   accs[idx].stats = { kills: 0, wins: 0, deaths: 0 };
+  accs[idx].xp = 0; accs[idx].level = 0; accs[idx].keys = 0; accs[idx].bazookaAmmo = 0;
+  accs[idx].winStreak = 0; accs[idx].bestStreak = 0; accs[idx].claimedChallenges = [];
+  accs[idx].cosmetics = { owned:[], equippedChar:null, equippedShot:null, equippedWrap:null };
   saveAccounts(accs);
   unlockedWeapons = [...DEFAULT_UNLOCKED];
   saveUnlocked();
@@ -2435,6 +2702,191 @@ document.querySelectorAll('.modeBtn').forEach(btn => {
     gameMode = btn.dataset.mode;
   });
 });
+// ── Shop system ───────────────────────────────────────────────────────────────
+function openShop() {
+  const acc = getCurrentAccount(); if (!acc) return;
+  renderShop(acc);
+  document.getElementById('shopScreen').style.display = 'flex';
+  document.getElementById('overlay').style.display = 'none';
+}
+function closeShop() {
+  document.getElementById('shopScreen').style.display = 'none';
+  showOverlay();
+}
+function renderShop(acc) {
+  acc.cosmetics = acc.cosmetics || { owned:[], equippedChar:null, equippedShot:null, equippedWrap:null };
+  const keys = acc.keys || 0;
+  document.getElementById('shopKeysTop').textContent = `🗝 ${keys} KEY${keys !== 1 ? 'S' : ''}`;
+  const container = document.getElementById('shopItems');
+  container.innerHTML = '';
+
+  // ── CHALLENGES tab ──
+  if (shopTab === 'challenges') {
+    acc.claimedChallenges = acc.claimedChallenges || [];
+    for (const ch of CHALLENGES) {
+      const progress = getChallengeProgress(acc, ch);
+      const done = progress >= ch.req;
+      const claimed = acc.claimedChallenges.includes(ch.id);
+      const pct = Math.min(progress / ch.req * 100, 100);
+      const card = document.createElement('div');
+      card.className = 'chalCard' + (claimed ? ' claimed' : done ? ' complete' : '');
+      const claimBtn = done && !claimed
+        ? `<button class="chalClaim" onclick="claimChallenge('${ch.id}')">CLAIM 🗝 ${ch.keys}</button>`
+        : '';
+      const rightSide = claimed
+        ? `<span class="chalClaimedBadge">✓ CLAIMED</span>`
+        : done ? claimBtn : `<span class="chalReward">🗝 ${ch.keys}</span>`;
+      card.innerHTML = `
+        <div class="chalIcon">${ch.icon}</div>
+        <div class="chalInfo">
+          <div class="chalName">${ch.name}</div>
+          <div class="chalDesc">${ch.desc}</div>
+          <div class="chalBar"><div class="chalBarFill" style="width:${pct}%"></div></div>
+          <div class="chalProg">${Math.min(progress, ch.req)} / ${ch.req}</div>
+        </div>
+        ${rightSide}`;
+      container.appendChild(card);
+    }
+    return;
+  }
+
+  // ── AMMO tab — special consumable UI ──
+  if (shopTab === 'ammo') {
+    const stock = acc.bazookaAmmo || 0;
+    const cantAfford = keys < 1;
+    const stockDiv = document.createElement('div');
+    stockDiv.style.cssText = 'width:100%;text-align:center;color:#aaa;font-size:13px;letter-spacing:1px;margin-bottom:4px;';
+    stockDiv.textContent = `Stockpile: 🚀 ${stock} extra shot${stock !== 1 ? 's' : ''} ready for next game`;
+    container.appendChild(stockDiv);
+    // Buy packs
+    for (const pack of [{shots:8,price:1},{shots:16,price:2},{shots:32,price:3}]) {
+      const div = document.createElement('div');
+      div.className = 'shopItem' + (keys < pack.price ? ' cant-afford' : '');
+      div.innerHTML = `<div class="siIcon">🚀</div>
+        <div class="siName">+${pack.shots} Shots</div>
+        <div class="siPrice" style="color:#ffd700">🗝 ${pack.price}</div>
+        <div class="siStatus" style="color:#aaa;font-size:9px;">BAZOOKA ONLY</div>`;
+      if (keys >= pack.price) div.onclick = () => buyAmmo(pack.shots, pack.price);
+      container.appendChild(div);
+    }
+    return;
+  }
+
+  const items = SHOP_ITEMS[shopTab] || [];
+  for (const item of items) {
+    const owned = acc.cosmetics.owned.includes(item.id);
+    let equipped = false;
+    if (shopTab==='char') equipped = acc.cosmetics.equippedChar === item.id;
+    else if (shopTab==='shot') equipped = acc.cosmetics.equippedShot === item.id;
+    else if (shopTab==='wrap') equipped = acc.cosmetics.equippedWrap === item.id;
+    const cantAfford = !owned && keys < item.price;
+    let cls = 'shopItem';
+    if (equipped) cls += ' equipped';
+    else if (owned) cls += ' owned';
+    if (cantAfford) cls += ' cant-afford';
+    const dotStyle = item.color ? `background:${item.color};width:12px;height:12px;border-radius:50%;display:inline-block;box-shadow:0 0 6px ${item.color};` : '';
+    const div = document.createElement('div');
+    div.className = cls;
+    div.innerHTML = `<div class="siIcon">${item.icon}</div>
+      <div class="siName">${item.name}${item.color ? `<span style="${dotStyle};margin-left:5px;vertical-align:middle;"></span>` : ''}</div>
+      <div class="siPrice" style="color:${owned?'#55ff55':'#ffd700'}">${owned ? (equipped ? '✓ EQUIPPED' : 'OWNED') : `🗝 ${item.price}`}</div>
+      <div class="siStatus" style="color:#ffd700">${equipped ? '★ ACTIVE' : ''}</div>`;
+    if (!cantAfford) div.onclick = () => buyOrEquip(item, shopTab);
+    container.appendChild(div);
+  }
+}
+
+function claimChallenge(id) {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  const a = accs[idx];
+  const ch = CHALLENGES.find(c => c.id === id); if (!ch) return;
+  a.claimedChallenges = a.claimedChallenges || [];
+  if (a.claimedChallenges.includes(id)) return;
+  if (getChallengeProgress(a, ch) < ch.req) return;
+  a.claimedChallenges.push(id);
+  a.keys = (a.keys || 0) + ch.keys;
+  saveAccounts(accs);
+  updateXPBar();
+  renderShop(a);
+}
+
+function buyAmmo(shots, price) {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  const a = accs[idx];
+  if ((a.keys || 0) < price) return;
+  a.keys = (a.keys || 0) - price;
+  a.bazookaAmmo = (a.bazookaAmmo || 0) + shots;
+  saveAccounts(accs);
+  updateXPBar();
+  renderShop(a);
+}
+function buyOrEquip(item, tab) {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts();
+  const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  const a = accs[idx];
+  a.cosmetics = a.cosmetics || { owned:[], equippedChar:null, equippedShot:null, equippedWrap:null };
+  const eqKey = tab==='char' ? 'equippedChar' : tab==='shot' ? 'equippedShot' : 'equippedWrap';
+  if (a.cosmetics.owned.includes(item.id)) {
+    a.cosmetics[eqKey] = a.cosmetics[eqKey] === item.id ? null : item.id;
+  } else {
+    if ((a.keys||0) < item.price) return;
+    a.keys = (a.keys||0) - item.price;
+    a.cosmetics.owned.push(item.id);
+    a.cosmetics[eqKey] = item.id;
+  }
+  saveAccounts(accs);
+  updateXPBar();
+  renderShop(a);
+}
+document.getElementById('shopBtn').addEventListener('click', openShop);
+// shopCloseBtn and shopTab listeners set up after DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('shopCloseBtn').addEventListener('click', closeShop);
+  document.querySelectorAll('.shopTab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.shopTab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      shopTab = tab.dataset.stab;
+      const acc = getCurrentAccount(); if (acc) renderShop(acc);
+    });
+  });
+});
+
+// ── Mode selector ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.modeBtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.modeBtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    gameMode = btn.dataset.mode;
+  });
+});
 </script>
+
+<!-- Shop screen -->
+<div id="shopScreen">
+  <h2>🛒 SHOP</h2>
+  <div id="shopKeysTop">🗝 0 KEYS</div>
+  <div id="shopTabs">
+    <button class="shopTab active" data-stab="char">👤 CHARACTER</button>
+    <button class="shopTab" data-stab="shot">💥 SHOT COLOR</button>
+    <button class="shopTab" data-stab="wrap">🔧 WEAPON WRAP</button>
+    <button class="shopTab" data-stab="ammo">🚀 AMMO</button>
+    <button class="shopTab" data-stab="challenges">🎯 CHALLENGES</button>
+  </div>
+  <div id="shopItems"></div>
+  <button id="shopCloseBtn">← BACK TO MENU</button>
+</div>
+
+<!-- Level-up notification -->
+<div id="levelUpNotif">
+  <div class="lunTitle">🏆 LEVEL UP!</div>
+  <div class="lunSub" id="levelUpText">You reached Level 2!</div>
+  <div class="lunKeys" id="levelUpKeys">+1 KEY 🗝</div>
+</div>
 </body>
 </html>

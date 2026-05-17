@@ -817,7 +817,7 @@ function doSignup(username, password) {
   if (!/^[a-zA-Z0-9_]+$/.test(username)) return 'Letters, numbers, _ only';
   const accs = getAccounts();
   if (accs.find(a => a.username.toLowerCase() === username.toLowerCase())) return 'Username taken';
-  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0}, xp:0, level:0, keys:0, bazookaAmmo:0, winStreak:0, bestStreak:0, claimedChallenges:[], cosmetics:{owned:[],equippedChar:null,equippedShot:null,equippedWrap:null} };
+  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0}, xp:0, level:0, keys:0, bazookaAmmo:0, rpgAmmo:0, winStreak:0, bestStreak:0, claimedChallenges:[], cosmetics:{owned:[],equippedChar:null,equippedShot:null,equippedWrap:null} };
   accs.push(acc);
   saveAccounts(accs);
   setSession(username);
@@ -1349,19 +1349,30 @@ function startGame() {
         : null;
       player.equippedWrap = _acc.cosmetics.equippedWrap || null;
     }
-    // Apply bazooka ammo stockpile if bazooka is in loadout
-    const bonus = _acc.bazookaAmmo || 0;
-    if (bonus > 0) {
-      const baz = player.weapons.find(w => w.name === 'BAZOOKA');
-      if (baz) {
-        baz.ammo = 16 + bonus;                    // patch the weapon copy's ammo cap
-        if (player.weapons[player.wIdx] === baz) player.ammo = baz.ammo; // update live ammo if active slot
-        // Consume stockpile
-        const accs2 = getAccounts();
-        const idx2 = accs2.findIndex(a => a.username === _acc.username);
-        if (idx2 !== -1) { accs2[idx2].bazookaAmmo = 0; saveAccounts(accs2); }
-        updateXPBar();
+    // Apply ammo stockpiles (bazooka + RPG)
+    const bazBonus = _acc.bazookaAmmo || 0;
+    const rpgBonus = _acc.rpgAmmo || 0;
+    if (bazBonus > 0 || rpgBonus > 0) {
+      const accs2 = getAccounts();
+      const idx2 = accs2.findIndex(a => a.username === _acc.username);
+      if (bazBonus > 0) {
+        const baz = player.weapons.find(w => w.name === 'BAZOOKA');
+        if (baz) {
+          baz.ammo = 16 + bazBonus;
+          if (player.weapons[player.wIdx] === baz) player.ammo = baz.ammo;
+          if (idx2 !== -1) accs2[idx2].bazookaAmmo = 0;
+        }
       }
+      if (rpgBonus > 0) {
+        const rpg = player.weapons.find(w => w.name === 'RPG');
+        if (rpg) {
+          rpg.ammo = 16 + rpgBonus;
+          if (player.weapons[player.wIdx] === rpg) player.ammo = rpg.ammo;
+          if (idx2 !== -1) accs2[idx2].rpgAmmo = 0;
+        }
+      }
+      if (idx2 !== -1) saveAccounts(accs2);
+      updateXPBar();
     }
   }
 
@@ -2664,6 +2675,7 @@ document.getElementById('clearDataBtn').addEventListener('click', () => {
   accs[idx].stats = { kills: 0, wins: 0, deaths: 0 };
   accs[idx].xp = 0; accs[idx].level = 0; accs[idx].keys = 0; accs[idx].bazookaAmmo = 0;
   accs[idx].winStreak = 0; accs[idx].bestStreak = 0; accs[idx].claimedChallenges = [];
+  accs[idx].rpgAmmo = 0;
   accs[idx].cosmetics = { owned:[], equippedChar:null, equippedShot:null, equippedWrap:null };
   saveAccounts(accs);
   unlockedWeapons = [...DEFAULT_UNLOCKED];
@@ -2752,23 +2764,33 @@ function renderShop(acc) {
 
   // ── AMMO tab — special consumable UI ──
   if (shopTab === 'ammo') {
-    const stock = acc.bazookaAmmo || 0;
-    const cantAfford = keys < 1;
-    const stockDiv = document.createElement('div');
-    stockDiv.style.cssText = 'width:100%;text-align:center;color:#aaa;font-size:13px;letter-spacing:1px;margin-bottom:4px;';
-    stockDiv.textContent = `Stockpile: 🚀 ${stock} extra shot${stock !== 1 ? 's' : ''} ready for next game`;
-    container.appendChild(stockDiv);
-    // Buy packs
-    for (const pack of [{shots:8,price:1},{shots:16,price:2},{shots:32,price:3}]) {
-      const div = document.createElement('div');
-      div.className = 'shopItem' + (keys < pack.price ? ' cant-afford' : '');
-      div.innerHTML = `<div class="siIcon">🚀</div>
-        <div class="siName">+${pack.shots} Shots</div>
-        <div class="siPrice" style="color:#ffd700">🗝 ${pack.price}</div>
-        <div class="siStatus" style="color:#aaa;font-size:9px;">BAZOOKA ONLY</div>`;
-      if (keys >= pack.price) div.onclick = () => buyAmmo(pack.shots, pack.price);
-      container.appendChild(div);
-    }
+    const bazStock = acc.bazookaAmmo || 0;
+    const rpgStock = acc.rpgAmmo || 0;
+    // Info row
+    const infoDiv = document.createElement('div');
+    infoDiv.style.cssText = 'width:100%;text-align:center;color:#777;font-size:12px;letter-spacing:1px;margin-bottom:8px;line-height:1.8;';
+    infoDiv.innerHTML = `Stockpile: 🚀 <b style="color:#ff4400">${bazStock}</b> bazooka shot${bazStock!==1?'s':''} &nbsp;|&nbsp; 🚀 <b style="color:#ff6600">${rpgStock}</b> RPG shot${rpgStock!==1?'s':''}<br><span style="font-size:10px;color:#444;">Shots are consumed at the start of your next game</span>`;
+    container.appendChild(infoDiv);
+    // Bazooka shot
+    const bazDiv = document.createElement('div');
+    bazDiv.className = 'shopItem' + (keys < 15 ? ' cant-afford' : '');
+    bazDiv.style.width = '180px';
+    bazDiv.innerHTML = `<div class="siIcon">💥</div>
+      <div class="siName">Bazooka Shot</div>
+      <div class="siPrice" style="color:#ffd700">🗝 15</div>
+      <div class="siStatus" style="color:#ff4400;font-size:9px;">+1 SHOT</div>`;
+    if (keys >= 15) bazDiv.onclick = () => buyAmmo('bazooka', 1, 15);
+    container.appendChild(bazDiv);
+    // RPG shot
+    const rpgDiv = document.createElement('div');
+    rpgDiv.className = 'shopItem' + (keys < 10 ? ' cant-afford' : '');
+    rpgDiv.style.width = '180px';
+    rpgDiv.innerHTML = `<div class="siIcon">🚀</div>
+      <div class="siName">RPG Shot</div>
+      <div class="siPrice" style="color:#ffd700">🗝 10</div>
+      <div class="siStatus" style="color:#ff6600;font-size:9px;">+1 SHOT</div>`;
+    if (keys >= 10) rpgDiv.onclick = () => buyAmmo('rpg', 1, 10);
+    container.appendChild(rpgDiv);
     return;
   }
 
@@ -2812,14 +2834,15 @@ function claimChallenge(id) {
   renderShop(a);
 }
 
-function buyAmmo(shots, price) {
+function buyAmmo(weapon, shots, price) {
   const u = getSession(); if (!u) return;
   const accs = getAccounts();
   const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
   const a = accs[idx];
   if ((a.keys || 0) < price) return;
   a.keys = (a.keys || 0) - price;
-  a.bazookaAmmo = (a.bazookaAmmo || 0) + shots;
+  if (weapon === 'bazooka') a.bazookaAmmo = (a.bazookaAmmo || 0) + shots;
+  else if (weapon === 'rpg')  a.rpgAmmo    = (a.rpgAmmo    || 0) + shots;
   saveAccounts(accs);
   updateXPBar();
   renderShop(a);

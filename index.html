@@ -182,7 +182,6 @@
       <div class="igRow ig-good">
         <button class="igwBtn" data-w="sniper">🎯 Sniper<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="railgun">⚡ Railgun<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="gravcannon">🌀 Grav Cannon<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="katana">🗡️ Katana<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="crossbow">🏹 Crossbow<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="ibadge good">GOOD</span></button>
@@ -197,7 +196,6 @@
         <button class="igwBtn" data-w="pulserifle">🔵 Pulse Rifle<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="devastator">💣 Devastator<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="chaingun">💥 Chain Gun<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="vortexrifle">🌀 Vortex Rifle<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="dualuzi">🔫 Dual Uzi<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="supersniper">🎯 Super Sniper<span class="ibadge good">GOOD</span></button>
         <button class="igwBtn" data-w="grenadelauncher">💣 Grenade Launcher<span class="ibadge good">GOOD</span></button>
@@ -346,7 +344,6 @@
       <div class="wRow">
         <button class="wBtn s0 active" data-w="sniper" data-slot="0">🎯 Sniper</button>
         <button class="wBtn s0" data-w="railgun" data-slot="0">⚡ Railgun</button>
-        <button class="wBtn s0" data-w="gravcannon" data-slot="0">🌀 Grav Cannon</button>
         <button class="wBtn s0" data-w="katana" data-slot="0">🗡️ Katana</button>
         <button class="wBtn s0" data-w="crossbow" data-slot="0">🏹 Crossbow</button>
         <button class="wBtn s0" data-w="plasmarifle" data-slot="0">🔵 Plasma Rifle</button>
@@ -361,7 +358,6 @@
         <button class="wBtn s0" data-w="pulserifle" data-slot="0">🔵 Pulse Rifle</button>
         <button class="wBtn s0" data-w="devastator" data-slot="0">💣 Devastator</button>
         <button class="wBtn s0" data-w="chaingun" data-slot="0">💥 Chain Gun</button>
-        <button class="wBtn s0" data-w="vortexrifle" data-slot="0">🌀 Vortex Rifle</button>
         <button class="wBtn s0" data-w="dualuzi" data-slot="0">🔫 Dual Uzi</button>
         <button class="wBtn s0" data-w="supersniper" data-slot="0">🎯 Super Sniper</button>
         <button class="wBtn s0" data-w="grenadelauncher" data-slot="0">💣 Grenade Launcher</button>
@@ -533,15 +529,13 @@ const WEAPONS = {
   burst:   { name: 'BURST',   damage: 30, fireRate: 650,  bullets: 3, spread: 0.05, speed: 15, ammo: 18, reload: 1400, color: '#ff88ff', range: 520 }, // 🟠 MID
   nerf:    { name: 'NERF GUN',damage: 8,  fireRate: 200,  bullets: 1, spread: 0.28, speed: 6,  ammo: 25, reload: 2200, color: '#ff8800', range: 280 }, // 🔴 BAD
   // ── Surprise weapons ────────────────────────────────────────────────────────
-  gravcannon:  { name: 'GRAV CANNON',  damage: 0,  fireRate: 1800, bullets: 1, spread: 0.01, speed: 5,  ammo: 3,  reload: 2500, color: '#9b59b6', range: 900,
-                 gravityOrb: true, pullRadius: 115, pullDuration: 1200, splashRadius: 88, splashDamage: 55 }, // 🟡 GOOD
   flamethrower:{ name: 'FLAMETHROWER', damage: 10, fireRate: 55,   bullets: 1, spread: 0.42, speed: 9,  ammo: 60, reload: 2000, color: '#ff4400', range: 195,
                  flame: true },                                                                                 // 🟠 MID
   boomerang:   { name: 'BOOMERANG',    damage: 40, fireRate: 700,  bullets: 1, spread: 0.02, speed: 10, ammo: 6,  reload: 1800, color: '#f0a500', range: 340,
                  boomerang: true },                                                                             // 🟠 MID
-  bubblegum:   { name: 'BUBBLE GUN',   damage: 8,  fireRate: 260,  bullets: 1, spread: 0.46, speed: 4,  ammo: 20, reload: 1500, color: '#ff69b4', range: 240 }, // 🔴 BAD
   freezeray:   { name: 'FREEZE RAY',  damage: 15, fireRate: 600,  bullets: 1, spread: 0.03, speed: 12, ammo: 8,  reload: 1800, color: '#88ddff', range: 650,
                  freeze: true },                                                                                    // 🟠 MID
+  bubblegum:   { name: 'BUBBLE GUN',   damage: 8,  fireRate: 260,  bullets: 1, spread: 0.46, speed: 4,  ammo: 20, reload: 1500, color: '#ff69b4', range: 240 }, // 🔴 BAD
   // ── GOOD ────────────────────────────────────────────────────────────────────
   crossbow:    { name: 'CROSSBOW',    damage: 90,  fireRate: 900,  bullets: 1, spread: 0.005,speed: 22, ammo: 1,  reload: 800,  color: '#c8a060', range: 880 },                                          // 🟡 GOOD
   plasmarifle: { name: 'PLASMA RIFLE',damage: 55,  fireRate: 650,  bullets: 1, spread: 0.03, speed: 15, ammo: 8,  reload: 1800, color: '#cc44ff', range: 750,
@@ -577,7 +571,6 @@ const WEAPONS = {
   pulserifle:   { name: 'PULSE RIFLE',   damage: 25,  fireRate: 500,  bullets: 4, spread: 0.04, speed: 16, ammo: 20, reload: 1600, color: '#ff44aa', range: 580 },
   devastator:   { name: 'DEVASTATOR',    damage: 80,  fireRate: 1500, bullets: 1, spread: 0.01, speed: 5,  ammo: 4,  reload: 2200, color: '#ff6600', range: 900, splash: true, splashRadius: 100, splashDamage: 50 },
   chaingun:     { name: 'CHAIN GUN',     damage: 20,  fireRate: 65,   bullets: 1, spread: 0.15, speed: 20, ammo: 120,reload: 3000, color: '#aaaaaa', range: 450 },
-  vortexrifle:  { name: 'VORTEX RIFLE',  damage: 0,   fireRate: 2000, bullets: 1, spread: 0.01, speed: 5,  ammo: 3,  reload: 2500, color: '#cc44ff', range: 900, gravityOrb: true, pullRadius: 140, pullDuration: 1500, splashRadius: 100, splashDamage: 70 },
   dualuzi:      { name: 'DUAL UZI',      damage: 14,  fireRate: 90,   bullets: 2, spread: 0.18, speed: 18, ammo: 60, reload: 2500, color: '#40c0f0', range: 420 },
   supersniper:  { name: 'SUPER SNIPER',  damage: 95,  fireRate: 2000, bullets: 1, spread: 0,    speed: 0,  ammo: 2,  reload: 3000, color: '#00ffaa', range: 950, hitscan: true },
   grenadelauncher:{ name: 'GRENADE LAUNCHER', damage:55, fireRate:700, bullets:1, spread:0.05, speed:9, ammo:6, reload:2000, color:'#aaff44', range:900, bouncing:true, fuseTime:1200, splash:true, splashRadius:85, splashDamage:40 },
@@ -640,7 +633,7 @@ const WEAPONS = {
 };
 
 // ── Weapon tier lists ────────────────────────────────────────────────────────
-const GOOD_WEAPONS = ['sniper','railgun','gravcannon','katana','crossbow','plasmarifle','laserrifle','deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','vortexrifle','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam'];
+const GOOD_WEAPONS = ['sniper','railgun','katana','crossbow','plasmarifle','laserrifle','deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam'];
 const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot','ak47','mp5','uzi','magnum','doubleshotgun','carbine','crossbolt','mortargun','nailgun','speargun','harpoon','discgun','chainsaw','mace','poisonspray','shockwave','triplebow','pepperbox','lancegun','frostbow'];
 const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti','spoon','banana','pillow','cottonball','glitter','airhorn','soap','toothpick','butterknife','kazoo','feather','newspaper','wetfish','leek','teacup','straw','flipflop','shoehorn','pennywhistle','squeakytoy'];
 const ALL_NORMAL_WEAPONS = [...GOOD_WEAPONS, ...MID_WEAPONS, ...BAD_WEAPONS];
@@ -1106,10 +1099,10 @@ function createPlayer(sp) {
 
 const BOT_NAMES = ['Shadow','Blaze','Frost','Storm','Viper','Ghost','Nova','Titan'];
 const BOT_COLORS = ['#f44','#f84','#f4f','#4f4','#f40','#40f','#ff0','#0ff'];
-const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade','burst','gravcannon','flamethrower','boomerang','katana','freezeray',
+const BOT_WEAPONS = ['pistol','smg','shotgun','sniper','rpg','railgun','grenade','burst','flamethrower','boomerang','katana','freezeray',
   'crossbow','plasmarifle','laserrifle','revolver','minigun','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot',
   'slingshot','watergun','rubberball','confetti',
-  'deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','vortexrifle','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam',
+  'deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam',
   'ak47','mp5','uzi','magnum','doubleshotgun','carbine','crossbolt','mortargun','nailgun','speargun','harpoon','discgun','chainsaw','mace','poisonspray','shockwave','triplebow','pepperbox','lancegun','frostbow',
   'spoon','banana','pillow','cottonball','glitter','airhorn','soap','toothpick','butterknife','kazoo','feather','newspaper','wetfish','leek','teacup','straw','flipflop','shoehorn','pennywhistle','squeakytoy'];
 

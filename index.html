@@ -148,6 +148,17 @@
   .modeBtn { background: #111; color: #777; border: 1px solid #333; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; transition: all 0.15s; }
   .modeBtn:hover { color: #fff; border-color: #666; }
   .modeBtn.active { color: #ffd700; border-color: #ffd700; background: rgba(255,215,0,0.1); }
+  .modeBtn.boss { color: #ff4444; border-color: #661111; }
+  .modeBtn.boss:hover { color: #ff6666; border-color: #ff4444; background: rgba(255,68,68,0.12); }
+  .modeBtn.boss.active { color: #ff4444; border-color: #ff4444; background: rgba(255,68,68,0.15); }
+  /* ── Boss HP bar ── */
+  #bossBar { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; z-index: 60; min-width: 340px; }
+  #bossBar.visible { display: flex; }
+  #bossBarLabel { color: #ff4444; font-size: 11px; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 10px #ff4444; animation: bossPulse 1.5s infinite; }
+  @keyframes bossPulse { 0%,100%{opacity:1;text-shadow:0 0 10px #ff4444;} 50%{opacity:0.7;text-shadow:0 0 20px #ff6666;} }
+  #bossBarTrack { width: 340px; height: 18px; background: #1a0000; border-radius: 9px; overflow: hidden; border: 2px solid #660000; box-shadow: 0 0 16px rgba(255,68,68,0.4); }
+  #bossBarFill { height: 100%; width: 100%; background: linear-gradient(90deg, #880000, #ff4444, #ff8844); border-radius: 7px; transition: width 0.15s; }
+  #bossBarHp { color: #ff9999; font-size: 11px; font-weight: 900; letter-spacing: 1px; }
   /* ── XP / Level system ── */
   #levelBadge { background: linear-gradient(135deg,#7b2fbe,#ffd700); color: #fff; font-size: 11px; font-weight: 900; padding: 2px 9px; border-radius: 10px; letter-spacing: 1px; white-space: nowrap; }
   #keysDisplay { color: #ffd700; font-size: 12px; font-weight: 900; letter-spacing: 1px; white-space: nowrap; }
@@ -192,6 +203,17 @@
   .chalClaim:hover { opacity: 0.85; }
   .chalReward { color: #ffd700; font-size: 12px; font-weight: 900; white-space: nowrap; flex-shrink: 0; text-align: center; }
   .chalClaimedBadge { color: #444; font-size: 11px; font-weight: 900; letter-spacing: 1px; flex-shrink: 0; }
+  /* ── Wrap weapon picker ── */
+  #wrapPicker { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 600; pointer-events: all; }
+  #wrapPickerBox { background: #0d0d20; border: 2px solid #9b59b6; border-radius: 12px; padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; min-width: 300px; max-width: 420px; }
+  #wrapPickerTitle { color: #fff; font-size: 15px; font-weight: 900; letter-spacing: 2px; text-align: center; }
+  #wrapPickerSub { color: #666; font-size: 11px; letter-spacing: 1px; text-align: center; margin-top: -8px; }
+  #wrapWeaponList { display: flex; flex-direction: column; gap: 7px; }
+  .wrapWeaponBtn { background: #111; color: #ccc; border: 1px solid #333; padding: 9px 16px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 900; text-align: left; display: flex; justify-content: space-between; align-items: center; pointer-events: all; transition: all 0.12s; }
+  .wrapWeaponBtn:hover { border-color: #9b59b6; color: #fff; background: #1a0a3a; }
+  .wrapWeaponBtn.active { border-color: #ffd700; color: #ffd700; background: rgba(255,215,0,0.08); }
+  #wrapPickerCancel { background: none; color: #555; border: 1px solid #222; padding: 7px; border-radius: 6px; cursor: pointer; font-size: 12px; pointer-events: all; transition: color 0.12s; }
+  #wrapPickerCancel:hover { color: #888; }
   /* ── Level-up notification ── */
   #levelUpNotif { position: fixed; top: 40%; left: 50%; transform: translate(-50%,-50%); background: linear-gradient(135deg,rgba(30,10,60,0.98),rgba(123,47,190,0.96)); border: 2px solid #ffd700; border-radius: 14px; padding: 22px 48px; text-align: center; display: none; z-index: 500; pointer-events: none; box-shadow: 0 0 60px rgba(255,215,0,0.3); }
   #levelUpNotif .lunTitle { font-size: 30px; font-weight: 900; color: #ffd700; letter-spacing: 3px; margin-bottom: 4px; }
@@ -207,6 +229,11 @@
     <div id="scoreList"></div>
   </div>
   <div id="killFeed"></div>
+  <div id="bossBar">
+    <div id="bossBarLabel">💀 THE BOSS</div>
+    <div id="bossBarTrack"><div id="bossBarFill"></div></div>
+    <div id="bossBarHp">1000 / 1000</div>
+  </div>
   <div id="hotbar">
     <div class="hotSlot" id="hs-0"><span class="hsKey">1</span><span class="hsName"></span><span class="hsTier good">GOOD</span></div>
     <div class="hotSlot" id="hs-1"><span class="hsKey">2</span><span class="hsName"></span><span class="hsTier mid">MID</span></div>
@@ -381,6 +408,7 @@
     <button class="modeBtn" data-mode="2v2">2v2</button>
     <button class="modeBtn" data-mode="3v3">3v3</button>
     <button class="modeBtn" data-mode="4v4">4v4 + COSMO</button>
+    <button class="modeBtn boss" data-mode="boss">💀 BOSS</button>
   </div>
   <div id="secretBox">
     <div id="secretLabel">enter code</div>
@@ -817,7 +845,7 @@ function doSignup(username, password) {
   if (!/^[a-zA-Z0-9_]+$/.test(username)) return 'Letters, numbers, _ only';
   const accs = getAccounts();
   if (accs.find(a => a.username.toLowerCase() === username.toLowerCase())) return 'Username taken';
-  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0}, xp:0, level:0, keys:0, bazookaAmmo:0, rpgAmmo:0, winStreak:0, bestStreak:0, claimedChallenges:[], cosmetics:{owned:[],equippedChar:null,equippedShot:null,equippedWrap:null} };
+  const acc = { username, password: hashPass(password), unlocked: [...DEFAULT_UNLOCKED], stats: {kills:0,wins:0,deaths:0}, xp:0, level:0, keys:0, bazookaAmmo:0, rpgAmmo:0, winStreak:0, bestStreak:0, claimedChallenges:[], cosmetics:{owned:[],equippedChar:null,equippedShot:null,weaponWraps:{}} };
   accs.push(acc);
   saveAccounts(accs);
   setSession(username);
@@ -869,6 +897,7 @@ function unlockWeapon(key) {
 }
 
 function showPrizeScreen() {
+  document.getElementById('bossBar').classList.remove('visible');
   const locked = ALL_NORMAL_WEAPONS.filter(k => !unlockedWeapons.includes(k));
   const ps = document.getElementById('prizeScreen');
   const choices = document.getElementById('prizeChoices');
@@ -926,7 +955,7 @@ function showPrizeScreen() {
 }
 
 function buildLoadout() {
-  return selectedSlots.map(key => ({...(WEAPONS[key] || WEAPONS.pistol)}));
+  return selectedSlots.map(key => ({...(WEAPONS[key] || WEAPONS.pistol), _key: key}));
 }
 
 // ── Map tiles ───────────────────────────────────────────────────────────────
@@ -958,7 +987,7 @@ function buildMap() {
   ];
   // Juggernaut uses a more open layout — small pillar cover with wide entrances
   // so the juggernaut can't get cornered by all 7 bots in a tight corridor.
-  const rects = gameMode === 'juggernaut' ? [
+  const rects = (gameMode === 'juggernaut' || gameMode === 'boss') ? [
     [3,3,3,2,   zones[0]],
     [12,3,3,2,  zones[1]],
     [3,8,3,2,   zones[2]],
@@ -1347,7 +1376,7 @@ function startGame() {
       player.equippedShotColor = _acc.cosmetics.equippedShot
         ? (SHOP_ITEMS.shot.find(i => i.id === _acc.cosmetics.equippedShot)||{}).color || null
         : null;
-      player.equippedWrap = _acc.cosmetics.equippedWrap || null;
+      player._weaponWraps = _acc.cosmetics.weaponWraps || {};
     }
     // Apply ammo stockpiles (bazooka + RPG)
     const bazBonus = _acc.bazookaAmmo || 0;
@@ -1396,11 +1425,38 @@ function startGame() {
     bots = [createBot(0, 0), createBot(1, 0), createBot(2, 0), createBot(3, 1), createBot(4, 1), createBot(5, 1), createBot(6, 1)];
     bots[6].name = 'Cosmo'; bots[6].color = '#ff00ff';
     player.team = 0;
+  } else if (gameMode === 'boss') {
+    const boss = createBot(0, 1);
+    boss.name = 'THE BOSS';
+    boss.color = '#cc0000';
+    boss.hp = 1000; boss.maxHp = 1000;
+    boss.speed = 3.4;
+    boss.r = 20;
+    boss.isBoss = true;
+    boss.respawnTimer = Infinity;
+    // Give boss a powerful weapon — unlimited bazooka ammo
+    const bossWDef = {...(WEAPONS['bazooka'] || WEAPONS['rpg'])};
+    bossWDef.ammo = 9999; bossWDef.perShotReload = false; // Boss never runs dry
+    bossWDef.reload = 1400; // slightly slower reload than normal
+    boss.weapons = [bossWDef];
+    boss.ammo = bossWDef.ammo;
+    boss.dodgeCooldown = 0;
+    boss.dodgeVx = 0; boss.dodgeVy = 0; boss.dodgeTimer = 0;
+    boss.phaseTimer = 0;
+    bots = [boss];
+    player.team = 0;
+    document.getElementById('bossBar').classList.add('visible');
   }
 
   gameRunning = true;
   bullets = []; particles = []; explosions = []; floatingTexts = []; beams = []; gravityWells = [];
   screenFlash = 0;
+  if (gameMode === 'boss') {
+    setTimeout(() => {
+      floatingTexts.push({ x: W/2, y: H/2 - 60, text: '💀 BOSS BATTLE', life: 3, color: '#ff4444', size: 38 });
+      floatingTexts.push({ x: W/2, y: H/2 - 20, text: '1000 HP — Defeat THE BOSS!', life: 3, color: '#ff9999', size: 18 });
+    }, 100);
+  }
   showIgToggle(true);
   // Mark the starting weapon active in the panel
   document.querySelectorAll('.igwBtn').forEach(b => b.classList.remove('active'));
@@ -1545,6 +1601,91 @@ function moveEntity(ent, dx, dy) {
 function updateBot(bot, dt) {
   if (bot.dead) return;
 
+  // ── BOSS special AI ──────────────────────────────────────────────────────────
+  if (bot.isBoss) {
+    bot.target = player.dead ? null : player;
+    const wDef = currentWeapon(bot);
+    const bossSpeed = bot.speed;
+
+    // Reload
+    if (bot.reloading) return;
+    if (bot.ammo === 0) { startReload(bot); return; }
+
+    // Tick dodge timer
+    if (bot.dodgeTimer > 0) {
+      bot.dodgeTimer -= dt;
+      moveEntity(bot, bot.dodgeVx, bot.dodgeVy);
+    }
+
+    // Tick phase timer (periodic burst movement to stay unpredictable)
+    bot.phaseTimer -= dt;
+    if (bot.phaseTimer <= 0) {
+      const pa = Math.random() * Math.PI * 2;
+      bot.phaseVx = Math.cos(pa) * bossSpeed * 1.2;
+      bot.phaseVy = Math.sin(pa) * bossSpeed * 1.2;
+      bot.phaseTimer = 600 + Math.random() * 600;
+      bot.phaseMoveTimer = 200 + Math.random() * 200;
+    }
+    if (bot.phaseMoveTimer > 0) {
+      bot.phaseMoveTimer -= dt;
+      moveEntity(bot, bot.phaseVx || 0, bot.phaseVy || 0);
+    }
+
+    // Scan incoming bullets from player — dodge any heading straight at boss
+    if (bot.dodgeCooldown > 0) bot.dodgeCooldown -= dt;
+    if (bot.dodgeCooldown <= 0) {
+      for (const b of bullets) {
+        if (b.owner === bot) continue; // own bullets
+        // Vector from bullet to boss
+        const dx = bot.x - b.x;
+        const dy = bot.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > 320) continue; // too far away
+        // Dot product: how much is bullet velocity aligned toward boss?
+        const bSpeed = Math.hypot(b.vx, b.vy);
+        if (bSpeed < 0.01) continue;
+        const dot = (b.vx * dx + b.vy * dy) / (bSpeed * dist);
+        if (dot > 0.82) {
+          // Bullet is heading toward boss — dodge perpendicular
+          // Choose perpendicular direction away from bullet path
+          const perpX = -b.vy / bSpeed;
+          const perpY =  b.vx / bSpeed;
+          // Pick the perpendicular direction that takes us farther from bullet path center
+          const side = (perpX * dx + perpY * dy) > 0 ? 1 : -1;
+          bot.dodgeVx = perpX * side * bossSpeed * 1.8;
+          bot.dodgeVy = perpY * side * bossSpeed * 1.8;
+          bot.dodgeTimer = 220;
+          bot.dodgeCooldown = 180;
+          break;
+        }
+      }
+    }
+
+    // Always move toward player at medium distance, orbit at close range
+    if (bot.target) {
+      const toTarget = Math.atan2(bot.target.y - bot.y, bot.target.x - bot.x);
+      const dist = Math.hypot(bot.target.x - bot.x, bot.target.y - bot.y);
+      bot.strafeTimer -= dt;
+      if (bot.strafeTimer <= 0) { bot.strafeDir *= -1; bot.strafeTimer = 500 + Math.random()*500; }
+      const strafeA = toTarget + Math.PI/2 * bot.strafeDir;
+      const idealDist = 160;
+      const moveFwd = (dist - idealDist) / idealDist * bossSpeed;
+      const mx = Math.cos(toTarget)*Math.min(moveFwd, bossSpeed)*0.8 + Math.cos(strafeA)*bossSpeed*0.6;
+      const my = Math.sin(toTarget)*Math.min(moveFwd, bossSpeed)*0.8 + Math.sin(strafeA)*bossSpeed*0.6;
+      moveEntity(bot, mx * 0.5, my * 0.5);
+      bot.angle = toTarget;
+      // Fire — no spread, boss aims true
+      tryFire(bot, bot.target.x, bot.target.y);
+    }
+
+    // Update boss HP bar
+    const pct = Math.max(0, bot.hp / bot.maxHp * 100);
+    document.getElementById('bossBarFill').style.width = pct + '%';
+    document.getElementById('bossBarHp').textContent = `${Math.ceil(bot.hp)} / ${bot.maxHp}`;
+    return;
+  }
+  // ── END BOSS AI ──────────────────────────────────────────────────────────────
+
   // Pick target (in juggernaut, all bots always hunt the player)
   if (gameMode === 'juggernaut') {
     bot.target = player.dead ? null : player;
@@ -1614,8 +1755,9 @@ function killEntity(ent, killer) {
     const killerName = killer ? killer.name : 'the environment';
     const kw = killer && killer.weapons ? killer.weapons[killer.wIdx] : null;
     const weaponName = kw ? kw.name : '???';
-    msg.innerHTML = `💀 ELIMINATED — GAME OVER<br>` +
-      `<span style="font-size:15px;color:#ff9999;">Eliminated by <b style="color:#ffd700;">${killerName}</b> using <b style="color:#ffd700;">${weaponName}</b></span>`;
+    msg.innerHTML = gameMode === 'boss'
+      ? `💀 THE BOSS WINS — GAME OVER<br><span style="font-size:15px;color:#ff9999;">The Boss crushed you with <b style="color:#ff4444;">${weaponName}</b>. Try again!</span>`
+      : `💀 ELIMINATED — GAME OVER<br><span style="font-size:15px;color:#ff9999;">Eliminated by <b style="color:#ffd700;">${killerName}</b> using <b style="color:#ffd700;">${weaponName}</b></span>`;
     msg.style.display = 'block';
     floatingTexts.push({ x: W/2, y: H/2 - 50, text: '💀 ELIMINATED', life: 4, color: '#ff4444', size: 36 });
     floatingTexts.push({ x: W/2, y: H/2 - 8, text: `by ${killerName} · ${weaponName}`, life: 4, color: '#ffaa66', size: 18 });
@@ -1637,7 +1779,12 @@ function killEntity(ent, killer) {
         ? bots.every(b => b.dead)
         : bots.filter(b => b.team !== player.team).every(b => b.dead);
       if (allBotsEliminated) {
-        floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
+        if (gameMode === 'boss') {
+          floatingTexts.push({ x: W/2, y: H/2 - 60, text: '💀 BOSS DEFEATED!', life: 4, color: '#ff4444', size: 40 });
+          floatingTexts.push({ x: W/2, y: H/2 - 15, text: '🏆 VICTORY!', life: 4, color: '#ffd700', size: 32 });
+        } else {
+          floatingTexts.push({ x: W/2, y: H/2 - 40, text: '🏆 YOU WIN!', life: 4, color: '#ffd700', size: 40 });
+        }
         setTimeout(() => {
           gameRunning = false;
           saveAccountProgress();
@@ -1661,8 +1808,8 @@ function killEntity(ent, killer) {
 function respawnEntity(ent) {
   // In 1v1 and juggernaut, Infinity timer prevents natural respawn — but guard here too
   if (ent.respawnTimer === Infinity) return;
-  // In 1v1, bots don't respawn either
-  if (gameMode === '1v1' && !ent.isPlayer) return;
+  // In 1v1 and boss mode, bots don't respawn either
+  if ((gameMode === '1v1' || gameMode === 'boss') && !ent.isPlayer) return;
   ent.dead = false;
   ent.hp = ent.maxHp;
   const sp = randomSpawn();
@@ -2289,6 +2436,32 @@ function draw() {
       }
     }
 
+    // Boss aura rings
+    if (ent.isBoss) {
+      const _bt = Date.now();
+      // Outer pulsing red ring
+      ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r + 8, 0, Math.PI*2);
+      const _ba = 0.5 + Math.sin(_bt*0.004)*0.3;
+      ctx.strokeStyle = `rgba(255,0,0,${_ba})`;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#ff0000'; ctx.shadowBlur = 20;
+      ctx.stroke(); ctx.shadowBlur = 0;
+      // Second ring, counter-rotating
+      ctx.beginPath(); ctx.arc(ent.x, ent.y, ent.r + 16, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(200,0,0,${0.25 + Math.sin(_bt*0.006+2)*0.12})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // Orbiting skull dots
+      for (let _d = 0; _d < 6; _d++) {
+        const _ang = -_bt*0.0012 + (_d/6)*Math.PI*2;
+        const _ddx = Math.cos(_ang)*(ent.r+24), _ddy = Math.sin(_ang)*(ent.r+24);
+        ctx.beginPath(); ctx.arc(ent.x+_ddx, ent.y+_ddy, 3, 0, Math.PI*2);
+        ctx.fillStyle = '#ff4444';
+        ctx.shadowColor = '#ff0000'; ctx.shadowBlur = 10;
+        ctx.fill(); ctx.shadowBlur = 0;
+      }
+    }
+
     // Frozen overlay — icy blue shell
     if (ent.frozen > 0) {
       const fp = Math.min(ent.frozen / 2200, 1);
@@ -2406,9 +2579,11 @@ function draw() {
     } else {
       const gLen = 18, gW = 5;
       const WRAP_COLORS = { wrap_carbon:'#2a2a2a', wrap_chrome:'#c8c8d4', wrap_camo:'#4a6b3a', wrap_gold:'#ffd700', wrap_neon:'#ff44ff', wrap_obsid:'#1a0a2e' };
-      const _wc = ent.isPlayer && ent.equippedWrap ? (WRAP_COLORS[ent.equippedWrap] || '#ccc') : (ent.isPlayer ? '#ccc' : '#999');
+      const _curWKey = ent.isPlayer ? (currentWeapon(ent)._key || null) : null;
+      const _activeWrap = ent.isPlayer && _curWKey && ent._weaponWraps ? ent._weaponWraps[_curWKey] : null;
+      const _wc = _activeWrap ? (WRAP_COLORS[_activeWrap] || '#ccc') : (ent.isPlayer ? '#ccc' : '#999');
       ctx.fillStyle = _wc;
-      if (ent.isPlayer && ent.equippedWrap) { ctx.shadowColor = _wc; ctx.shadowBlur = 8; }
+      if (_activeWrap) { ctx.shadowColor = _wc; ctx.shadowBlur = 8; }
       ctx.fillRect(ent.r-2, -gW/2, gLen, gW);
       ctx.shadowBlur = 0;
     }
@@ -2416,18 +2591,30 @@ function draw() {
     ctx.restore();
 
     // HP bar
-    const bw = ent.r*2.5, bh = 5, bx = ent.x-bw/2, by = ent.y-ent.r-12;
-    ctx.fillStyle = '#111';
+    const _bossHpBar = ent.isBoss;
+    const bw = _bossHpBar ? ent.r*4 : ent.r*2.5, bh = _bossHpBar ? 8 : 5, bx = ent.x-bw/2, by = ent.y-ent.r - (_bossHpBar ? 16 : 12);
+    ctx.fillStyle = _bossHpBar ? '#330000' : '#111';
     ctx.fillRect(bx, by, bw, bh);
     const hpPct = ent.hp/ent.maxHp;
-    ctx.fillStyle = hpPct>0.6?'#2ecc71':hpPct>0.3?'#f39c12':'#e74c3c';
+    ctx.fillStyle = _bossHpBar ? `hsl(${hpPct*20},100%,45%)` : (hpPct>0.6?'#2ecc71':hpPct>0.3?'#f39c12':'#e74c3c');
+    if (_bossHpBar) { ctx.shadowColor = '#ff2200'; ctx.shadowBlur = 8; }
     ctx.fillRect(bx, by, bw*hpPct, bh);
+    ctx.shadowBlur = 0;
 
     // Name tag
-    ctx.fillStyle = ent.isPlayer ? '#4af' : '#fff';
-    ctx.font = `bold 10px Segoe UI`;
-    ctx.textAlign = 'center';
-    ctx.fillText(ent.name, ent.x, ent.y - ent.r - 16);
+    if (ent.isBoss) {
+      ctx.font = `bold 13px Segoe UI`;
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#ff0000'; ctx.shadowBlur = 16;
+      ctx.fillStyle = `hsl(${(Date.now()*0.1)%360},100%,60%)`;
+      ctx.fillText('💀 ' + ent.name + ' 💀', ent.x, ent.y - ent.r - 20);
+      ctx.shadowBlur = 0;
+    } else {
+      ctx.fillStyle = ent.isPlayer ? '#4af' : '#fff';
+      ctx.font = `bold 10px Segoe UI`;
+      ctx.textAlign = 'center';
+      ctx.fillText(ent.name, ent.x, ent.y - ent.r - 16);
+    }
 
     // Reload arc
     if (ent.reloading && ent.reloadTimer > 0) {
@@ -2623,6 +2810,7 @@ document.getElementById('startBtn').addEventListener('click', startGame);
 let authMode = 'login';
 
 function showOverlay() {
+  document.getElementById('bossBar').classList.remove('visible');
   const acc = getCurrentAccount();
   if (acc) {
     document.getElementById('userBarName').textContent = '👤 ' + acc.username;
@@ -2731,9 +2919,17 @@ function renderShop(acc) {
   document.getElementById('shopKeysTop').textContent = `🗝 ${keys} KEY${keys !== 1 ? 'S' : ''}`;
   const container = document.getElementById('shopItems');
   container.innerHTML = '';
+  container.style.flexDirection = '';
+  container.style.alignItems = '';
+  container.style.maxWidth = '';
+  container.style.width = '';
 
   // ── CHALLENGES tab ──
   if (shopTab === 'challenges') {
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'stretch';
+    container.style.maxWidth = '640px';
+    container.style.width = '100%';
     acc.claimedChallenges = acc.claimedChallenges || [];
     for (const ch of CHALLENGES) {
       const progress = getChallengeProgress(acc, ch);
@@ -2800,7 +2996,12 @@ function renderShop(acc) {
     let equipped = false;
     if (shopTab==='char') equipped = acc.cosmetics.equippedChar === item.id;
     else if (shopTab==='shot') equipped = acc.cosmetics.equippedShot === item.id;
-    else if (shopTab==='wrap') equipped = acc.cosmetics.equippedWrap === item.id;
+    else if (shopTab==='wrap') {
+      equipped = Object.values(acc.cosmetics.weaponWraps||{}).includes(item.id);
+      // Find which weapon it's assigned to
+      const assignedTo = Object.entries(acc.cosmetics.weaponWraps||{}).find(([,v])=>v===item.id)?.[0];
+      item._assignedTo = assignedTo ? (WEAPONS[assignedTo]?.name || assignedTo.toUpperCase()) : null;
+    }
     const cantAfford = !owned && keys < item.price;
     let cls = 'shopItem';
     if (equipped) cls += ' equipped';
@@ -2809,14 +3010,104 @@ function renderShop(acc) {
     const dotStyle = item.color ? `background:${item.color};width:12px;height:12px;border-radius:50%;display:inline-block;box-shadow:0 0 6px ${item.color};` : '';
     const div = document.createElement('div');
     div.className = cls;
+    const wrapAssignLine = (shopTab==='wrap' && owned)
+      ? `<div class="siStatus" style="color:${equipped?'#ffd700':'#555'};font-size:9px;">${item._assignedTo ? `🔧 ${item._assignedTo}` : 'No weapon'}</div>`
+      : `<div class="siStatus" style="color:#ffd700">${equipped ? '★ ACTIVE' : ''}</div>`;
     div.innerHTML = `<div class="siIcon">${item.icon}</div>
       <div class="siName">${item.name}${item.color ? `<span style="${dotStyle};margin-left:5px;vertical-align:middle;"></span>` : ''}</div>
-      <div class="siPrice" style="color:${owned?'#55ff55':'#ffd700'}">${owned ? (equipped ? '✓ EQUIPPED' : 'OWNED') : `🗝 ${item.price}`}</div>
-      <div class="siStatus" style="color:#ffd700">${equipped ? '★ ACTIVE' : ''}</div>`;
+      <div class="siPrice" style="color:${owned?'#55ff55':'#ffd700'}">${owned ? (shopTab==='wrap' ? 'CHOOSE WEAPON' : equipped ? '✓ EQUIPPED' : 'OWNED') : `🗝 ${item.price}`}</div>
+      ${wrapAssignLine}`;
     if (!cantAfford) div.onclick = () => buyOrEquip(item, shopTab);
     container.appendChild(div);
   }
 }
+
+// ── Wrap weapon picker ────────────────────────────────────────────────────────
+const WRAP_WEAPON_EMOJIS = {
+  sniper:'🎯',railgun:'⚡',katana:'🗡️',crossbow:'🏹',plasmarifle:'🔵',laserrifle:'🔴',
+  deagle:'🔫',barrett:'🎯',jackhammer:'🔴',bfg:'💥',tripleshot:'🔫',lightningrifle:'⚡',
+  energysword:'⚔️',pulserifle:'🔵',devastator:'💣',chaingun:'💥',dualuzi:'🔫',
+  supersniper:'🎯',grenadelauncher:'💣',shockrifle:'⚡',spiritblade:'🗡️',bazooka:'💥',
+  pistol:'🔫',smg:'💨',shotgun:'🔴',rpg:'🚀',burst:'🔫',revolver:'🔫',minigun:'💥',
+  grenade:'💣',flamethrower:'🔥',boomerang:'🪃',knife:'🔪',freezeray:'🧊',
+  huntingrifle:'🦌',dualpistols:'🔫',cannon:'💣',ak47:'🔫',mp5:'💨',uzi:'💨',
+};
+
+let _wrapPickerWrapId = null;
+
+function openWrapPicker(wrapId) {
+  _wrapPickerWrapId = wrapId;
+  const acc = getCurrentAccount(); if (!acc) return;
+  acc.cosmetics = acc.cosmetics || {};
+  acc.cosmetics.weaponWraps = acc.cosmetics.weaponWraps || {};
+  const wrapDef = SHOP_ITEMS.wrap.find(w => w.id === wrapId);
+  document.getElementById('wrapPickerTitle').textContent = `🔧 ${wrapDef ? wrapDef.name : ''} WRAP — CHOOSE WEAPON`;
+
+  const list = document.getElementById('wrapWeaponList');
+  list.innerHTML = '';
+
+  // Show all unlocked weapons grouped: currently selected loadout first, then others
+  const allWeapons = [...new Set([...selectedSlots, ...unlockedWeapons])];
+  const slotNames = selectedSlots.map(k => WEAPONS[k]?.name || k.toUpperCase());
+
+  for (const wKey of allWeapons) {
+    const wDef = WEAPONS[wKey]; if (!wDef || wDef.nuke || wDef.golden) continue;
+    const currentWrap = acc.cosmetics.weaponWraps[wKey];
+    const isThis = currentWrap === wrapId;
+    const isLoadout = selectedSlots.includes(wKey);
+    const btn = document.createElement('button');
+    btn.className = 'wrapWeaponBtn' + (isThis ? ' active' : '');
+    btn.innerHTML = `<span>${WRAP_WEAPON_EMOJIS[wKey]||'🔫'} ${wDef.name}${isLoadout ? ' <span style="font-size:9px;color:#555;font-weight:400;">IN LOADOUT</span>' : ''}</span>
+      <span style="font-size:11px;color:${isThis?'#ffd700':'#444'}">${isThis ? '★ ACTIVE' : ''}</span>`;
+    btn.onclick = () => assignWrap(wKey, isThis ? null : wrapId);
+    list.appendChild(btn);
+  }
+
+  // Remove button (unassign from all)
+  const anyAssigned = Object.entries(acc.cosmetics.weaponWraps).some(([,v]) => v === wrapId);
+  if (anyAssigned) {
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'wrapWeaponBtn';
+    removeBtn.style.color = '#ff4444';
+    removeBtn.style.borderColor = '#331111';
+    removeBtn.innerHTML = '✕ Remove from all weapons';
+    removeBtn.onclick = () => {
+      const u = getSession(); if (!u) return;
+      const accs = getAccounts(); const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+      const wraps = accs[idx].cosmetics.weaponWraps || {};
+      for (const k in wraps) { if (wraps[k] === wrapId) delete wraps[k]; }
+      accs[idx].cosmetics.weaponWraps = wraps;
+      saveAccounts(accs);
+      document.getElementById('wrapPicker').style.display = 'none';
+      renderShop(getCurrentAccount());
+    };
+    list.appendChild(removeBtn);
+  }
+
+  document.getElementById('wrapPicker').style.display = 'flex';
+}
+
+function assignWrap(weaponKey, wrapId) {
+  const u = getSession(); if (!u) return;
+  const accs = getAccounts(); const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
+  accs[idx].cosmetics = accs[idx].cosmetics || {};
+  accs[idx].cosmetics.weaponWraps = accs[idx].cosmetics.weaponWraps || {};
+  // Remove this wrap from any previous weapon assignment
+  for (const k in accs[idx].cosmetics.weaponWraps) {
+    if (accs[idx].cosmetics.weaponWraps[k] === wrapId) delete accs[idx].cosmetics.weaponWraps[k];
+  }
+  if (wrapId) accs[idx].cosmetics.weaponWraps[weaponKey] = wrapId;
+  saveAccounts(accs);
+  document.getElementById('wrapPicker').style.display = 'none';
+  renderShop(getCurrentAccount());
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('wrapPickerCancel').addEventListener('click', () => {
+    document.getElementById('wrapPicker').style.display = 'none';
+    renderShop(getCurrentAccount());
+  });
+});
 
 function claimChallenge(id) {
   const u = getSession(); if (!u) return;
@@ -2853,14 +3144,18 @@ function buyOrEquip(item, tab) {
   const idx = accs.findIndex(a => a.username === u); if (idx === -1) return;
   const a = accs[idx];
   a.cosmetics = a.cosmetics || { owned:[], equippedChar:null, equippedShot:null, equippedWrap:null };
-  const eqKey = tab==='char' ? 'equippedChar' : tab==='shot' ? 'equippedShot' : 'equippedWrap';
+  const eqKey = tab==='char' ? 'equippedChar' : tab==='shot' ? 'equippedShot' : null;
   if (a.cosmetics.owned.includes(item.id)) {
-    a.cosmetics[eqKey] = a.cosmetics[eqKey] === item.id ? null : item.id;
+    if (tab === 'wrap') { openWrapPicker(item.id); return; } // wraps use weapon picker
+    if (eqKey) a.cosmetics[eqKey] = a.cosmetics[eqKey] === item.id ? null : item.id;
   } else {
     if ((a.keys||0) < item.price) return;
     a.keys = (a.keys||0) - item.price;
     a.cosmetics.owned.push(item.id);
-    a.cosmetics[eqKey] = item.id;
+    if (eqKey) a.cosmetics[eqKey] = item.id; // auto-equip (not wraps)
+    saveAccounts(accs);
+    updateXPBar();
+    if (tab === 'wrap') { openWrapPicker(item.id); return; } // open picker after buying wrap
   }
   saveAccounts(accs);
   updateXPBar();
@@ -2903,6 +3198,16 @@ document.querySelectorAll('.modeBtn').forEach(btn => {
   </div>
   <div id="shopItems"></div>
   <button id="shopCloseBtn">← BACK TO MENU</button>
+</div>
+
+<!-- Wrap weapon picker modal -->
+<div id="wrapPicker">
+  <div id="wrapPickerBox">
+    <div id="wrapPickerTitle">🔧 CHOOSE WEAPON</div>
+    <div id="wrapPickerSub">Pick which weapon this wrap applies to</div>
+    <div id="wrapWeaponList"></div>
+    <button id="wrapPickerCancel">✕ CANCEL</button>
+  </div>
 </div>
 
 <!-- Level-up notification -->

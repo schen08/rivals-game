@@ -990,11 +990,7 @@ function doRailgun(ent, tx, ty, wDef) {
 
 function doNuke(owner) {
   screenFlash = 1;
-  // Massive central explosion rings
-  for (let r = 80; r <= 700; r += 120) {
-    explosions.push({ x: W/2, y: H/2, r: r * 0.1, maxR: r, life: 1 });
-  }
-  // Scatter particles everywhere
+  // Scatter particles everywhere (no map-covering expanding rings)
   for (let i = 0; i < 120; i++) {
     particles.push({ x: Math.random()*W, y: Math.random()*H,
       vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10,

@@ -70,17 +70,29 @@
   .tierSection.hidden { display: none; }
   .wRow { display: flex; gap: 8px; justify-content: center; align-items: center; }
   .tier-header { font-size: 10px; font-weight: 900; letter-spacing: 3px; padding: 2px 10px; border-radius: 3px; }
-  .tier-header.good { color: #ffd700; border: 1px solid #ffd70055; background: rgba(255,215,0,0.08); }
-  .tier-header.mid  { color: #ff9900; border: 1px solid #ff990055; background: rgba(255,153,0,0.08); }
-  .tier-header.bad  { color: #ff4444; border: 1px solid #ff444455; background: rgba(255,68,68,0.08); }
-  .wBtn { background: #1a1a2e; color: #fff; border: 2px solid #333; padding: 6px 6px 4px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center; width: 100%; }
-  .wBtn .badge { font-size: 8px; font-weight: 900; letter-spacing: 1.5px; margin-top: 1px; }
-  .wBtn .badge.good { color: #ffd700; }
-  .wBtn .badge.mid  { color: #ff9900; }
-  .wBtn .badge.bad  { color: #ff4444; }
-  .wBtn:hover, .wBtn.active { border-color: #ffd700; color: #ffd700; background: #12122a; }
-  .wBtn.active .badge { opacity: 1; }
-  .wBtn.locked { opacity: 0.3; cursor: not-allowed; border-color: #222 !important; color: #444 !important; }
+  .tier-header.primary    { color: #ffd700; border: 1px solid #ffd70055; background: rgba(255,215,0,0.08); }
+  .tier-header.secondary  { color: #ff9900; border: 1px solid #ff990055; background: rgba(255,153,0,0.08); }
+  .tier-header.tertiary   { color: #ff6622; border: 1px solid #ff662255; background: rgba(255,102,34,0.08); }
+  .tier-header.quaternary { color: #ff4444; border: 1px solid #ff444455; background: rgba(255,68,68,0.08); }
+  .tier-header.secret { color: #ffd700; border: 1px solid #ffd70099; background: rgba(255,215,0,0.12); }
+  /* Slot section tier accent */
+  .slotSection.primary    { border-color: #ffd70033; }
+  .slotSection.secondary  { border-color: #ff990033; }
+  .slotSection.tertiary   { border-color: #ff662233; }
+  .slotSection.quaternary { border-color: #ff444433; }
+  /* Weapon cards */
+  .wBtn { background: #12121f; color: #ccc; border: 2px solid #2a2a3a; border-left: 4px solid #2a2a3a; padding: 8px 6px 6px; border-radius: 7px; cursor: pointer; font-size: 13px; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; width: 100%; }
+  .wBtn .wName { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; line-height: 1.2; }
+  .wBtn .badge { font-size: 7px; font-weight: 900; letter-spacing: 1.5px; margin-top: 1px; }
+  .wBtn.s0 { border-left-color: #ffd70066; }
+  .wBtn.s1 { border-left-color: #ff990066; }
+  .wBtn.s2 { border-left-color: #ff662266; }
+  .wBtn.s3 { border-left-color: #ff444466; }
+  .wBtn.s0:hover, .wBtn.s0.active { border-color: #ffd700; border-left-color: #ffd700; color: #ffd700; background: #1a1800; }
+  .wBtn.s1:hover, .wBtn.s1.active { border-color: #ff9900; border-left-color: #ff9900; color: #ff9900; background: #1a1200; }
+  .wBtn.s2:hover, .wBtn.s2.active { border-color: #ff6622; border-left-color: #ff6622; color: #ff6622; background: #1a0e00; }
+  .wBtn.s3:hover, .wBtn.s3.active { border-color: #ff4444; border-left-color: #ff4444; color: #ff4444; background: #1a0000; }
+  .wBtn.locked { opacity: 0.25; cursor: not-allowed; border-color: #1e1e2e !important; border-left-color: #1e1e2e !important; color: #333 !important; }
   .wBtn.locked::after { content: ' 🔒'; font-size: 10px; }
   .prizeGroup { display:flex; flex-direction:column; gap:6px; }
   .prizeGroupLabel { font-size:10px; font-weight:900; letter-spacing:3px; padding:2px 8px; border-radius:3px; align-self:flex-start; }
@@ -115,11 +127,12 @@
   #igPanel.open { display: flex; }
   #igTabs { display: flex; gap: 5px; justify-content: center; }
   .igTab { background: #111122; color: #666; border: 1px solid #333; padding: 3px 11px; border-radius: 12px; cursor: pointer; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; transition: all 0.12s; pointer-events: all; }
-  .igTab.tab-active.all    { border-color: #fff;    color: #fff; }
-  .igTab.tab-active.good   { border-color: #ffd700; color: #ffd700; }
-  .igTab.tab-active.mid    { border-color: #ff9900; color: #ff9900; }
-  .igTab.tab-active.bad    { border-color: #ff4444; color: #ff4444; }
-  .igTab.tab-active.secret { border-color: #ffd700; color: #ffd700; }
+  .igTab.tab-active.all        { border-color: #fff;    color: #fff; }
+  .igTab.tab-active.primary    { border-color: #ffd700; color: #ffd700; }
+  .igTab.tab-active.secondary  { border-color: #ff9900; color: #ff9900; }
+  .igTab.tab-active.tertiary   { border-color: #ff6622; color: #ff6622; }
+  .igTab.tab-active.quaternary { border-color: #ff4444; color: #ff4444; }
+  .igTab.tab-active.secret     { border-color: #ffd700; color: #ffd700; }
   #igWeapons { display: flex; flex-direction: column; gap: 5px; max-height: 320px; overflow-y: auto; }
   .igRow { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
   .igwBtn { background: #1a1a2e; color: #ccc; border: 1px solid #333; padding: 4px 9px 3px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.12s; pointer-events: all; white-space: nowrap; }
@@ -250,107 +263,110 @@
   <div id="igPanel">
     <div id="igTabs">
       <button class="igTab all tab-active" data-tier="all">ALL</button>
-      <button class="igTab good" data-tier="good">★ GOOD</button>
-      <button class="igTab mid"  data-tier="mid">◆ MID</button>
-      <button class="igTab bad"  data-tier="bad">✗ BAD</button>
+      <button class="igTab primary"    data-tier="primary">▲ PRIMARY</button>
+      <button class="igTab secondary"  data-tier="secondary">◆ SECONDARY</button>
+      <button class="igTab tertiary"   data-tier="tertiary">◇ TERTIARY</button>
+      <button class="igTab quaternary" data-tier="quaternary">✗ QUATERNARY</button>
       <button class="igTab secret" id="igSecretTab" data-tier="secret" style="display:none;">★ SECRET</button>
     </div>
     <div id="igWeapons">
-      <div class="igRow ig-good">
-        <button class="igwBtn" data-w="sniper">🎯 Sniper<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="railgun">⚡ Railgun<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="katana">🗡️ Katana<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="crossbow">🏹 Crossbow<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="laserrifle">🔴 Laser Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="deagle">🔫 Deagle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="barrett">🎯 Barrett .50<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="jackhammer">🔴 Jackhammer<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="bfg">💥 BFG<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="tripleshot">🔫 Triple Shot<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="lightningrifle">⚡ Lightning Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="energysword">⚔️ Energy Sword<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="pulserifle">🔵 Pulse Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="devastator">💣 Devastator<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="chaingun">💥 Chain Gun<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="dualuzi">🔫 Dual Uzi<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="bazooka">🚀 Bazooka<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="supersniper">🎯 Super Sniper<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="grenadelauncher">💣 Grenade Launcher<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="shockrifle">⚡ Shock Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="spiritblade">🗡️ Spirit Blade<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="rocketpistol">🚀 Rocket Pistol<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="megashotgun">🔴 Mega Shotgun<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="chargerifle">⚡ Charge Rifle<span class="ibadge good">GOOD</span></button>
-        <button class="igwBtn" data-w="plasmabeam">🔵 Plasma Beam<span class="ibadge good">GOOD</span></button>
+      <div class="igRow ig-primary">
+        <button class="igwBtn" data-w="sniper">🎯 Sniper<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="railgun">⚡ Railgun<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="katana">🗡️ Katana<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="crossbow">🏹 Crossbow<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="plasmarifle">🔵 Plasma Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="laserrifle">🔴 Laser Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="deagle">🔫 Deagle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="barrett">🎯 Barrett .50<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="jackhammer">🔴 Jackhammer<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="bfg">💥 BFG<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="tripleshot">🔫 Triple Shot<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="lightningrifle">⚡ Lightning Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="energysword">⚔️ Energy Sword<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="pulserifle">🔵 Pulse Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="devastator">💣 Devastator<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="chaingun">💥 Chain Gun<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="dualuzi">🔫 Dual Uzi<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="bazooka">🚀 Bazooka<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="supersniper">🎯 Super Sniper<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="grenadelauncher">💣 Grenade Launcher<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="shockrifle">⚡ Shock Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="spiritblade">🗡️ Spirit Blade<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="rocketpistol">🚀 Rocket Pistol<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="megashotgun">🔴 Mega Shotgun<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="chargerifle">⚡ Charge Rifle<span class="ibadge good">PRI</span></button>
+        <button class="igwBtn" data-w="plasmabeam">🔵 Plasma Beam<span class="ibadge good">PRI</span></button>
       </div>
-      <div class="igRow ig-mid">
-        <button class="igwBtn" data-w="pistol">🔫 Pistol<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="smg">💨 SMG<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="shotgun">🔴 Shotgun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="rpg">🚀 RPG<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="burst">🔫 Burst<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="revolver">🔫 Revolver<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="minigun">💥 Minigun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="grenade">💣 Grenade<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="flamethrower">🔥 Flamethrower<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="boomerang">🪃 Boomerang<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="knife">🔪 Knife<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="freezeray">🧊 Freeze Ray<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="dualpistols">🔫 Dual Pistols<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="cannon">💣 Cannon<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="iceshards">❄️ Ice Shards<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="scattershot">🟡 Scatter Shot<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="ak47">🔫 AK-47<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="mp5">💨 MP5<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="uzi">💨 Uzi<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="magnum">🔫 Magnum<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="doubleshotgun">🔴 Dbl Shotgun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="carbine">🔫 Carbine<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="crossbolt">🏹 Crossbolt<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="mortargun">💣 Mortar<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="nailgun">🔨 Nail Gun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="speargun">🏹 Spear Gun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="harpoon">🪝 Harpoon<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="discgun">🥏 Disc Gun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="chainsaw">⚙️ Chainsaw<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="mace">🔨 Mace<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="poisonspray">☠️ Poison Spray<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="shockwave">💫 Shockwave<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="triplebow">🏹 Triple Bow<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="pepperbox">🔫 Pepperbox<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="lancegun">⚡ Lance Gun<span class="ibadge mid">MID</span></button>
-        <button class="igwBtn" data-w="frostbow">❄️ Frost Bow<span class="ibadge mid">MID</span></button>
+      <div class="igRow ig-secondary">
+        <button class="igwBtn" data-w="pistol">🔫 Pistol<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="smg">💨 SMG<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="shotgun">🔴 Shotgun<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="rpg">🚀 RPG<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="burst">🔫 Burst<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="revolver">🔫 Revolver<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="minigun">💥 Minigun<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="grenade">💣 Grenade<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="flamethrower">🔥 Flamethrower<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="boomerang">🪃 Boomerang<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="knife">🔪 Knife<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="freezeray">🧊 Freeze Ray<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="huntingrifle">🦌 Hunting Rifle<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="dualpistols">🔫 Dual Pistols<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="cannon">💣 Cannon<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="throwingknives">🗡️ Throwing Knives<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="iceshards">❄️ Ice Shards<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="scattershot">🟡 Scatter Shot<span class="ibadge mid">SEC</span></button>
+        <button class="igwBtn" data-w="ak47">🔫 AK-47<span class="ibadge mid">SEC</span></button>
       </div>
-      <div class="igRow ig-bad">
-        <button class="igwBtn" data-w="nerf">🟠 Nerf Gun<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="bubblegum">🫧 Bubble Gun<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="slingshot">🪢 Slingshot<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="watergun">💧 Water Gun<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="rubberball">🎱 Rubber Ball<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="confetti">🎉 Confetti Gun<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="spoon">🥄 Spoon<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="banana">🍌 Banana<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="pillow">🛏️ Pillow<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="cottonball">☁️ Cotton Ball<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="glitter">✨ Glitter Gun<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="airhorn">📢 Air Horn<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="soap">🧼 Soap<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="toothpick">🦷 Toothpick<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="butterknife">🍴 Butter Knife<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="kazoo">🎺 Kazoo<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="feather">🪶 Feather Duster<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="newspaper">📰 Newspaper<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="wetfish">🐟 Wet Fish<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="leek">🌿 Leek<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="teacup">🍵 Teacup<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="straw">🥤 Straw<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="flipflop">🩴 Flip Flop<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="shoehorn">👟 Shoe Horn<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="pennywhistle">🎵 Pennywhistle<span class="ibadge bad">BAD</span></button>
-        <button class="igwBtn" data-w="squeakytoy">🧸 Squeaky Toy<span class="ibadge bad">BAD</span></button>
+      <div class="igRow ig-tertiary">
+        <button class="igwBtn" data-w="mp5">💨 MP5<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="uzi">💨 Uzi<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="magnum">🔫 Magnum<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="doubleshotgun">🔴 Dbl Shotgun<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="carbine">🔫 Carbine<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="crossbolt">🏹 Crossbolt<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="mortargun">💣 Mortar<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="nailgun">🔨 Nail Gun<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="speargun">🏹 Spear Gun<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="harpoon">🪝 Harpoon<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="discgun">🥏 Disc Gun<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="chainsaw">⚙️ Chainsaw<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="mace">🔨 Mace<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="poisonspray">☠️ Poison Spray<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="shockwave">💫 Shockwave<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="triplebow">🏹 Triple Bow<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="pepperbox">🔫 Pepperbox<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="lancegun">⚡ Lance Gun<span class="ibadge" style="color:#ff6622">TERT</span></button>
+        <button class="igwBtn" data-w="frostbow">❄️ Frost Bow<span class="ibadge" style="color:#ff6622">TERT</span></button>
+      </div>
+      <div class="igRow ig-quaternary">
+        <button class="igwBtn" data-w="nerf">🟠 Nerf Gun<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="bubblegum">🫧 Bubble Gun<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="slingshot">🪢 Slingshot<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="watergun">💧 Water Gun<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="rubberball">🎱 Rubber Ball<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="confetti">🎉 Confetti Gun<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="spoon">🥄 Spoon<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="banana">🍌 Banana<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="pillow">🛏️ Pillow<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="cottonball">☁️ Cotton Ball<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="glitter">✨ Glitter Gun<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="airhorn">📢 Air Horn<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="soap">🧼 Soap<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="toothpick">🦷 Toothpick<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="butterknife">🍴 Butter Knife<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="kazoo">🎺 Kazoo<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="feather">🪶 Feather Duster<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="newspaper">📰 Newspaper<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="wetfish">🐟 Wet Fish<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="leek">🌿 Leek<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="teacup">🍵 Teacup<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="straw">🥤 Straw<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="flipflop">🩴 Flip Flop<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="shoehorn">👟 Shoe Horn<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="pennywhistle">🎵 Pennywhistle<span class="ibadge bad">QUAT</span></button>
+        <button class="igwBtn" data-w="squeakytoy">🧸 Squeaky Toy<span class="ibadge bad">QUAT</span></button>
       </div>
       <div class="igRow ig-secret" style="display:none;">
         <button class="igwBtn" data-w="goldengun" style="border-color:#ffd700;color:#ffd700;">☠️ KILLER+BLADE<span class="ibadge secret">SECRET</span></button>
@@ -426,9 +442,9 @@
   <h1>RIVALS</h1>
   <p>Arena combat — last team standing</p>
   <div id="weaponPicker">
-    <!-- SLOT 1: GOOD -->
-    <div class="slotSection">
-      <div class="slotLabel"><span class="slotKey">1</span><span class="tier-header good">★ GOOD</span><span class="slotCurrent" id="sc-0">SNIPER</span></div>
+    <!-- SLOT 1: PRIMARY -->
+    <div class="slotSection primary">
+      <div class="slotLabel"><span class="slotKey">1</span><span class="tier-header primary">▲ PRIMARY</span><span class="slotCurrent" id="sc-0">SNIPER</span></div>
       <div class="wRow">
         <button class="wBtn s0 active" data-w="sniper" data-slot="0">🎯 Sniper</button>
         <button class="wBtn s0" data-w="railgun" data-slot="0">⚡ Railgun</button>
@@ -458,9 +474,9 @@
         <button class="wBtn s0" data-w="bazooka" data-slot="0">🚀 Bazooka</button>
       </div>
     </div>
-    <!-- SLOT 2: MID -->
-    <div class="slotSection">
-      <div class="slotLabel"><span class="slotKey">2</span><span class="tier-header mid">◆ MID</span><span class="slotCurrent" id="sc-1">PISTOL</span></div>
+    <!-- SLOT 2: SECONDARY (top half of mid) -->
+    <div class="slotSection secondary">
+      <div class="slotLabel"><span class="slotKey">2</span><span class="tier-header secondary">◆ SECONDARY</span><span class="slotCurrent" id="sc-1">PISTOL</span></div>
       <div class="wRow">
         <button class="wBtn s1 active" data-w="pistol" data-slot="1">🔫 Pistol</button>
         <button class="wBtn s1" data-w="smg" data-slot="1">💨 SMG</button>
@@ -481,51 +497,13 @@
         <button class="wBtn s1" data-w="iceshards" data-slot="1">❄️ Ice Shards</button>
         <button class="wBtn s1" data-w="scattershot" data-slot="1">🟡 Scatter Shot</button>
         <button class="wBtn s1" data-w="ak47" data-slot="1">🔫 AK-47</button>
-        <button class="wBtn s1" data-w="mp5" data-slot="1">💨 MP5</button>
-        <button class="wBtn s1" data-w="uzi" data-slot="1">💨 Uzi</button>
-        <button class="wBtn s1" data-w="magnum" data-slot="1">🔫 Magnum</button>
-        <button class="wBtn s1" data-w="doubleshotgun" data-slot="1">🔴 Dbl Shotgun</button>
-        <button class="wBtn s1" data-w="carbine" data-slot="1">🔫 Carbine</button>
-        <button class="wBtn s1" data-w="crossbolt" data-slot="1">🏹 Crossbolt</button>
-        <button class="wBtn s1" data-w="mortargun" data-slot="1">💣 Mortar</button>
-        <button class="wBtn s1" data-w="nailgun" data-slot="1">🔨 Nail Gun</button>
-        <button class="wBtn s1" data-w="speargun" data-slot="1">🏹 Spear Gun</button>
-        <button class="wBtn s1" data-w="harpoon" data-slot="1">🪝 Harpoon</button>
-        <button class="wBtn s1" data-w="discgun" data-slot="1">🥏 Disc Gun</button>
-        <button class="wBtn s1" data-w="chainsaw" data-slot="1">⚙️ Chainsaw</button>
-        <button class="wBtn s1" data-w="mace" data-slot="1">🔨 Mace</button>
-        <button class="wBtn s1" data-w="poisonspray" data-slot="1">☠️ Poison Spray</button>
-        <button class="wBtn s1" data-w="shockwave" data-slot="1">💫 Shockwave</button>
-        <button class="wBtn s1" data-w="triplebow" data-slot="1">🏹 Triple Bow</button>
-        <button class="wBtn s1" data-w="pepperbox" data-slot="1">🔫 Pepperbox</button>
-        <button class="wBtn s1" data-w="lancegun" data-slot="1">⚡ Lance Gun</button>
-        <button class="wBtn s1" data-w="frostbow" data-slot="1">❄️ Frost Bow</button>
       </div>
     </div>
-    <!-- SLOT 3: MID -->
-    <div class="slotSection">
-      <div class="slotLabel"><span class="slotKey">3</span><span class="tier-header mid">◆ MID</span><span class="slotCurrent" id="sc-2">SMG</span></div>
+    <!-- SLOT 3: TERTIARY (bottom half of mid) -->
+    <div class="slotSection tertiary">
+      <div class="slotLabel"><span class="slotKey">3</span><span class="tier-header tertiary">◇ TERTIARY</span><span class="slotCurrent" id="sc-2">MP5</span></div>
       <div class="wRow">
-        <button class="wBtn s2" data-w="pistol" data-slot="2">🔫 Pistol</button>
-        <button class="wBtn s2 active" data-w="smg" data-slot="2">💨 SMG</button>
-        <button class="wBtn s2" data-w="shotgun" data-slot="2">🔴 Shotgun</button>
-        <button class="wBtn s2" data-w="rpg" data-slot="2">🚀 RPG</button>
-        <button class="wBtn s2" data-w="burst" data-slot="2">🔫 Burst</button>
-        <button class="wBtn s2" data-w="revolver" data-slot="2">🔫 Revolver</button>
-        <button class="wBtn s2" data-w="minigun" data-slot="2">💥 Minigun</button>
-        <button class="wBtn s2" data-w="grenade" data-slot="2">💣 Grenade</button>
-        <button class="wBtn s2" data-w="flamethrower" data-slot="2">🔥 Flamethrower</button>
-        <button class="wBtn s2" data-w="boomerang" data-slot="2">🪃 Boomerang</button>
-        <button class="wBtn s2" data-w="knife" data-slot="2">🔪 Knife</button>
-        <button class="wBtn s2" data-w="freezeray" data-slot="2">🧊 Freeze Ray</button>
-        <button class="wBtn s2" data-w="huntingrifle" data-slot="2">🦌 Hunting Rifle</button>
-        <button class="wBtn s2" data-w="dualpistols" data-slot="2">🔫 Dual Pistols</button>
-        <button class="wBtn s2" data-w="cannon" data-slot="2">💣 Cannon</button>
-        <button class="wBtn s2" data-w="throwingknives" data-slot="2">🗡️ Throwing Knives</button>
-        <button class="wBtn s2" data-w="iceshards" data-slot="2">❄️ Ice Shards</button>
-        <button class="wBtn s2" data-w="scattershot" data-slot="2">🟡 Scatter Shot</button>
-        <button class="wBtn s2" data-w="ak47" data-slot="2">🔫 AK-47</button>
-        <button class="wBtn s2" data-w="mp5" data-slot="2">💨 MP5</button>
+        <button class="wBtn s2 active" data-w="mp5" data-slot="2">💨 MP5</button>
         <button class="wBtn s2" data-w="uzi" data-slot="2">💨 Uzi</button>
         <button class="wBtn s2" data-w="magnum" data-slot="2">🔫 Magnum</button>
         <button class="wBtn s2" data-w="doubleshotgun" data-slot="2">🔴 Dbl Shotgun</button>
@@ -546,9 +524,9 @@
         <button class="wBtn s2" data-w="frostbow" data-slot="2">❄️ Frost Bow</button>
       </div>
     </div>
-    <!-- SLOT 4: BAD -->
-    <div class="slotSection">
-      <div class="slotLabel"><span class="slotKey">4</span><span class="tier-header bad">✗ BAD</span><span class="slotCurrent" id="sc-3">NERF GUN</span></div>
+    <!-- SLOT 4: QUATERNARY -->
+    <div class="slotSection quaternary">
+      <div class="slotLabel"><span class="slotKey">4</span><span class="tier-header quaternary">✗ QUATERNARY</span><span class="slotCurrent" id="sc-3">NERF GUN</span></div>
       <div class="wRow">
         <button class="wBtn s3 active" data-w="nerf" data-slot="3">🟠 Nerf Gun</button>
         <button class="wBtn s3" data-w="bubblegum" data-slot="3">🫧 Bubble Gun</button>
@@ -727,8 +705,10 @@ const WEAPONS = {
 const GOOD_WEAPONS = ['sniper','railgun','katana','crossbow','plasmarifle','laserrifle','deagle','barrett','jackhammer','bfg','tripleshot','lightningrifle','energysword','pulserifle','devastator','chaingun','dualuzi','supersniper','grenadelauncher','shockrifle','spiritblade','rocketpistol','megashotgun','chargerifle','plasmabeam','bazooka'];
 const MID_WEAPONS  = ['pistol','smg','shotgun','rpg','burst','revolver','minigun','grenade','flamethrower','boomerang','knife','freezeray','huntingrifle','dualpistols','cannon','throwingknives','iceshards','scattershot','ak47','mp5','uzi','magnum','doubleshotgun','carbine','crossbolt','mortargun','nailgun','speargun','harpoon','discgun','chainsaw','mace','poisonspray','shockwave','triplebow','pepperbox','lancegun','frostbow'];
 const BAD_WEAPONS  = ['nerf','bubblegum','slingshot','watergun','rubberball','confetti','spoon','banana','pillow','cottonball','glitter','airhorn','soap','toothpick','butterknife','kazoo','feather','newspaper','wetfish','leek','teacup','straw','flipflop','shoehorn','pennywhistle','squeakytoy'];
+const SECONDARY_WEAPONS = MID_WEAPONS.slice(0, Math.ceil(MID_WEAPONS.length / 2)); // pistol→ak47
+const TERTIARY_WEAPONS  = MID_WEAPONS.slice(Math.ceil(MID_WEAPONS.length / 2));  // mp5→frostbow
 const ALL_NORMAL_WEAPONS = [...GOOD_WEAPONS, ...MID_WEAPONS, ...BAD_WEAPONS];
-const DEFAULT_UNLOCKED = ['sniper', 'pistol', 'smg', 'nerf'];
+const DEFAULT_UNLOCKED = ['sniper', 'pistol', 'smg', 'mp5', 'nerf'];
 
 // ── Account system ────────────────────────────────────────────────────────────
 function hashPass(p) { let h=5381; for(let i=0;i<p.length;i++) h=((h<<5)+h)+p.charCodeAt(i)|0; return h.toString(36); }
@@ -875,7 +855,7 @@ function refreshLockedStates() {
     // If currently selected slot uses a now-locked weapon, reset to default
     const slot = parseInt(btn.dataset.slot);
     if (locked && selectedSlots[slot] === key) {
-      const defaults = ['sniper','pistol','smg','nerf'];
+      const defaults = ['sniper','pistol','mp5','nerf'];
       selectedSlots[slot] = defaults[slot];
     }
   });
@@ -915,9 +895,10 @@ function showPrizeScreen() {
   } else {
     // Group locked weapons by tier
     const groups = [
-      { label: '★ GOOD', cls: 'good', keys: GOOD_WEAPONS.filter(k => locked.includes(k)) },
-      { label: '◆ MID',  cls: 'mid',  keys: MID_WEAPONS.filter(k => locked.includes(k)) },
-      { label: '✗ BAD',  cls: 'bad',  keys: BAD_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '▲ PRIMARY',    cls: 'good', keys: GOOD_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '◆ SECONDARY',  cls: 'mid',  keys: SECONDARY_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '◇ TERTIARY',   cls: 'mid',  keys: TERTIARY_WEAPONS.filter(k => locked.includes(k)) },
+      { label: '✗ QUATERNARY', cls: 'bad',  keys: BAD_WEAPONS.filter(k => locked.includes(k)) },
     ];
     const emojis = { sniper:'🎯',railgun:'⚡',gravcannon:'🌀',katana:'🗡️',crossbow:'🏹',plasmarifle:'🔵',laserrifle:'🔴',pistol:'🔫',smg:'💨',shotgun:'🔴',rpg:'🚀',burst:'🔫',revolver:'🔫',minigun:'💥',grenade:'💣',flamethrower:'🔥',boomerang:'🪃',knife:'🔪',freezeray:'🧊',huntingrifle:'🦌',dualpistols:'🔫',cannon:'💣',throwingknives:'🗡️',iceshards:'❄️',scattershot:'🟡',nerf:'🟠',bubblegum:'🫧',slingshot:'🪢',watergun:'💧',rubberball:'🎱',confetti:'🎉',
       deagle:'🔫',barrett:'🎯',jackhammer:'🔴',bfg:'💥',tripleshot:'🔫',lightningrifle:'⚡',energysword:'⚔️',pulserifle:'🔵',devastator:'💣',chaingun:'💥',vortexrifle:'🌀',dualuzi:'🔫',supersniper:'🎯',grenadelauncher:'💣',shockrifle:'⚡',spiritblade:'🗡️',rocketpistol:'🚀',megashotgun:'🔴',chargerifle:'⚡',plasmabeam:'🔵',bazooka:'🚀',
@@ -1173,6 +1154,7 @@ function spawnBullet(owner, x, y, angle, wDef) {
   const a = angle + spread;
   bullets.push({
     owner, x, y,
+    age: 0,
     vx: Math.cos(a)*wDef.speed, vy: Math.sin(a)*wDef.speed,
     damage: wDef.damage, color: (owner && owner.isPlayer && owner.equippedShotColor && !wDef.golden && !wDef.nuke) ? owner.equippedShotColor : wDef.color,
     dist: 0, maxDist: wDef.range,
@@ -1219,7 +1201,7 @@ function updateScoreboard() {
 
 // ── Player ──────────────────────────────────────────────────────────────────
 let player, bots, gameRunning=false;
-let selectedSlots = ['sniper', 'pistol', 'smg', 'nerf']; // slot 0=GOOD, 1=MID, 2=MID, 3=BAD
+let selectedSlots = ['sniper', 'pistol', 'mp5', 'nerf']; // slot 0=PRIMARY, 1=SECONDARY, 2=TERTIARY, 3=QUATERNARY
 let gameMode = 'ffa';
 let mouse = {x:W/2, y:H/2};
 let keys = {};
@@ -1895,7 +1877,14 @@ function loop(ts=0) {
     if (b.trail.length > 5) b.trail.shift();
     b.x += b.vx; b.y += b.vy;
     b.dist += Math.hypot(b.vx, b.vy);
+    b.age = (b.age || 0) + dt;
     let remove = false;
+    // Hard cap: any bullet older than 5 seconds is forcibly removed
+    if (b.age > 5000) {
+      if (b.splash && !b.bouncing) doSplash(b, b.x, b.y, null);
+      bullets.splice(i, 1);
+      continue;
+    }
 
     // Grenade fuse countdown
     if (b.bouncing && b.fuse > 0) {
@@ -2500,6 +2489,124 @@ function draw() {
     }
   }
 
+  // Bullet trails
+  for (const b of bullets) {
+    if (b.trail.length < 2) continue;
+    ctx.strokeStyle = b.color;
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(b.trail[0].x, b.trail[0].y);
+    for (let i=1;i<b.trail.length;i++) ctx.lineTo(b.trail[i].x,b.trail[i].y);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  // Bullets
+  for (const b of bullets) {
+    if (b.isRocket) {
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle);
+      ctx.fillStyle = '#ff6600';
+      ctx.shadowColor = '#ff6600'; ctx.shadowBlur = 14;
+      ctx.fillRect(-10, -4, 20, 8);
+      ctx.fillStyle = '#ffcc00';
+      ctx.beginPath();
+      ctx.moveTo(10, 0); ctx.lineTo(16, -3); ctx.lineTo(16, 3); ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = `rgba(255,200,50,0.8)`;
+      ctx.beginPath();
+      ctx.moveTo(-10, 0); ctx.lineTo(-18, -3); ctx.lineTo(-18, 3); ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    } else if (b.gravityOrb) {
+      ctx.beginPath(); ctx.arc(b.x, b.y, 8, 0, Math.PI*2);
+      ctx.fillStyle = '#9b59b6';
+      ctx.shadowColor = '#9b59b6'; ctx.shadowBlur = 18;
+      ctx.fill();
+      ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.shadowBlur = 0;
+    } else if (b.boomerang) {
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle + Math.PI/4);
+      ctx.fillStyle = '#f0a500';
+      ctx.shadowColor = '#f0a500'; ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 12, 4, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    } else if (b.color === '#ffd700' && !b.bouncing) {
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle);
+      ctx.fillStyle = '#ffd700';
+      ctx.shadowColor = '#ffd700'; ctx.shadowBlur = 22;
+      ctx.fillRect(-12, -3, 24, 6);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-4, -1, 8, 2);
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    } else if (b.freeze) {
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle);
+      ctx.fillStyle = '#88ddff';
+      ctx.shadowColor = '#88ddff'; ctx.shadowBlur = 14;
+      ctx.beginPath();
+      ctx.moveTo(-8, 0); ctx.lineTo(0, -4); ctx.lineTo(8, 0); ctx.lineTo(0, 4);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(-3, 0); ctx.lineTo(0, -2); ctx.lineTo(3, 0); ctx.lineTo(0, 2);
+      ctx.closePath(); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    } else if (b.flame) {
+      const alpha = 1 - b.dist / 195;
+      ctx.globalAlpha = Math.max(0.1, alpha);
+      ctx.beginPath(); ctx.arc(b.x, b.y, 5, 0, Math.PI*2);
+      ctx.fillStyle = Math.random() > 0.5 ? '#ff4400' : '#ff8800';
+      ctx.shadowColor = '#ff4400'; ctx.shadowBlur = 12;
+      ctx.fill(); ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+    } else if (b.bubble) {
+      ctx.beginPath(); ctx.arc(b.x, b.y, 9, 0, Math.PI*2);
+      ctx.strokeStyle = '#ff69b4'; ctx.lineWidth = 2;
+      ctx.shadowColor = '#ff69b4'; ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,105,180,0.12)'; ctx.fill();
+      ctx.shadowBlur = 0;
+    } else if (b.bouncing) {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, 6, 0, Math.PI*2);
+      ctx.fillStyle = '#556b2f';
+      ctx.shadowColor = '#aaff44'; ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.strokeStyle = '#aaff44'; ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      if (b.fuse > 0 && Math.random() > 0.4) {
+        ctx.beginPath();
+        ctx.arc(b.x + 5, b.y - 5, 3, 0, Math.PI*2);
+        ctx.fillStyle = b.fuse < 500 ? '#ff3300' : '#ffcc00';
+        ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 10;
+        ctx.fill(); ctx.shadowBlur = 0;
+      }
+    } else {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, 4, 0, Math.PI*2);
+      ctx.fillStyle = b.color;
+      ctx.shadowColor = b.color; ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
   // Floating texts (backstab, etc.)
   for (const t of floatingTexts) {
     ctx.globalAlpha = t.life;
@@ -2603,7 +2710,7 @@ igToggle.addEventListener('click', () => {
 function setIgTierFilter(tier) {
   document.querySelectorAll('.igTab').forEach(t => t.classList.remove('tab-active'));
   document.querySelector(`.igTab[data-tier="${tier}"]`).classList.add('tab-active');
-  const show = { all: ['ig-good','ig-mid','ig-bad','ig-secret'], good: ['ig-good'], mid: ['ig-mid'], bad: ['ig-bad'], secret: ['ig-secret'] }[tier] || [];
+  const show = { all: ['ig-primary','ig-secondary','ig-tertiary','ig-quaternary','ig-secret'], primary: ['ig-primary'], secondary: ['ig-secondary'], tertiary: ['ig-tertiary'], quaternary: ['ig-quaternary'], secret: ['ig-secret'] }[tier] || [];
   document.querySelectorAll('#igWeapons .igRow').forEach(row => {
     const visible = show.some(cls => row.classList.contains(cls));
     row.style.display = visible ? 'flex' : 'none';
@@ -2744,7 +2851,7 @@ document.getElementById('clearDataBtn').addEventListener('click', () => {
   saveUnlocked();
   secretUnlocked = false;
   document.getElementById('secretTier').style.display = 'none';
-  selectedSlots = ['sniper','pistol','smg','nerf'];
+  selectedSlots = ['sniper','pistol','mp5','nerf'];
   showOverlay();
 });
 

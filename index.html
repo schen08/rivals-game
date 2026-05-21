@@ -864,10 +864,12 @@ function unlockAll() {
   refreshLockedStates();
 }
 
+const SECRET_WEAPONS = ['nuke', 'goldengun'];
 function refreshLockedStates() {
   document.querySelectorAll('.wBtn[data-slot]').forEach(btn => {
     const key = btn.dataset.w;
-    const locked = !unlockedWeapons.includes(key);
+    const isSecret = SECRET_WEAPONS.includes(key);
+    const locked = isSecret ? !secretUnlocked : !unlockedWeapons.includes(key);
     btn.classList.toggle('locked', locked);
     btn.disabled = locked;
     // If currently selected slot uses a now-locked weapon, reset to default
@@ -2792,6 +2794,7 @@ document.addEventListener('keydown', e => {
       document.getElementById('secretTier').style.display = 'block';
       unlockIgSecret();
       unlockAll(); // secret code unlocks every weapon
+      refreshLockedStates();
     }
     secretTyped = '';
   } else if (!SECRET_CODE.startsWith(secretTyped)) {

@@ -1437,6 +1437,7 @@ function startGame() {
     // Give boss a powerful weapon — unlimited bazooka ammo
     const bossWDef = {...(WEAPONS['bazooka'] || WEAPONS['rpg'])};
     bossWDef.ammo = 9999; bossWDef.perShotReload = false; // Boss never runs dry
+    bossWDef.fireRate = 500; // 500ms between shots
     bossWDef.reload = 1400; // slightly slower reload than normal
     boss.weapons = [bossWDef];
     boss.ammo = bossWDef.ammo;
@@ -1445,6 +1446,7 @@ function startGame() {
     boss.phaseTimer = 0;
     bots = [boss];
     player.team = 0;
+    player.speed += 100;
     document.getElementById('bossBar').classList.add('visible');
   }
 
@@ -1877,7 +1879,7 @@ function loop(ts=0) {
     if (bot.frozen > 0) bot.frozen -= dt;
     const bw = currentWeapon(bot);
     const botRegen = bw.golden ? 0.020 : bw.melee ? 0.010 : 0.005;
-    if (bot.hp < bot.maxHp) bot.hp = Math.min(bot.maxHp, bot.hp + dt * botRegen);
+    if (!bot.isBoss && bot.hp < bot.maxHp) bot.hp = Math.min(bot.maxHp, bot.hp + dt * botRegen);
     updateBot(bot, dt);
     bot.trail.push({x:bot.x,y:bot.y,life:1});
     if (bot.trail.length > 6) bot.trail.shift();

@@ -1418,11 +1418,12 @@ function startGame() {
     boss.r = 20;
     boss.isBoss = true;
     boss.respawnTimer = Infinity;
-    // Give boss a powerful weapon — unlimited bazooka ammo
-    const bossWDef = {...(WEAPONS['bazooka'] || WEAPONS['rpg'])};
-    bossWDef.ammo = 9999; bossWDef.perShotReload = false; // Boss never runs dry
-    bossWDef.fireRate = 500; // 500ms between shots
-    bossWDef.reload = 1400; // slightly slower reload than normal
+    // Give boss a fully custom weapon (bazooka stats, no per-shot-reload, unlimited ammo)
+    const bossWDef = {
+      name: 'BAZOOKA', damage: 95, fireRate: 2000, bullets: 1, spread: 0,
+      speed: 6.75, ammo: 9999, reload: 1400, color: '#ff4400', range: 1200,
+      splash: true, splashRadius: 110, splashDamage: 55, perShotReload: false
+    }; // 25% slower rockets, slightly slower reload than normal
     boss.weapons = [bossWDef];
     boss.ammo = bossWDef.ammo;
     boss.dodgeCooldown = 0;

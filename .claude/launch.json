@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "5500"],
       "port": 5500
+    },
+    {
+      "name": "rivals-3d",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8931", "--directory", "/Users/edisonchen/PycharmProjects/Rivals 3D"],
+      "port": 8931
     }
   ]
 }

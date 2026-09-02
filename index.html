@@ -232,6 +232,29 @@
   #levelUpNotif .lunTitle { font-size: 30px; font-weight: 900; color: #ffd700; letter-spacing: 3px; margin-bottom: 4px; }
   #levelUpNotif .lunSub { color: #ccc; font-size: 14px; letter-spacing: 1px; }
   #levelUpNotif .lunKeys { color: #ffd700; font-weight: 900; font-size: 18px; margin-top: 8px; }
+  /* ── Teleport Practice mini-game ── */
+  #tpHUD { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; z-index: 60; min-width: 300px; }
+  #tpHUD.visible { display: flex; }
+  #tpTopRow { display: flex; gap: 20px; align-items: center; }
+  #tpScoreText { color: #fff; font-size: 22px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px #00ffcc; }
+  #tpTimeText { color: #ffd700; font-size: 18px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 8px #ffd700; }
+  #tpTimerTrack { width: 300px; height: 8px; background: #1a1a2e; border-radius: 4px; overflow: hidden; border: 1px solid #333; }
+  #tpTimerFill { height: 100%; width: 100%; background: linear-gradient(90deg,#e74c3c,#ffd700,#00ffcc); border-radius: 4px; transition: width 0.1s linear; transform-origin: right; }
+  #tpCoolRow { display: flex; align-items: center; gap: 8px; }
+  #tpCoolLabel { color: #444; font-size: 10px; font-weight: 900; letter-spacing: 2px; }
+  #tpCoolBar { width: 80px; height: 4px; background: #1a1a2e; border-radius: 2px; overflow: hidden; }
+  #tpCoolFill { height: 100%; width: 0%; background: #00ffcc; border-radius: 2px; }
+  #tpHint { color: #333; font-size: 10px; font-weight: 900; letter-spacing: 2px; }
+  #tpResultScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.93); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 18px; z-index: 400; pointer-events: all; }
+  #tpResultScreen h2 { font-size: 44px; font-weight: 900; background: linear-gradient(135deg,#00ffcc,#ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; margin: 0; }
+  .tpStatRow { color: #aaa; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .tpStatRow span { color: #ffd700; }
+  .tpStatRow.best span { color: #c084fc; }
+  #tpPlayAgainBtn { background: linear-gradient(135deg,#00ddaa,#007766); color: #fff; border: none; padding: 12px 36px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; letter-spacing: 2px; transition: opacity 0.15s; margin-top: 8px; }
+  #tpPlayAgainBtn:hover { opacity: 0.85; }
+  .modeBtn.teleport { color: #00ffcc; border-color: rgba(0,255,204,0.35); }
+  .modeBtn.teleport:hover { color: #aaffee; border-color: #00ffcc; background: rgba(0,255,204,0.1); }
+  .modeBtn.teleport.active { color: #00ffcc; border-color: #00ffcc; background: rgba(0,255,204,0.12); text-shadow: 0 0 8px #00ffcc; }
 </style>
 </head>
 <body>
@@ -379,6 +402,19 @@
     <div id="reloadLabel">RELOADING</div>
   </div>
   <div id="respawnMsg">You were eliminated! Respawning...</div>
+  <!-- Teleport Practice HUD -->
+  <div id="tpHUD">
+    <div id="tpTopRow">
+      <span id="tpScoreText">SCORE: 0</span>
+      <span id="tpTimeText">30s</span>
+    </div>
+    <div id="tpTimerTrack"><div id="tpTimerFill"></div></div>
+    <div id="tpCoolRow">
+      <span id="tpCoolLabel">BLINK READY</span>
+      <div id="tpCoolBar"><div id="tpCoolFill"></div></div>
+      <span id="tpHint">RIGHT-CLICK or E to teleport</span>
+    </div>
+  </div>
   <div id="prizeScreen" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;z-index:200;pointer-events:all;overflow-y:auto;padding:30px 20px 40px;">
     <div style="font-size:50px;margin-top:10px;">🏆</div>
     <div style="font-size:30px;font-weight:900;color:#ffd700;letter-spacing:3px;">YOU WIN!</div>
@@ -425,6 +461,7 @@
     <button class="modeBtn" data-mode="3v3">3v3</button>
     <button class="modeBtn" data-mode="4v4">4v4 + COSMO</button>
     <button class="modeBtn boss" data-mode="boss">💀 BOSS</button>
+    <button class="modeBtn teleport" data-mode="teleport">⚡ TELEPORT PRACTICE</button>
   </div>
   <div id="secretBox">
     <div id="secretLabel">enter code</div>
